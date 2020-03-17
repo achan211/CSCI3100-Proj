@@ -18,7 +18,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        CUHK Live Classroom
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -78,10 +78,10 @@ export default function LoginPage() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="User Name"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -115,7 +115,7 @@ export default function LoginPage() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
