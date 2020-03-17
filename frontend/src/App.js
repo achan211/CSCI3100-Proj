@@ -1,6 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import LoginPage from "./LoginPage"
+import SignUp from "./Signup"
+import ForgetPW from "./forgetPW"
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,6 +24,12 @@ function App() {
               <li>
                 <Link to="/login">Login</Link>
               </li>
+              <li>
+                <Link to="/signup">Sign Up</Link>
+              </li>
+              <li>
+                <Link to="/forgetpw">Forget Password</Link>
+              </li>
             </ul>
           </nav>
 
@@ -29,12 +37,24 @@ function App() {
             <Route path="/login">
               <LoginPage />
             </Route>
-            <Route path="/">
-              <div className="App">
-                <p>Home Page</p>
-              </div>
+            <Route path="/signup">
+              <SignUp />
+            </Route>
+            <Route path="/forgetpw">
+              <ForgetPW />
             </Route>
 
+            <Route path="/">
+              <div className="App">
+                <p>Alvin's Update:
+                  I have included the following items: 
+                  <ul>
+                    <li>Sign Up Page</li>
+                    <li>Forget my Password Page</li>
+                  </ul>
+                </p>
+              </div>
+            </Route>
           </Switch>
         </React.Fragment>
       </Router>
