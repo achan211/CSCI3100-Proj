@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import LoginPage from "./LoginPage"
 import SignUp from "./Signup"
 import ForgetPW from "./forgetPW"
+import Chatroom from "./chatroom"
 import {
   BrowserRouter as Router,
   Switch,
@@ -30,6 +31,9 @@ function App() {
               <li>
                 <Link to="/forgetpw">Forget Password</Link>
               </li>
+              <li>
+                <Link to="/chatroom">Chatroom</Link>
+              </li>
             </ul>
           </nav>
 
@@ -42,6 +46,9 @@ function App() {
             </Route>
             <Route path="/forgetpw">
               <ForgetPW />
+            </Route>
+            <Route path="/chatroom">
+              <Chatroom />
             </Route>
 
             <Route path="/">
