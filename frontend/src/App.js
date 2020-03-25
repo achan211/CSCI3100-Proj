@@ -4,6 +4,8 @@ import LoginPage from "./LoginPage"
 import SignUp from "./Signup"
 import ForgetPW from "./forgetPW"
 import Chatroom from "./chatroom"
+import ForumHome from "./ForumHome"
+import ClassForum from "./ClassAForum"
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,7 +22,7 @@ function App() {
           <nav>
             <ul>
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/">Index</Link>
               </li>
               <li>
                 <Link to="/login">Login</Link>
@@ -33,6 +35,12 @@ function App() {
               </li>
               <li>
                 <Link to="/chatroom">Chatroom</Link>
+              </li>
+              <li>
+                <Link to="/ForumHome">Forum Home</Link>
+              </li>
+              <li>
+                <Link to="/ClassAForum">Class A Forum</Link>
               </li>
             </ul>
           </nav>
@@ -50,14 +58,20 @@ function App() {
             <Route path="/chatroom">
               <Chatroom />
             </Route>
+            <Route path="/ForumHome">
+              <ForumHome />
+            </Route>
+            <Route path="/ClassAForum">
+              <ClassForum />
+            </Route>
 
             <Route path="/">
               <div className="App">
                 <p>Alvin's Update:
                   I have included the following items: 
                   <ul>
-                    <li>Sign Up Page</li>
-                    <li>Forget my Password Page</li>
+                    <li>Forum Home Page</li>
+                    <li>Class Forum Page</li>
                   </ul>
                 </p>
               </div>
@@ -70,3 +84,4 @@ function App() {
 }
 
 export default App;
+
