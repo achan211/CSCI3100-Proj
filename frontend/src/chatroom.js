@@ -26,8 +26,8 @@ export default function App() {
           <Grid item xs={7}>
           <List>
               <Chat message="hello" name="Bob" />
-              <Chat message="fuck" name="Bob" />
-              <Chat message="fuck you2" name="Alice" />
+              <Chat message="Hi" name="Bob" />
+              <Chat message="Hi you2" name="Alice" />
               <Chat message="8" name="Alice" />
 
             </List>
