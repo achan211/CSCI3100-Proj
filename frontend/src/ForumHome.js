@@ -31,7 +31,7 @@ export default function ForumHome() {
         <Header title="CUHK Live Classroom (Forum - Home Page)" sections={sections} />
         <main>
             <h1>Latest threads:</h1>
-          In this section the system will show the latest threads from all of the forums that the user joined. 
+          In this section the system will show the latest threads from ALL of the forums that the user joined. 
         </main>
       </Container>
       <Footer />
