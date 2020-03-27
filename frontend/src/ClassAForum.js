@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Header from './ForumHeader';
 import Footer from './ForumFooter';
 import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
     padding: theme.spacing(2),
   },
+
 }));
 
 const sections = [
@@ -47,10 +49,18 @@ export default function ClassForum() {
         {/* Threads */}
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            Thread 1: Each time we show the latest 5 threads.
+            Thread 1: Each time we show the latest 5 threads. <br />
+            {/* Comments */}
+            <Link color="Black" noWrap variant="body2" href="./ForumComments">
+            Every thread has a comment link at this place. 
+            </Link>
           </Paper>
           <Paper className={classes.paper}>
-            Thread 2: When click "Show more" n times, below, it should show latest 5*n threads. # let's do some maths
+            Thread 2: When click "Show more" n times, below, it should show latest 5*n threads. # let's do some maths <br />
+            {/* Comments */}
+            <Link color="Black" noWrap variant="body2" href="./ForumComments">
+            Click to show comments.
+            </Link>
           </Paper>
           <Paper className={classes.paper}>
             Thread 3: We can see that threads are multilined. 
@@ -59,13 +69,25 @@ export default function ClassForum() {
             He didn't actually enjoy it, but he had accepted it and come to terms with it. 
             Or at least he thought he had. 
             All that changed when he put the key into the ignition, 
-            turned it and the engine didn't make a sound.
+            turned it and the engine didn't make a sound. <br />
+            {/* Comments */}
+            <Link color="Black" noWrap variant="body2" href="./ForumComments">
+            Click to show comments.
+            </Link>
           </Paper>
           <Paper className={classes.paper}>
-            Thread 4: Search button at the top should be able to search for all threads related to input words. 
+            Thread 4: Search button at the top should be able to search for all threads related to input words. <br />
+            {/* Comments */}
+            <Link color="Black" noWrap variant="body2" href="./ForumComments">
+            Click to show comments.
+            </Link>
           </Paper>
           <Paper className={classes.paper}>
-            This is the Username: And this is thread content. Note that the textfield is also multilined. 
+            This is the Username: And this is thread content. Note that the textfield is also multilined. <br />
+            {/* Comments */}
+            <Link color="Black" noWrap variant="body2" href="./ForumComments">
+            Click to show comments.
+            </Link>
           </Paper>
 
         {/* Button */}
