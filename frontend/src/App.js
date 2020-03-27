@@ -19,30 +19,22 @@ function App() {
     <div className="App">
       <Router>
         <React.Fragment>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Index</Link>
-              </li>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-              <li>
-                <Link to="/signup">Sign Up</Link>
-              </li>
-              <li>
-                <Link to="/forgetpw">Forget Password</Link>
-              </li>
-              <li>
-                <Link to="/chatroom">Chatroom</Link>
-              </li>
-              <li>
-                <Link to="/ForumHome">Forum Home</Link>
-              </li>
-              <li>
-                <Link to="/ClassAForum">Class A Forum</Link>
-              </li>
-            </ul>
+          <nav className="nav">
+      
+                <Link className="link" to="/">Index</Link>
+        
+                <Link className="link" to="/login">Login</Link>
+          
+                <Link className="link" to="/signup">Sign Up</Link>
+           
+                <Link className="link" to="/forgetpw">Forget Password</Link>
+            
+                <Link className="link" to="/chatroom">Chatroom</Link>
+        
+                <Link className="link" to="/ForumHome">Forum Home</Link>
+            
+                <Link className="link" to="/ClassAForum">Class A Forum</Link>
+           
           </nav>
 
           <Switch>
@@ -66,7 +58,8 @@ function App() {
             </Route>
 
             <Route path="/">
-              <div className="App">
+              <div >
+                <h2>CUHK Live Classroom</h2>
                 <p>Alvin's Update:
                   I have included the following items: 
                   <ul>
