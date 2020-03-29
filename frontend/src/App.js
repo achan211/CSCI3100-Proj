@@ -7,6 +7,7 @@ import Chatroom from "./chatroom"
 import ForumHome from "./ForumHome"
 import ClassForum from "./ClassAForum"
 import ForumComments from "./ForumComments"
+import Home from "./home"
 import {
   BrowserRouter as Router,
   Switch,
@@ -29,6 +30,8 @@ function App() {
                 <Link className="link" to="/signup">Sign Up</Link>
            
                 <Link className="link" to="/forgetpw">Forget Password</Link>
+
+                <Link className="link" to="/home">Logined Home</Link>
             
                 <Link className="link" to="/chatroom">Chatroom</Link>
         
@@ -49,6 +52,9 @@ function App() {
             </Route>
             <Route path="/forgetpw">
               <ForgetPW />
+            </Route>
+            <Route path="/home">
+              <Home />
             </Route>
             <Route path="/chatroom">
               <Chatroom />
