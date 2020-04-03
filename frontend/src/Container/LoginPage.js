@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useReducer,useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,9 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import TokenReducer from "../Reducer/TokenReducer";
+import {MyContext} from "../test"
+import { Redirect } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -57,10 +60,61 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function LoginPage() {
+let LoginPage = (props) => {
   const classes = useStyles();
+  const initState = {
+    'token': '' 
+   }
+  const [username, setusername] = useState('');
+  const [pw, setpw] = useState('');
+  // const { state, stateDispatch } =  useContext(MyContext);
 
-  return (
+  let handleSubmit = () => {
+    if ( username.length > 0 &&  pw.length > 0  )
+    {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          'username' : username,
+          'pw':pw
+        })
+      };
+      fetch('http://localhost:5000/login', requestOptions)
+        .then(response => response.json())
+        .then(response => {
+          const { history } = props;
+          if(response.status === "success"){
+            alert("Success!!");
+            HandleMapSateToProps(response.token)
+            history.push('/');
+          }
+          
+          else
+          alert ("Wrong PW or AC!")
+
+        });
+    }
+  }
+
+  let HandleMapSateToProps = (token) =>{
+    // stateDispatch({ type: 'ADD_TOKEN', payload: { 'token': token} })
+    localStorage.setItem( 'token', token )
+    console.log(localStorage.getItem( 'token' ))
+  }
+
+  let RedirectToHome = () =>{
+    alert("You have already loginned!");
+    const { history } = props;
+    // eslint-disable-next-line no-restricted-globals
+    history.push('/');
+  }
+
+  let LoginPage = () =>{
+    return (
+      <React.Fragment>
+
+     
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -83,6 +137,8 @@ export default function LoginPage() {
               name="username"
               autoComplete="username"
               autoFocus
+              value={username}
+                onChange={event => { setusername(event.target.value) }}
             />
             <TextField
               variant="outlined"
@@ -94,17 +150,20 @@ export default function LoginPage() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={pw}
+                onChange={event => { setpw(event.target.value) }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
             <Button
-              type="submit"
+              type="button"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={handleSubmit}
             >
               Sign In
             </Button>
@@ -127,5 +186,17 @@ export default function LoginPage() {
         </div>
       </Grid>
     </Grid>
+    </React.Fragment>
+    )
+  }
+  
+
+
+  return ( 
+    <React.Fragment>
+    {localStorage.getItem( 'token' ) ? RedirectToHome() : LoginPage()}
+    </React.Fragment>
+
   );
 }
+export default LoginPage

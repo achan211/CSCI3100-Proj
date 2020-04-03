@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { useState, useReducer } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { FormLabel } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import history from "../history"
+
 
 function Copyright() {
   return (
-     <Typography variant="body2" color="textSecondary" align="center">
+    <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
         CUHK Live Classroom
@@ -53,8 +55,66 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignUp() {
+
+let SignUp = (props) => {
   const classes = useStyles();
+
+  const [firstname, setfirstname] = useState('');
+  const [lastname, setlastname] = useState('');
+  const [username, setusername] = useState('');
+  const [email, setemail] = useState('');
+  const [pw, setpw] = useState('');
+  const [repw, setrepw] = useState('');
+  const [pwErrorMessage, setpwErrorMessage] = useState('');
+
+  // useEffect(() => {
+
+  // });
+
+
+  let handleSubmit = () => {
+    if ( firstname.length > 0 && lastname.length > 0 && username.length > 0 && validateEmail() && pw.length > 0 && pwErrorMessage.length === 0  )
+    {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          'firstname': firstname,
+          'lastname': lastname,
+          'username' : username,
+          'email':email,
+          'pw':pw
+        })
+      };
+      fetch('http://localhost:5000/signUp', requestOptions)
+        .then(response => response.json())
+        .then(response => {
+          const { history } = props;
+          alert("Success!!");
+          history.push('/login');
+
+        });
+    }
+  
+  }
+
+  let validateEmail = () => {
+    var re = /\S+@\S+\.\S+/
+    if(re.test(String(email).toLowerCase())){
+      return true
+    }
+    return false
+}
+
+  let setandcheckrepw = (event) => {
+
+    setrepw(event.target.value)
+    if (event.target.value !== pw) {
+      setpwErrorMessage("pw is not the same!")
+    } else {
+      setpwErrorMessage("")
+    }
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -78,6 +138,8 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                value={firstname}
+                onChange={event => { setfirstname(event.target.value) }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -89,6 +151,8 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                value={lastname}
+                onChange={event => { setlastname(event.target.value) }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -100,6 +164,8 @@ export default function SignUp() {
                 label="Username"
                 name="username"
                 autoComplete="username"
+                value={username}
+                onChange={event => { setusername(event.target.value) }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -111,6 +177,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={email}
+                onChange={event => { setemail(event.target.value) }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -123,6 +191,8 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={pw}
+                onChange={event => { setpw(event.target.value) }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -132,24 +202,31 @@ export default function SignUp() {
                 fullWidth
                 name="cpassword"
                 label="Confirm Password"
-                type="cpassword"
-                id="cpassword"
+                type="password"
+                id="ppassword"
                 autoComplete="confirm-password"
+                value={repw}
+                onChange={setandcheckrepw}
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I agree to the terms of service."
-              />
+              <FormLabel >
+                <div>{!validateEmail() && "please enter true eamil" }</div>
+              </FormLabel>
+            </Grid>
+            <Grid item xs={12}>
+              <FormLabel >
+                <div>{pwErrorMessage}</div>
+              </FormLabel>
             </Grid>
           </Grid>
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={ handleSubmit }
           >
             Sign Up
           </Button>
@@ -169,3 +246,4 @@ export default function SignUp() {
     </Container>
   );
 }
+export default  SignUp

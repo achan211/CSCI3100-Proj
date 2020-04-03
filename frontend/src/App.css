@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  max-width: 1920px;
+  margin:  0 auto;
 }
 
 .App-logo {
@@ -11,6 +13,10 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+.generalGridContainer{
+  display: grid;
+  grid-template-columns: 20% 80% ;
 }
 
 .App-header {

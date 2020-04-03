@@ -5,8 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
-import Header from './ForumHeader';
-import Footer from './ForumFooter';
+import Header from '../Component/ForumHeader';
+import Footer from '../Component/ForumFooter';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
