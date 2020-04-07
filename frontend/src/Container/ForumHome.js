@@ -4,10 +4,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
-import Header from '../Component/ForumHeader';
-import Footer from '../Component/ForumFooter';
 import Button from '@material-ui/core/Button';
-import CoursePageButton from "../Component/CoursePageButton"
+import Header from "../Component/Header"
 
 const useStyles = makeStyles(theme => ({
   mainGrid: {
@@ -42,11 +40,11 @@ export default function ForumHome(props) {
   return (
     <React.Fragment>
       <div className="generalGridContainer">
-        <CoursePageButton id={props.match.params.id} />
+        {/* <CoursePageButton id={props.match.params.id} /> */}
         <div>
           <CssBaseline />
           <Container maxWidth="lg">
-            <Header title="CUHK Live Classroom (Forum - Home Page)" sections={sections} />
+            <Header title="CUHK Live Classroom (Forum - Home Page)" />
 
             {/* Threads */}
             <Grid item xs={12}>
