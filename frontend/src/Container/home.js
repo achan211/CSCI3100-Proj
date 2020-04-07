@@ -1,22 +1,18 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Container } from '@material-ui/core';
-import Header from "../Component/HomeHeader";
-import Footer from '../Component/ForumFooter';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
+import Header from '../Component/Header'
+import Divider from '@material-ui/core/Divider'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        maxWidth: 345,
+        width: 900,
     },
 
     mainGrid: {
@@ -38,13 +34,16 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         padding: theme.spacing(2),
     },
+    app: {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+      },
+      main: {
+        flex: 1,
+        padding: theme.spacing(6, 4),
+      },
 }));
-
-const sections = [
-    { title: 'Forum', url: 'ForumHome' },
-    { title: 'Chatroom', url: '#' },
-    { title: 'Quiz', url: '#' },
-];
 
 // This is the homepage for user that have log into their accounts
 export default function Home(props) {
@@ -81,16 +80,15 @@ export default function Home(props) {
                     <Card className={classes.root}>
                         <Link className="link" to={`/${item.courseid}`}>
                             <CardActionArea>
-                                <CardMedia className={classes.media} image="url(https://source.unsplash.com/random)" title="Contemplative Reptile" />
                                 <CardContent>
                                     {/* Course Title */}
                                     <Typography gutterBottom variant="h5" component="h2">
                                         {item.courseTitle}
-                        </Typography>
+                                    </Typography>
                                     {/* Course Description */}
                                     <Typography variant="body2" color="textSecondary" component="p">
                                         {item.courseDesc}
-                        </Typography>
+                                    </Typography>
                                 </CardContent>
                             </CardActionArea>
                         </Link>
@@ -103,14 +101,20 @@ export default function Home(props) {
 
     let loginnedHome = (
         <React.Fragment>
-                <CssBaseline />
-                <Container>
-                    <Header title="Welcome to CUHK Live Classroom" sections={sections} />
-                    <Grid container spacing={4} justify="center">
-                    {renderCourseCard()}
-                </Grid>
-            </Container>
-            <Footer />
+            <CssBaseline />
+            <div className={classes.app}>
+                <Header />
+                <main className={classes.main}>
+                <Typography variant="h3" noWrap>
+                    Updates from My Courses
+                </Typography>
+                <Divider />
+                    <Grid container spacing={3} direction="column" alignItems="center" justify="center">
+                        <Grid item xs={12} />
+                        {renderCourseCard()}
+                    </Grid>
+                </main>
+            </div>
         </React.Fragment>
     )
     let RedirectToLogin = () => {
