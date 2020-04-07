@@ -8,6 +8,7 @@ import ForumHome from "./Container/ForumHome"
 import ForumComments from "./Container/ForumComments"
 import CoursePage from "./Container/CoursePage"
 import Attendance from "./Container/Attendance"
+import Header from "./Component/Header"
 import Quiz from "./Container/Quiz"
 import Home from "./Container/home"
 import {
@@ -30,14 +31,13 @@ function App() {
     <div className="App">
       <Router history={history}>
         <React.Fragment>
-          <nav className="nav">
-            {/* <div>hi state{state.token}</div> */} 
+          {/* <nav className="nav">
             <Link className="link" to="/">Home</Link>
             <Link className="link" to="/login">Login</Link>
             <Link className="link" to="/TEST/ForumHome">Forum Home</Link>
             <Link className="link" to="/TEST/ForumComments">Forum Thread Comments</Link>
-          </nav>
-
+          </nav> */}
+          <Header />
           <Switch>
             {/* <Route path="/login" render={(props)=><MyContext.Provider value={{
                 state: state,
@@ -49,11 +49,11 @@ function App() {
             <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={SignUp} />
             <Route path="/forgetpw" component={ForgetPW} />
-            <Route path="/:id/Chatroom" component={Chatroom} />
-            <Route path="/:id/ForumHome" component={ForumHome} />
+            <Route path="/Chatroom" component={Chatroom} />
+            <Route path="/ForumHome" component={ForumHome} />
             <Route path="/:id/ForumComments" component={ForumComments} />
-            <Route path="/:id/Attendance" component={Attendance} />
-            <Route path="/:id/Quiz" component={Quiz} />
+            <Route path="/Attendance" component={Attendance} />
+            <Route path="/Quiz" component={Quiz} />
             <Route path="/:id" component={CoursePage} />
             
             <Route exact path="/" component={Home}/>

@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import CoursePageButton from "../Component/CoursePageButton"
 
 let Attendance = (props) => {
 
@@ -8,7 +6,6 @@ let Attendance = (props) => {
         return (
             <React.Fragment>
                 <div className="generalGridContainer">
-                    <CoursePageButton id={props.match.params.id} />
                     <div>
                         <div><h1>This is Attendance Page</h1></div>
                         <h3>Please do the styling thanks.</h3>

@@ -5,9 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
-import Header from '../Component/ForumHeader';
-import Footer from '../Component/ForumFooter';
 import Button from '@material-ui/core/Button';
+import Footer from '../Component/ForumFooter';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,13 +25,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const sections = [
-    // This part will shows all of the forums (except the current forum i.e. Class A) that the user have joined. 
-  { title: 'Class B Forum', url: '#' },
-  { title: 'Class C Forum', url: '#' },
-  { title: 'Class D Forum', url: '#' },
-  { title: 'Class E Forum', url: '#' },
-];
 
 export default function ClassForum() {
   const classes = useStyles();
@@ -41,7 +33,6 @@ export default function ClassForum() {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Header title="CUHK Live Classroom (Forum - Class A)" sections={sections} />
  
         {/* Main Thread */}
         <Grid container spacing={3}>
