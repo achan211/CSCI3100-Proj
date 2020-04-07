@@ -9,10 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from "react-router-dom";
 import Header from '../Component/Header'
 import Divider from '@material-ui/core/Divider'
+import Paper from '@material-ui/core/Paper'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        width: 900,
+        width: 800,
     },
 
     mainGrid: {
@@ -26,8 +27,16 @@ const useStyles = makeStyles(theme => ({
     paper: {
         padding: theme.spacing(2),
         margin: theme.spacing(1),
-        textAlign: 'left',
-        color: theme.palette.text.secondary,
+        textAlign: 'center',
+        color: theme.palette.text.primary,
+    },
+
+    card: {
+        padding: theme.spacing(2),
+        margin: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.primary,
+        fontSize: 16,
     },
 
     Button: {
@@ -39,10 +48,16 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
       },
-      main: {
+
+    main: {
         flex: 1,
         padding: theme.spacing(6, 4),
-      },
+    },
+
+    divider: {
+        marginBottom: 10,
+        marginTop: 8,
+    }, 
 }));
 
 // This is the homepage for user that have log into their accounts
@@ -80,13 +95,13 @@ export default function Home(props) {
                     <Card className={classes.root}>
                         <Link className="link" to={`/${item.courseid}`}>
                             <CardActionArea>
-                                <CardContent>
+                                <CardContent className={classes.card}>
                                     {/* Course Title */}
                                     <Typography gutterBottom variant="h5" component="h2">
                                         {item.courseTitle}
                                     </Typography>
                                     {/* Course Description */}
-                                    <Typography variant="body2" color="textSecondary" component="p">
+                                    <Typography variant="body2" component="p">
                                         {item.courseDesc}
                                     </Typography>
                                 </CardContent>
@@ -96,7 +111,6 @@ export default function Home(props) {
                 </Grid>
             )
         })
-
     }
 
     let loginnedHome = (
@@ -106,11 +120,10 @@ export default function Home(props) {
                 <Header />
                 <main className={classes.main}>
                 <Typography variant="h3" noWrap>
-                    Updates from My Courses
+                    My Courses
                 </Typography>
-                <Divider />
+                <Divider className={classes.divider} />
                     <Grid container spacing={3} direction="column" alignItems="center" justify="center">
-                        <Grid item xs={12} />
                         {renderCourseCard()}
                     </Grid>
                 </main>
