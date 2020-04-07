@@ -49,7 +49,7 @@ function App() {
             <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={SignUp} />
             <Route path="/forgetpw" component={ForgetPW} />
-            <Route path="/:id/Chatroom" component={Chatroom} />
+            <Route path="/Chatroom" component={Chatroom} />
             <Route path="/ForumHome" component={ForumHome} />
             <Route path="/:id/ForumComments" component={ForumComments} />
             <Route path="/Attendance" component={Attendance} />
