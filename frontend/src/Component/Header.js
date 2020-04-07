@@ -5,7 +5,7 @@ import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Link from '@material-ui/core/Link'
+import { Link } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -31,6 +31,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    marginBottom: "64px"
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
@@ -145,8 +146,8 @@ export default function Header() {
         </div>
         <Divider />
         <MenuList>
-          <MenuItem component={Link} color="inherit">
-            <ListItem>
+          <MenuItem  color="inherit" >
+            <ListItem  >
               <ListItemIcon><AccountCircleIcon /></ListItemIcon>
               <ListItemText primary="User Profile" />
               </ListItem>
@@ -154,31 +155,31 @@ export default function Header() {
 
           <Divider />
 
-          <MenuItem component={Link} color="inherit">
+          <MenuItem component={Link} to="/" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><AssignmentIcon /></ListItemIcon>
               <ListItemText primary="My Courses" />
               </ListItem>
           </MenuItem>
-          <MenuItem component={Link} color="inherit">
+          <MenuItem component={Link} to="/Attendance" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><GroupIcon /></ListItemIcon>
               <ListItemText primary="Attendance" />
               </ListItem>
           </MenuItem>
-          <MenuItem component={Link} color="inherit">
+          <MenuItem component={Link} to="/Chatroom" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><ChatIcon /></ListItemIcon>
               <ListItemText primary="Chatroom" />
               </ListItem>
           </MenuItem>
-          <MenuItem component={Link} color="inherit">
+          <MenuItem component={Link} to="/ForumHome" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><ForumIcon /></ListItemIcon>
               <ListItemText primary="Forum" />
               </ListItem>
           </MenuItem>
-          <MenuItem component={Link} color="inherit">
+          <MenuItem component={Link} to="/Quiz" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><TimerIcon /></ListItemIcon>
               <ListItemText primary="Quiz" />

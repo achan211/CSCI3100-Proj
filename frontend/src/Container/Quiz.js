@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import Header from "../Component/Header"
 
 let Quiz = (props) => {
 
@@ -8,8 +7,6 @@ let Quiz = (props) => {
         return (
             <React.Fragment>
                 <div className="generalGridContainer">
-                    {/* <CoursePageButton id={props.match.params.id} /> */}
-                    <Header />
                     <div>
                         <div><h1>Course ID:{props.match.params.id}</h1></div>
                         <h1> Here is the Quiz page </h1>

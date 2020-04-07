@@ -7,42 +7,48 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Link } from "react-router-dom";
-import Header from '../Component/Header'
 import Divider from '@material-ui/core/Divider'
-
+import Paper from '@material-ui/core/Paper';
 const useStyles = makeStyles(theme => ({
     root: {
-        width: 900,
+        flexGrow: 1,
     },
 
     mainGrid: {
         marginTop: theme.spacing(3),
+
+    },
+    paper: {
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+    title:{
+        color: '#B9B9B9',
+        paddingTop: '15px',
+        paddingBottom: '15px'
     },
 
     media: {
         height: 140,
     },
 
-    paper: {
-        padding: theme.spacing(2),
-        margin: theme.spacing(1),
-        textAlign: 'left',
-        color: theme.palette.text.secondary,
+    card: {
+        padding: theme.spacing(1)
     },
-
     Button: {
         margin: theme.spacing(1),
         padding: theme.spacing(2),
     },
     app: {
-        flex: 1,
         display: 'flex',
-        flexDirection: 'column',
-      },
-      main: {
-        flex: 1,
-        padding: theme.spacing(6, 4),
-      },
+    },
+    course: {
+        flexGrow: 1
+    },
+    profUpdate: {
+        flexGrow: 1
+    }
 }));
 
 // This is the homepage for user that have log into their accounts
@@ -71,51 +77,128 @@ export default function Home(props) {
             courseTitle: "UGEA 2100 GE course",
             courseDesc: "OKs is the course description of the course. I really wish to get an A in CSCI3100 so please give us anA"
         },
+
     ]
-    
+
+    let tmpProfUpdatedata = [
+        {
+            courseid: "CSCI3100",
+            courseTitle: "CSCI3100 This is Course Title",
+            profUpdate: "suffer la u",
+        },
+        {
+            courseid: "CSCI3130",
+            courseTitle: "CSCI3130 automataion",
+            profUpdate: "do as much as hw u can"
+        },
+        {
+            courseid: "CSCI3150",
+            courseTitle: "CSCI3150 OS",
+            profUpdate: "do your hw la diu"
+        },
+        {
+            courseid: "UGEA2100",
+            courseTitle: "UGEA 2100 GE course",
+            profUpdate: "Update 4"
+        },
+    ]
+
     let renderCourseCard = () => {
-        return tmpCoursedata.map((item,index)=>{
+        return tmpCoursedata.map((item, index) => {
             return (
-                <Grid item>
-                    <Card className={classes.root}>
-                        <Link className="link" to={`/${item.courseid}`}>
-                            <CardActionArea>
-                                <CardContent>
-                                    {/* Course Title */}
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        {item.courseTitle}
-                                    </Typography>
-                                    {/* Course Description */}
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {item.courseDesc}
-                                    </Typography>
-                                </CardContent>
-                            </CardActionArea>
-                        </Link>
-                    </Card>
-                </Grid>
+                <React.Fragment>
+                    <Grid xs={1}></Grid>
+                    <Grid item xs={10}>
+                        <Card className={classes.card}>
+                            <Link className="link" to={`/${item.courseid}`}>
+                                <CardActionArea>
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            {item.courseTitle}
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            {item.courseDesc}
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                            </Link>
+                        </Card>
+                    </Grid>
+                    <Grid xs={1}></Grid>
+                </React.Fragment>
             )
         })
 
     }
 
+    let renderProfUpdate = () => {
+        return tmpProfUpdatedata.map((item, index) => {
+            return (
+                <React.Fragment>
+                    <Grid xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <Card className={classes.card}>
+                            <Link className="link" to={`/${item.courseid}`}>
+                                <CardActionArea >
+                                    <CardContent >
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            {item.courseTitle}
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            {item.profUpdate}
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                            </Link>
+
+                        </Card>
+                    </Grid>
+                    <Grid xs={2}></Grid>
+
+
+                </React.Fragment>
+            )
+        })
+
+    }
+
+    function FormRow() {
+        return (
+            <React.Fragment>
+                <Grid item xs={4}>
+                    <Paper className={classes.paper}>sadabdesdbdsbd</Paper>
+                </Grid>
+                <Grid item xs={8}>
+                    <Paper className={classes.paper}>item</Paper>
+                </Grid>
+            </React.Fragment>
+        );
+    }
     let loginnedHome = (
-        <React.Fragment>
-            <CssBaseline />
-            <div className={classes.app}>
-                <Header />
-                <main className={classes.main}>
-                <Typography variant="h3" noWrap>
-                    Updates from My Courses
-                </Typography>
-                <Divider />
-                    <Grid container spacing={3} direction="column" alignItems="center" justify="center">
-                        <Grid item xs={12} />
+        // <React.Fragment>
+        //     <CssBaseline />
+        <div className={classes.root}>
+            <Grid container >
+                <Grid item xs={4} spacing={3} >
+                    <Typography variant="h4" noWrap className={classes.title}>
+                        My Courses
+                        </Typography>
+                    <Grid container spacing={3} >
                         {renderCourseCard()}
                     </Grid>
-                </main>
-            </div>
-        </React.Fragment>
+                </Grid>
+
+                <Grid item xs={8} spacing={3} >
+                    <Typography variant="h4" noWrap className={classes.title}>
+                        Updates from My Courses
+                        </Typography>
+                    <Grid container xs={12} spacing={3} >
+                        {renderProfUpdate()}
+                    </Grid>
+                </Grid>
+            </Grid>
+        </div>
+        // </React.Fragment>
     )
     let RedirectToLogin = () => {
         alert("You have not yet login!");

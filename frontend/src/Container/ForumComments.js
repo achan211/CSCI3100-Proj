@@ -5,8 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
-import Header from '../Component/Header';
 import Button from '@material-ui/core/Button';
+import Footer from '../Component/ForumFooter';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,7 +33,6 @@ export default function ClassForum() {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Header title="CUHK Live Classroom (Forum - Class A)" />
  
         {/* Main Thread */}
         <Grid container spacing={3}>

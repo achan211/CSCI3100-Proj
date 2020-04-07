@@ -1,13 +1,11 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import CoursePageButton from "../Component/CoursePageButton"
 let CoursePage = (props) => {
 
     let renderCoursePage = () => {
         return (
             <React.Fragment>
                 <div className="generalGridContainer">
-                    <CoursePageButton id={props.match.params.id} />
                     <div>
                         <h3>Requirements: I)Prof Updates area, showing the updates of the course</h3>
                         <div>
