@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, List, ListItem } from "@material-ui/core";
 import Dialog from "../Component/Dialog";
 import Chat from "../Component/chat";
-import CoursePageButton from "../Component/CoursePageButton"
+import Header from "../Component/Header"
 
 const useStyle = makeStyles({
   paper: {
@@ -16,7 +16,8 @@ let Chatroom = (props) => {
   return (
     <React.Fragment>
       <div className="generalGridContainer">
-        <CoursePageButton id={props.match.params.id} />
+        {/* <CoursePageButton id={props.match.params.id} /> */}
+        <Header />
         <div>
           <Paper className={classes.paper}>
             <div><h1>Course ID:{props.match.params.id}</h1></div>
