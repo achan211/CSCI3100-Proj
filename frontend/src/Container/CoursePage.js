@@ -67,7 +67,7 @@ export default function CoursePage(props){
                     {/* <CoursePageButton id={props.match.params.id} /> */}
                     <Header />
                     <div className={classes.main}>
-                        <Typography variant="h3" noWrap>
+                        <Typography variant="h4" noWrap>
                             Course Title (Could you help me fix it thanks...)
                         </Typography>
                         <Divider className={classes.divider} />
