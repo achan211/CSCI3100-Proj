@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Header from "../Component/Header"
@@ -12,6 +12,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import NotesIcon from '@material-ui/icons/Notes';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import { addLeadingSlash } from 'history/PathUtils';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -58,6 +59,36 @@ const useStyles = makeStyles(theme => ({
 
 export default function CoursePage(props){
     const classes = useStyles();
+
+    const [Course, setCourse] = useState([])
+
+    let code= localStorage.getItem('info');
+    code = JSON.parse(code).course
+    console.log(props.match.params.id)
+    // useEffect(()=>{
+    //     const requestOptions = {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({ 
+    //           'code' : code,
+    //         })
+    //       };
+    //       fetch('http://localhost:5000/', requestOptions)
+    //         .then(response => response.json())
+    //         .then(response => {
+    //           if(!response.error){
+    //               console.log(response)
+    //             setCourse(response)
+    //           }
+    //           else
+    //           setCourse('no course yet')
+    
+    //         });
+    // },[])
+
+    let checkIfEnrolled = () =>{
+        
+    }
 
     let renderCoursePage = () => {
         return (
@@ -144,7 +175,7 @@ export default function CoursePage(props){
     console.log(localStorage.getItem('token'))
     return (
         <React.Fragment>
-            {localStorage.getItem('token') ? renderCoursePage() : RedirectToLogin()}
+            {localStorage.getItem('token') ?  checkIfEnrolled()  ? renderCoursePage() : renderErrorMessage() : RedirectToLogin()}
         </React.Fragment>
     )
 }

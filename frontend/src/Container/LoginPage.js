@@ -84,9 +84,9 @@ let LoginPage = (props) => {
         .then(response => response.json())
         .then(response => {
           const { history } = props;
-          if(response.status === "success"){
+          if(response._id){
             alert("Success!!");
-            HandleMapSateToProps(response.token)
+            HandleMapSateToProps(response)
             history.push('/');
           }
           
@@ -97,10 +97,12 @@ let LoginPage = (props) => {
     }
   }
 
-  let HandleMapSateToProps = (token) =>{
+  let HandleMapSateToProps = (studentDetails) =>{
     // stateDispatch({ type: 'ADD_TOKEN', payload: { 'token': token} })
-    localStorage.setItem( 'token', token )
-    console.log(localStorage.getItem( 'token' ))
+    localStorage.setItem( 'info', JSON.stringify(studentDetails) )
+    localStorage.setItem( 'token', studentDetails._id )
+    
+    console.log(  localStorage.getItem( "token" ) )
   }
 
   let RedirectToHome = () =>{

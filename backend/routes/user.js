@@ -75,13 +75,13 @@ router.post('/requestAddCourse', async (req, res) => {
                                     res.json(success);
                                 }
                             });
-                    }else{
+                    } else {
                         console.log('already requested! ');
-            res.json({ message: 'already requested! ' })
+                        res.json({ message: 'already requested! ' })
                     }
-                }else{
+                } else {
                     console.log('no user  code! ');
-            res.json({ message: 'no user  code!  ' })
+                    res.json({ message: 'no user  code!  ' })
                 }
             })
 

@@ -86,16 +86,29 @@ let SignUp = (props) => {
           'pw':pw
         })
       };
-      fetch('http://localhost:5000/signUp', requestOptions)
+      fetch('http://localhost:5000/createAC', requestOptions)
         .then(response => response.json())
         .then(response => {
           const { history } = props;
-          alert("Success!!");
-          history.push('/login');
-
+          if(response._id){
+            alert("Success!!");
+            HandleMapSateToProps(response)
+            history.push('/');
+          }
+          else{
+            alert("user/email exists already!");
+          }
         });
     }
   
+  }
+
+  let HandleMapSateToProps = (studentDetails) =>{
+    // stateDispatch({ type: 'ADD_TOKEN', payload: { 'token': token} })
+    localStorage.setItem( 'info', JSON.stringify(studentDetails) )
+    localStorage.setItem( 'token', studentDetails._id )
+    
+    console.log(  localStorage.getItem( "token" ) )
   }
 
   let validateEmail = () => {

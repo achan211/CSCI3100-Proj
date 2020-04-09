@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
@@ -54,70 +54,47 @@ const useStyles = makeStyles(theme => ({
 // This is the homepage for user that have log into their accounts
 export default function Home(props) {
     const classes = useStyles();
-    console.log(localStorage.getItem('token'))
+    const [Course, setCourse] = useState([])
 
-    let tmpCoursedata = [
-        {
-            courseid: "CSCI3100",
-            courseTitle: "CSCI3100 This is Course Title",
-            courseDesc: "This is the course description of the course. I really wish to get an A in CSCI3100 so please give us an A.",
-        },
-        {
-            courseid: "CSCI3130",
-            courseTitle: "CSCI3130 automataion",
-            courseDesc: "gs is the course description of the course. I really wish to get an A in CSCI3100 so please give us an"
-        },
-        {
-            courseid: "CSCI3150",
-            courseTitle: "CSCI3150 OS",
-            courseDesc: "ves is the course description of the course. I really wish to get an A in CSCI3100 so please give us anrse"
-        },
-        {
-            courseid: "UGEA2100",
-            courseTitle: "UGEA 2100 GE course",
-            courseDesc: "OKs is the course description of the course. I really wish to get an A in CSCI3100 so please give us anA"
-        },
 
-    ]
-
-    let tmpProfUpdatedata = [
-        {
-            courseid: "CSCI3100",
-            courseTitle: "CSCI3100 This is Course Title",
-            profUpdate: "suffer la u",
-        },
-        {
-            courseid: "CSCI3130",
-            courseTitle: "CSCI3130 automataion",
-            profUpdate: "do as much as hw u can"
-        },
-        {
-            courseid: "CSCI3150",
-            courseTitle: "CSCI3150 OS",
-            profUpdate: "do your hw la diu"
-        },
-        {
-            courseid: "UGEA2100",
-            courseTitle: "UGEA 2100 GE course",
-            profUpdate: "Update 4"
-        },
-    ]
+    let code= localStorage.getItem('info');
+    code = JSON.parse(code).course
+    useEffect(()=>{
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              'code' : code,
+            })
+          };
+          fetch('http://localhost:5000/', requestOptions)
+            .then(response => response.json())
+            .then(response => {
+              if(!response.error){
+                  console.log(response)
+                setCourse(response)
+              }
+              else
+              setCourse('no course yet')
+    
+            });
+    },[])
 
     let renderCourseCard = () => {
-        return tmpCoursedata.map((item, index) => {
+        return Course.map((item, index) => {
             return (
-                <React.Fragment>
-                    <Grid xs={1}></Grid>
+                <React.Fragment key={item.code}>
+                    <Grid xs={1} ></Grid>
                     <Grid item xs={10}>
                         <Card className={classes.card}>
-                            <Link className="link" to={`/${item.courseid}`}>
+                            <Link className="link" to={`/${item.code}`}>
                                 <CardActionArea>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            {item.courseTitle}
+                                            {item.name}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            {item.courseDesc}
+                                            {item.department}
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
@@ -132,20 +109,21 @@ export default function Home(props) {
     }
 
     let renderProfUpdate = () => {
-        return tmpProfUpdatedata.map((item, index) => {
+        return Course.map((item, index) => {
             return (
-                <React.Fragment>
+                <React.Fragment key={item.code}>
                     <Grid xs={2}></Grid>
                     <Grid item xs={8}>
                         <Card className={classes.card}>
-                            <Link className="link" to={`/${item.courseid}`}>
+                            <Link className="link" to={`/${item.code}`}>
                                 <CardActionArea >
                                     <CardContent >
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            {item.courseTitle}
+                                            {item.name}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            {item.profUpdate}
+                                            {item.updates}
+                                            {/* note: updates is an array */}
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
