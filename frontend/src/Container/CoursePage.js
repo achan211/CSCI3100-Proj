@@ -87,7 +87,14 @@ export default function CoursePage(props){
     // },[])
 
     let checkIfEnrolled = () =>{
-        
+
+    }
+    let renderErrorMessage = () =>{
+        return(
+            <div>
+                wrong
+            </div>
+        )
     }
 
     let renderCoursePage = () => {
