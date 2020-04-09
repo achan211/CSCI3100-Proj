@@ -12,6 +12,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import NotesIcon from '@material-ui/icons/Notes';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -58,6 +61,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function CoursePage(props){
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };
 
     let renderCoursePage = () => {
         return (
@@ -78,12 +90,22 @@ export default function CoursePage(props){
                                     <div className={classes.paperContent}>
                                         This is the content of the course update made by the professor. 
                                         Only the latest will be shown. If student would like to read more, then there would be a
-                                        button "Read More" which would redirect to another page, showing all of the updates or announcements made 
+                                        button "Read More" which would open up a dialog for all of the updates, showing all of the updates or announcements made 
                                         by the professor.
                                         <Divider className={classes.divider} />
                                     </div>
-                                    <Button variant="contained" color="primary">Read More</Button>
+                                    <Button variant="contained" color="primary" onClick={handleClickOpen}>Read More</Button>
                                 </Paper>
+                                {/* Dialogue */}
+                                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                                <DialogTitle id="form-dialog-title">Updates from this Course</DialogTitle>
+                                <DialogContent>
+                                    This is an update. 
+                                <Divider className={classes.divider} />
+                                    This is also an update. Notice that updates maybe very long. 
+                                <Divider className={classes.divider} />
+                                </DialogContent>
+                                </Dialog>
                             </Grid>
                             <Grid item xs={6}>
                                 <Paper className={classes.paper} variant="elevation">
