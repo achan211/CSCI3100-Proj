@@ -113,6 +113,7 @@ let Attendance = (props) => {
                             <PeopleIcon fontSize="large" /><br />
                             <Typography variant="h4" component="h4">Verify Your Attendance</Typography>
                             <Divider className={classes.divider} />
+                            <Typography variant="h6" component="h5">Selected Course: This is Course Code</Typography>
                             <Typography variant="h6" component="h5">Enter the 4 Digit Code your Teacher gave you</Typography>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
