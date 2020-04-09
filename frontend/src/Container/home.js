@@ -58,26 +58,28 @@ export default function Home(props) {
 
 
     let code= localStorage.getItem('info');
-    code = JSON.parse(code).course
     useEffect(()=>{
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              'code' : code,
-            })
-          };
-          fetch('http://localhost:5000/', requestOptions)
-            .then(response => response.json())
-            .then(response => {
-              if(!response.error){
-                  console.log(response)
-                setCourse(response)
-              }
-              else
-              setCourse('no course yet')
-    
-            });
+        if(localStorage.getItem('token') ){
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                  'code' : JSON.parse(code).course,
+                })
+              };
+              fetch('http://localhost:5000/', requestOptions)
+                .then(response => response.json())
+                .then(response => {
+                  if(!response.error){
+                      console.log(response)
+                    setCourse(response)
+                  }
+                  else
+                  setCourse('no course yet')
+        
+                });
+        }
+
     },[])
 
     let renderCourseCard = () => {

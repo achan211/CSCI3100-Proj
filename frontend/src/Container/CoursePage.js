@@ -12,7 +12,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import NotesIcon from '@material-ui/icons/Notes';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import { addLeadingSlash } from 'history/PathUtils';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -59,40 +61,59 @@ const useStyles = makeStyles(theme => ({
 
 export default function CoursePage(props){
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
 
+    const handleClickOpen = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };    
     const [Course, setCourse] = useState([])
 
-    let code= localStorage.getItem('info');
-    code = JSON.parse(code).course
-    console.log(props.match.params.id)
-    // useEffect(()=>{
-    //     const requestOptions = {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({ 
-    //           'code' : code,
-    //         })
-    //       };
-    //       fetch('http://localhost:5000/', requestOptions)
-    //         .then(response => response.json())
-    //         .then(response => {
-    //           if(!response.error){
-    //               console.log(response)
-    //             setCourse(response)
-    //           }
-    //           else
-    //           setCourse('no course yet')
-    
-    //         });
-    // },[])
+    let info= localStorage.getItem('info');
+    useEffect(()=>{
+        if( localStorage.getItem('token') && checkIfEnrolled() ){
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                  'code' : props.match.params.id,
+                })
+              };
+              fetch('http://localhost:5000/', requestOptions)
+                .then(response => response.json())
+                .then(response => {
+                  if(!response.error){
+                    console.log(response[0])
+                    setCourse(response[0])
+                   
+                  }
+                  else
+                  setCourse('no course yet')
+                });
+        }
+    },[])
 
     let checkIfEnrolled = () =>{
+        let code = JSON.parse(info).course
+         let filtered = code.filter(i=>{
+            return i === props.match.params.id
+        })
+        if(filtered.length >0){
+            return true
+        }
+        else{
+            return false
 
-    }
+        }
+    }   
     let renderErrorMessage = () =>{
         return(
             <div>
-                wrong
+                not yet enrolled this course!
+                (need styling, thanks!)
             </div>
         )
     }
@@ -116,12 +137,22 @@ export default function CoursePage(props){
                                     <div className={classes.paperContent}>
                                         This is the content of the course update made by the professor. 
                                         Only the latest will be shown. If student would like to read more, then there would be a
-                                        button "Read More" which would redirect to another page, showing all of the updates or announcements made 
+                                        button "Read More" which would open up a dialog for all of the updates, showing all of the updates or announcements made 
                                         by the professor.
                                         <Divider className={classes.divider} />
                                     </div>
-                                    <Button variant="contained" color="primary">Read More</Button>
+                                    <Button variant="contained" color="primary" onClick={handleClickOpen}>Read More</Button>
                                 </Paper>
+                                {/* Dialogue */}
+                                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                                <DialogTitle id="form-dialog-title">Updates from this Course</DialogTitle>
+                                <DialogContent>
+                                    This is an update. 
+                                <Divider className={classes.divider} />
+                                    This is also an update. Notice that updates maybe very long. 
+                                <Divider className={classes.divider} />
+                                </DialogContent>
+                                </Dialog>
                             </Grid>
                             <Grid item xs={6}>
                                 <Paper className={classes.paper} variant="elevation">
