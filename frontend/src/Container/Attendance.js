@@ -130,6 +130,29 @@ let Attendance = (props) => {
             </React.Fragment>
         )
     }
+    let renderAttendanceCode = () => {
+        return (
+            <React.Fragment>
+                {/* This part is for professor to generate a code */}
+                <Grid item xs={6}>
+                        <Paper className={classes.paper}>
+                            <PeopleIcon fontSize="large" /><br />
+                            <Typography variant="h4" component="h4">Check Attendance</Typography>
+                            <Divider className={classes.divider} />
+                            <Typography variant="h6" component="h5">Selected Course: This is Course Code</Typography>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <TextField id="attendanceCode" label="Generate 4-digit Code" />
+                                </Grid>
+                            </Grid>
+                            <Divider className={classes.divider} />
+                            <Button variant="contained" color="primary">Continue</Button>
+                        </Paper>
+                        </Grid>
+            </React.Fragment>
+        )
+    }
+    
     let RedirectToLogin = () => {
         alert("You have not yet login!");
         const { history } = props;
