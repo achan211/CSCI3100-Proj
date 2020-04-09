@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Footer from '../Component/ForumFooter';
 import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,9 +13,15 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
+import { ListItem, ListItemAvatar, ListItemIcon, ListItemText } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-
+import CreateIcon from '@material-ui/icons/Create';
+import Tooltip from '@material-ui/core/Tooltip';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,27 +65,42 @@ const useStyles = makeStyles(theme => ({
   }, 
 
   container: {
-    maxHeight: 480,
+    maxHeight: 580,
   },
 
   tableHead: {
     fontSize: 18,
   }, 
 
-}));
+  AddButton: {
+    marginLeft: 'auto',
+    marginRight: -12,
+  }, 
 
-const sections = [
-  // This part will shows all of the forums that the user have joined. 
-  { title: 'Class A Forum', url: 'ClassAForum' },
-  { title: 'Class B Forum', url: '#' },
-  { title: 'Class C Forum', url: '#' },
-  { title: 'Class D Forum', url: '#' },
-  { title: 'Class E Forum', url: '#' },
-];
+}));
 
 export default function ForumHome(props) {
   const classes = useStyles();
-  {/* Will try to reduce the LIines of Codes later*/}
+  const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpenComment = () => {
+    setOpen2(true);
+  };
+
+  const handleCloseComment = () => {
+    setOpen2(false);
+  };
+
+
   return (
     <React.Fragment>
       <div className={classes.app}>
@@ -99,8 +120,31 @@ export default function ForumHome(props) {
                     Working on switching different forums*/}
                     <TableHead>
                       <TableRow>
-                        <TableCell className={classes.tableHead} align="center">
-                          This is the Course Title
+                        <TableCell >
+
+                          <ListItem>
+                            <ListItemText align="center" className={classes.tableHead}>This is Course Title</ListItemText>
+                            {/* Create new Thread Button*/}
+                            <Tooltip title="Write a Thread" placement="bottom">
+                              <IconButton className={classes.AddButton} onClick={handleClickOpen}>
+                                <CreateIcon />
+                              </IconButton>
+                            </Tooltip>
+                            </ListItem>
+                            
+                            {/* Dialogue */}
+                            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                            <DialogTitle id="form-dialog-title">Write a Thread</DialogTitle>
+                            <DialogContent>
+                              <TextField autoFocus margin="dense" id="title" label="Thread Title" type="text" fullWidth multiline required />
+                              <TextField margin="dense" id="contents" label="Thread Contents" type="text" fullWidth multiline required />
+                              </DialogContent>
+                              <DialogActions>
+                                <Button onClick={handleClose} color="primary">Cancel</Button>
+                                <Button onClick={handleClose} color="primary">Submit</Button>
+                              </DialogActions>
+                            </Dialog>
+
                         </TableCell>
                       </TableRow>
                     </TableHead>
@@ -164,32 +208,47 @@ export default function ForumHome(props) {
                     </TableBody>
                   </Table>
                 </TableContainer>
-                <Divider className={classes.divider} />
-                <Button variant="contained" color="primary">Write a Thread</Button>
               </Paper>
             </Grid>
             {/* Thread Main Content & Comments */}
             <Grid item xs={6}>
               <Paper className={classes.paper}>
               <TableContainer className={classes.container}>
-                  <Table aria-label="sticky table">
-                    {/* The header of the table shows the Main Content of the Threads */}
+                  <Table stickyHeader aria-label="sticky table">
+                    {/* The header of the table shows the Content of the Selected Threads */}
                     <TableHead>
                       <TableRow>
                         <TableCell>
                         <ListItem>
                           <ListItemAvatar><Avatar /></ListItemAvatar>
                           <ListItemText>This is username: And this is the Thread Title. </ListItemText>
+                          <Tooltip title="Write a Comment" placement="bottom">
+                            <IconButton className={classes.AddButton} onclick={handleClickOpenComment}><CreateIcon /></IconButton>
+                          </Tooltip>
                         </ListItem>
-                        <ListItemText>
+                        {/* Dialogue for Comments */}
+                        <Dialog open={open2} onClose={handleCloseComment} aria-labelledby="form-dialog-title">
+                            <DialogTitle id="form-dialog-title">Write a Comment</DialogTitle>
+                            <DialogContent>
+                              <TextField margin="dense" id="comments" label="Comments" type="text" fullWidth multiline required />
+                              </DialogContent>
+                              <DialogActions>
+                                <Button onClick={handleCloseComment} color="primary">Cancel</Button>
+                                <Button onClick={handleCloseComment} color="primary">Submit</Button>
+                              </DialogActions>
+                            </Dialog>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    {/* Below are the comments */}
+                    <TableRow><TableCell>
+                    <ListItemText>
                           This is Thread Main Content. Comments are arranged in descending order of time. 
                           I just want an A grade on CSCI3100. TAs please give us full score for our projects. 
                           BTW CUHK can use this instead of Blackboard. 
                           I would only charge $2500 per month per 30 users! So cheap right?
                         </ListItemText>
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
+                    </TableCell></TableRow>
 
                     <TableRow><TableCell>
                         <ListItem>
@@ -228,14 +287,11 @@ export default function ForumHome(props) {
                     </TableCell></TableRow>
                   </Table>
                 </TableContainer>
-                <Divider className={classes.divider} />
-                <Button variant="contained" color="primary">Write a comment</Button>
               </Paper>
             </Grid>
           </Grid>
         </div>
       </div>
-      <Footer />
     </React.Fragment>
   );
 }
