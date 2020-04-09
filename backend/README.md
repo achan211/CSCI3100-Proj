@@ -1,5 +1,5 @@
 Step 0 : 
-First , you need to add a .env file under to backend folder
+First , you need to add a .env file under the backend folder
 
 inside the .env file, add the follwing code:
 
