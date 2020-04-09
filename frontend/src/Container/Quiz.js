@@ -1,21 +1,35 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+const useStyles = makeStyles(theme => ({
+    app: {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    
+    main: {
+        flex: 1,
+    },
+}));
+
 
 let Quiz = (props) => {
+    const classes = useStyles();
 
     let renderQuiz = () => {
         return (
             <React.Fragment>
-                <div className="generalGridContainer">
-                    <div>
-                        <div><h1>Course ID:{props.match.params.id}</h1></div>
-                        <h1> Here is the Quiz page </h1>
-                        <h3>Please do the styling thanks.</h3>
-                     
+                <div className={classes.app}>
+                    <div className={classes.main}>
+                        <Typography variant="h4" align="center" justify="center" noWrap>
+                            To 森美 and Billy: <br />
+                            This is the Quiz Page. Please do styling here. <br />
+                            Also please update your chatroom UI
+                        </Typography>
                     </div>
                 </div>
-
-
             </React.Fragment>
         )
     }
