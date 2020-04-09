@@ -1,6 +1,8 @@
 
 var express = require('express');
 var app = express();
+const mongoose = require("mongoose")
+require('dotenv/config')
 var cors = require('cors');
 var port = 5000
 app.use(cors());
@@ -10,40 +12,45 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 
-app.listen(port, function () {
+
+//import routes
+const createAC = require('./routes/createAC')
+const loginAC = require('./routes/loginAC')
+const homePage = require('./routes/homePage')
+const forumPage = require('./routes/forumPage')
+const attendance = require('./routes/attendance')
+const quiz = require('./routes/quiz')
+const forumComments = require('./routes/forumComments')
+const user = require('./routes/user')
+
+
+
+
+
+
+
+
+app.use('/createAC', createAC)
+app.use('/login', loginAC)
+app.use('/', homePage)
+
+app.use('/forum', forumPage) 
+app.use('/attendance', attendance) 
+app.use('/quiz', quiz) 
+app.use("/forumComments",forumComments)
+app.use("/user",user)
+
+
+
+
+
+
+
+app.listen(port, function () { 
   console.log('Example app listening on port 5000!');
 });
 
-let demodata =  { 'firstname': 'chan',
-'lastname': 'Peter',
-'username': 'Peter123',
-'email': 'Peter123@gmail.com',
-'pw': '123',
-'id': '123456' }
-
-
-
-app.get('/', (req, res) => {
-  const test ="he"
-  res.json(test);
-});
-
-app.post('/login', (req, res) => {
-  const info = req.body;
-  console.log(info)
-  if (info.username === demodata.username && info.pw === demodata.pw)
-  res.json({'status':'success', 'token': demodata.id});
-  else
-  res.json({'status':'error'});
-
-
-  
-});
-
-app.post('/signUp', (req, res) => {
-  const info = req.body;
-  console.log(info);
-
-  res.json(info);
-});
+mongoose.connect(process.env.DB_CONNECTION, {useNewUrlParser: true,useUnifiedTopology: true }, ()=>{
+  console.log("connected to DB!")
+})
 
