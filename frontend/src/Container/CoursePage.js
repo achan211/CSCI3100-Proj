@@ -119,11 +119,11 @@ export default function CoursePage(props){
         }
     }   
 
-    let renderUpdates = () =>{
-        if (Course.updates !== null){
-            return Course.map(item => {
+    let renderUpdates = () => {
+        if (Course && Course.updates) {
+            return Course.updates.map(item => {
                 return (
-                    <div key = {item.updates}></div>
+                <div key = {item.updates}>{item.updates}</div>
                 )
             })
         }
@@ -160,7 +160,7 @@ export default function CoursePage(props){
                     {/* <CoursePageButton id={props.match.params.id} /> */}
                     <div className={classes.main}>
                         <Typography variant="h4" noWrap>
-                            {Course.code}: {Course.name}
+                            {Course && Course.code}: {Course && Course.name}
                         </Typography>
                         <Divider className={classes.divider} />
                         <Grid container>
@@ -169,7 +169,7 @@ export default function CoursePage(props){
                                 <Paper className={classes.paper} variant="elevation">
                                     <Typography variant="h5" noWrap>Course Updates from {Course.code}</Typography>
                                     <Divider className={classes.divider} />
-                                    {renderUpdates}
+                                    {renderUpdates()}
                                     <Divider className={classes.divider} />
                                     <Button variant="contained" color="primary" onClick={handleClickOpen}>Read More</Button>
                                 </Paper>
