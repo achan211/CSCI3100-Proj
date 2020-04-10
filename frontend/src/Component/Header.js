@@ -265,7 +265,7 @@ export default function Header() {
         </div>
         <Divider />
         <MenuList>
-          <MenuItem color="inherit" onClick={handleDrawerClose} >
+          <MenuItem color="inherit" component={Link} to="/userProfile" onClick={handleDrawerClose}>
             <ListItem  >
               <ListItemIcon><AccountCircleIcon /></ListItemIcon>
               <ListItemText primary="User Profile" />
