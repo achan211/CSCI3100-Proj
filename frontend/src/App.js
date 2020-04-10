@@ -11,6 +11,7 @@ import Attendance from "./Container/Attendance"
 import Header from "./Component/Header"
 import Quiz from "./Container/Quiz"
 import Home from "./Container/home"
+import QuizRecord from "./Container/QuizRecord"
 import {
   BrowserRouter as Router,
   Switch,
@@ -54,6 +55,7 @@ function App() {
             <Route path="/:id/ForumComments" component={ForumComments} />
             <Route path="/Attendance" component={Attendance} />
             <Route path="/Quiz" component={Quiz} />
+            <Route path="/QuizRecord" component={QuizRecord} />
             <Route path="/:id" component={CoursePage} />
             
             <Route exact path="/" component={Home}/>
