@@ -21,7 +21,8 @@ import history from './history';
 import './App.css';
 import TokenReducer from "./Reducer/TokenReducer";
 import { MyContext } from "./test"
-
+import Themes from "./themes";
+import { ThemeProvider } from "@material-ui/styles";
 function App() {
 
 
@@ -29,6 +30,9 @@ function App() {
 
   return (
     <div className="App">
+        <ThemeProvider theme={Themes.default}>
+   
+
       <Router history={history}>
         <React.Fragment>
           {/* <nav className="nav">
@@ -50,7 +54,8 @@ function App() {
             <Route path="/signup" component={SignUp} />
             <Route path="/forgetpw" component={ForgetPW} />
             <Route path="/Chatroom" component={Chatroom} />
-            <Route path="/ForumHome" component={ForumHome} />
+            <Route path="/ForumHome/:id" component={ForumHome} />
+            <Route path="/ForumHome/" component={ForumHome} />
             <Route path="/:id/ForumComments" component={ForumComments} />
             <Route path="/Attendance" component={Attendance} />
             <Route path="/Quiz" component={Quiz} />
@@ -63,6 +68,7 @@ function App() {
           </Switch>
         </React.Fragment>
       </Router>
+      </ThemeProvider>
     </div>
   );
 }

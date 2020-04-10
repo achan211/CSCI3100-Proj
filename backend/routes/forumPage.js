@@ -3,14 +3,14 @@ const router = express.Router();
 const Post = require('../model/ForumPage')
 
 // get the forum topic
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
     Post.find({ code : { $in : req.body.code }  }, function (err, docs) {
         if (docs.length) {
             console.log(docs)
             res.json(   docs[0] )
         } else {
             console.log('no such forum! ');
-            res.json({ message: 'no such forum! ' })
+            res.json({ error: 'no such forum! ' })
         }
     });
 
@@ -18,13 +18,15 @@ router.get('/', async (req, res) => {
 
 
 // To add a fourm topic to the server
-router.post('/', async (req, res) => {
+router.post('/addTopic', async (req, res) => {
     let code = req.body.code 
     let topic = req.body.topic 
+    let context = req.body.context 
     Post.find({'code':code}, async function (err, docs) {
         if (docs.length) {
             let pushObj={
                 topic: topic, 
+                context: context
             }
             Post.findOneAndUpdate(
                 { code: req.body.code }, 

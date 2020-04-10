@@ -5,7 +5,7 @@ const Quiz = require('../model/Quiz')
 
 
 // get quiz question
-router.get('/student', async (req, res) => {
+router.post('/student', async (req, res) => {
     Quiz.find({'courseCode':req.body.courseCode},  async function (err, docs) {
         if (docs.length) {
             let len = docs[0].quiz.length
@@ -19,7 +19,7 @@ router.get('/student', async (req, res) => {
 })
 
 //Used by student. used to submit score to server
-router.post('/student', async (req, res) => {
+router.post('/student/submit', async (req, res) => {
     Quiz.find({'courseCode':req.body.courseCode},   function (err, docs) {
         if (docs.length) {
             let len = docs[0].quiz.length
