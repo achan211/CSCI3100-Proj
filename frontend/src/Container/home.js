@@ -72,6 +72,7 @@ export default function Home(props) {
                 .then(response => {
                   if(!response.error){
                       console.log(response)
+                      
                     setCourse(response)
                   }
                   else
@@ -111,34 +112,37 @@ export default function Home(props) {
     }
 
     let renderProfUpdate = () => {
-        return Course.map((item, index) => {
-            return (
-                <React.Fragment key={item.code}>
-                    <Grid xs={2}></Grid>
-                    <Grid item xs={8}>
-                        <Card className={classes.card}>
-                            <Link className="link" to={`/${item.code}`}>
-                                <CardActionArea >
-                                    <CardContent >
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            {item.name}
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            {item.updates}
-                                            {/* note: updates is an array */}
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Link>
+        if(Course ){
+            return Course.map((item, index) => {
+                return (
+                    <React.Fragment key={item.code}>
+                        <Grid xs={2}></Grid>
+                        <Grid item xs={8}>
+                            <Card className={classes.card}>
+                                <Link className="link" to={`/${item.code}`}>
+                                    <CardActionArea >
+                                        <CardContent >
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {item.name}
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                {/* {item.updates} */} nend fix
+                                                {/* note: updates is an array */}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Link>
+    
+                            </Card>
+                        </Grid>
+                        <Grid xs={2}></Grid>
+    
+    
+                    </React.Fragment>
+                )
+            })
+        }
 
-                        </Card>
-                    </Grid>
-                    <Grid xs={2}></Grid>
-
-
-                </React.Fragment>
-            )
-        })
 
     }
 

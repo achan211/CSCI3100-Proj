@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.primary,
-
+    height: 'calc(100vh - 80px)'
   },
 
   paperContent: {
@@ -124,6 +124,7 @@ let AddCourse = (props) => {
                 <Autocomplete
                   id="combo-box-demo"
                   options={AvaCourse}
+                  autoFocus
                   className={classes.completeBox}
                   getOptionLabel={(AvaCourse) => AvaCourse.code}
                   onChange={(e, value) => setCourse(value)}
@@ -131,7 +132,7 @@ let AddCourse = (props) => {
                 />
                 <TextField
                   className={classes.message}
-                  autoFocus
+                  
                   value={Message}
                   onChange={e => setMessage(e.target.value)}
                   margin="dense" id="comments"

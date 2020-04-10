@@ -191,7 +191,8 @@ export default function ForumHome(props) {
       body: JSON.stringify({
         'code': CurrentCourse,
         'topic': Topic,
-        'context': Context
+        'context': Context,
+        'lauzhu': JSON.parse(info).username
       })
     };
     fetch('http://localhost:5000/forum/addTopic', requestOptions)
@@ -234,7 +235,6 @@ export default function ForumHome(props) {
 
   //add a new comment to server
   let handleAddComment = (value) => {
-
     if (value) {
       handleCloseComment()
       const requestOptions = {
@@ -244,7 +244,8 @@ export default function ForumHome(props) {
           'code': CurrentCourse,
           'id': CurrentFourmTopicId._id,
           'text': value,
-          'user': JSON.parse(info).username
+          'user': JSON.parse(info).username,
+          'lauzhu' : CurrentFourmTopicId.lauzhu
         })
       };
       fetch('http://localhost:5000/forumComments/addComment', requestOptions)

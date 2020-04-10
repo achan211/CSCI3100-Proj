@@ -120,23 +120,42 @@ export default function Header() {
     setOpen(false);
   };
 
-  useEffect(()=>{
-    
-    if(notificationsMenu ||notice === null ){
-      if(JSON.parse(localStorage.getItem('info'))){
+  useEffect(() => {
+
+    if (notificationsMenu || notice === null) {
+      if (JSON.parse(localStorage.getItem('info'))) {
         let username = JSON.parse(localStorage.getItem('info')).username
         // get notification form server
         fetch(`http://localhost:5000/user/getNotification/${username}`)
           .then(response => response.json())
           .then(response => {
             if (!response.error) {
-              setNotice(response)
+              let tmp = []
+              response.sitNotice.map(item => {
+                tmp.push(item)
+              })
+              if (JSON.parse(localStorage.getItem('info')).type === 'student') {
+                response.courseNotice.map(item => {
+                  tmp.push(item)
+                })
+              }
+
+              response.forumNotice.map(item => {
+                tmp.push(item)
+              })
+              tmp.sort(function (a, b) {
+                if (a.date > b.date) //sort  descending
+                  return -1
+                else
+                  return 1
+              })
+              setNotice(tmp)
             }
             else {
               setNotice(response.error)
             }
-    
-    
+
+
           });
       }
 
@@ -175,10 +194,10 @@ export default function Header() {
             className={classes.headerMenuButton}
           >
             <Badge
-            badgeContent={isNotificationsUnread ? Array.isArray(notice) ? notice.length : null : null}
-            color="warning"
-          >
-            <NotificationsIcon classes={{ root: classes.headerIcon }} />
+              badgeContent={isNotificationsUnread ? Array.isArray(notice) ? notice.length : null : null}
+              color="warning"
+            >
+              <NotificationsIcon classes={{ root: classes.headerIcon }} />
             </Badge>
           </IconButton>
           <Menu
@@ -189,17 +208,34 @@ export default function Header() {
             className={classes.headerMenu}
             disableAutoFocusItem
           >
-            {Array.isArray(notice) && notice.map(item => (
+            {Array.isArray(notice) && notice.length > 0 ? notice.map(item => (
               <MenuItem
                 key={item._id}
                 onClick={() => {
                   setNotificationsMenu(null)
                 }}
+                component={Link}
+                to="/NotificationPage"
                 className={classes.headerMenuItem}
               >
                 <Notification text={"[" + item.course + "]" + " " + item.type} content={item.message} typographyVariant="inherit" />
               </MenuItem>
-            ))}
+
+            )) :
+              <MenuItem
+                onClick={() => {
+                  setNotificationsMenu(null)
+                }}
+                component={Link}
+                to="/NotificationPage"
+                className={classes.headerMenuItem}
+              >
+                <Typography gutterBottom variant="p" component="p">
+                   -------- No New Message --------
+                                    </Typography>
+              </MenuItem>
+            }
+
           </Menu>
           <Typography variant="h6" noWrap>
             CUHK Live Classroom
@@ -229,15 +265,29 @@ export default function Header() {
         </div>
         <Divider />
         <MenuList>
-          <MenuItem color="inherit" >
+          <MenuItem color="inherit" onClick={handleDrawerClose} >
             <ListItem  >
               <ListItemIcon><AccountCircleIcon /></ListItemIcon>
               <ListItemText primary="User Profile" />
             </ListItem>
           </MenuItem>
 
+
+          <MenuItem color="inherit" component={Link} to="/NotificationPage" onClick={handleDrawerClose}>
+            <ListItem  >
+              <ListItemIcon><AccountCircleIcon /></ListItemIcon>
+              <ListItemText primary="Notification" />
+            </ListItem>
+          </MenuItem>
+
           <Divider />
 
+          <MenuItem component={Link} to="/AddCourse" onClick={handleDrawerClose} color="inherit">
+            <ListItem>
+              <ListItemIcon><AssignmentIcon /></ListItemIcon>
+              <ListItemText primary="Sit In On A Course" />
+            </ListItem>
+          </MenuItem>
           <MenuItem component={Link} to="/" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><AssignmentIcon /></ListItemIcon>

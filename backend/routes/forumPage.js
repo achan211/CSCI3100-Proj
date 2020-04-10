@@ -22,11 +22,13 @@ router.post('/addTopic', async (req, res) => {
     let code = req.body.code 
     let topic = req.body.topic 
     let context = req.body.context 
+    let lauzhu = req.body.lauzhu
     Post.find({'code':code}, async function (err, docs) {
         if (docs.length) {
             let pushObj={
                 topic: topic, 
-                context: context
+                context: context,
+                lauzhu: lauzhu
             }
             Post.findOneAndUpdate(
                 { code: req.body.code }, 

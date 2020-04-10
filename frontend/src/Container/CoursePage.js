@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Header from "../Component/Header"
@@ -15,6 +15,10 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CheckIcon from '@material-ui/icons/Check';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ClearIcon from '@material-ui/icons/Clear';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -35,12 +39,12 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center',
         color: theme.palette.text.primary,
     },
-    
+
     paperContent: {
         textAlign: 'left',
         justify: 'justified',
         fontSize: 16,
-    }, 
+    },
 
     app: {
         flex: 1,
@@ -55,67 +59,105 @@ const useStyles = makeStyles(theme => ({
     divider: {
         marginBottom: 10,
         marginTop: 8,
-    }, 
+    },
 
 }));
 
-export default function CoursePage(props){
+export default function CoursePage(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
-      };
-    
-      const handleClose = () => {
+    };
+
+    const handleClose = () => {
         setOpen(false);
-      };    
+    };
     const [Course, setCourse] = useState([])
 
-    let info= localStorage.getItem('info');
-    useEffect(()=>{
-        if( localStorage.getItem('token') && checkIfEnrolled() ){
+    let info = localStorage.getItem('info');
+    useEffect(() => {
+        if (localStorage.getItem('token') && checkIfEnrolled()) {
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                  'code' : props.match.params.id,
+                body: JSON.stringify({
+                    'code': props.match.params.id,
                 })
-              };
-              fetch('http://localhost:5000/', requestOptions)
+            };
+            fetch('http://localhost:5000/', requestOptions)
                 .then(response => response.json())
                 .then(response => {
-                  if(!response.error){
-                    console.log(response[0])
-                    setCourse(response[0])
-                   
-                  }
-                  else
-                  setCourse('no course yet')
+                    if (!response.error) {
+                        console.log(response[0])
+                        setCourse(response[0])
+
+                    }
+                    else
+                        setCourse('no course yet')
                 });
         }
-    },[])
+    }, [])
 
-    let checkIfEnrolled = () =>{
+    let checkIfEnrolled = () => {
         let code = JSON.parse(info).course
-         let filtered = code.filter(i=>{
+        let filtered = code.filter(i => {
             return i === props.match.params.id
         })
-        if(filtered.length >0){
+        if (filtered.length > 0) {
             return true
         }
-        else{
+        else {
             return false
 
         }
-    }   
-    let renderErrorMessage = () =>{
-        return(
-            <div>
-                not yet enrolled this course!
-                (need styling, thanks!)
-            </div>
+    }
+    let renderErrorMessage = () => {
+        return (
+            <React.Fragment>
+                <div className={classes.app}>
+                    <div className={classes.main}>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <Paper className={classes.paperAnnouncement} variant="elevation">
+                                    <Typography variant="h4" align="center" justify="center" noWrap className={classes.Announcement}>
+                                        Opps! <br />
+                                You didn't register this course. Please check your URL. <br />
+                                Or click the button below to redirect you back to Home Page.
+                                </Typography>
+                                    <Button variant="contained" color="primary">Home Page</Button>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </div>
+            </React.Fragment>
         )
+    }
+
+    let renderUpdates = () => {
+        if (Course && Course.updates) {
+            return Course.updates.map(item => {
+                return (
+                    <React.Fragment key={item._id}>
+                        <ListItem>
+                            <ListItemText
+                                primary={"type: " + item.type}
+                                secondaryTypographyProps={{ component: 'div' }}
+                                secondary={
+                                    <React.Fragment>
+                                        <p>date: {item.date.slice(0,10)}</p>
+                                        <p>message: {item.type}</p>
+                                    </React.Fragment>
+                                }
+                            />
+                        </ListItem>
+                        <Divider variant="inset" component="li" />
+                    </React.Fragment>
+                )
+            })
+        }
     }
 
     let renderCoursePage = () => {
@@ -125,7 +167,7 @@ export default function CoursePage(props){
                     {/* <CoursePageButton id={props.match.params.id} /> */}
                     <div className={classes.main}>
                         <Typography variant="h4" noWrap>
-                            Course Title (Could you help me fix it thanks...)
+                            {Course && Course.code}: {Course && Course.name}
                         </Typography>
                         <Divider className={classes.divider} />
                         <Grid container>
@@ -134,24 +176,18 @@ export default function CoursePage(props){
                                 <Paper className={classes.paper} variant="elevation">
                                     <Typography variant="h5" noWrap>Course Updates</Typography>
                                     <Divider className={classes.divider} />
-                                    <div className={classes.paperContent}>
-                                        This is the content of the course update made by the professor. 
-                                        Only the latest will be shown. If student would like to read more, then there would be a
-                                        button "Read More" which would open up a dialog for all of the updates, showing all of the updates or announcements made 
-                                        by the professor.
-                                        <Divider className={classes.divider} />
-                                    </div>
+                                    {renderUpdates()}
                                     <Button variant="contained" color="primary" onClick={handleClickOpen}>Read More</Button>
                                 </Paper>
                                 {/* Dialogue */}
                                 <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                                <DialogTitle id="form-dialog-title">Updates from this Course</DialogTitle>
-                                <DialogContent>
-                                    This is an update. 
+                                    <DialogTitle id="form-dialog-title">Updates from this Course</DialogTitle>
+                                    <DialogContent>
+                                        This is an update.
                                 <Divider className={classes.divider} />
-                                    This is also an update. Notice that updates maybe very long. 
+                                    This is also an update. Notice that updates maybe very long.
                                 <Divider className={classes.divider} />
-                                </DialogContent>
+                                    </DialogContent>
                                 </Dialog>
                             </Grid>
                             <Grid item xs={6}>
@@ -170,7 +206,7 @@ export default function CoursePage(props){
                             <Grid item xs={12}>
                                 <Paper className={classes.paper} variant="elevation">
                                     <Typography variant="h5" noWrap>Course Materials</Typography>
-                                    <Divider className={classes.divider}/>
+                                    <Divider className={classes.divider} />
                                     <div className={classes.paperContent}>
                                         <ListItem>
                                             <ListItemIcon><NotesIcon /></ListItemIcon>
@@ -213,7 +249,7 @@ export default function CoursePage(props){
     console.log(localStorage.getItem('token'))
     return (
         <React.Fragment>
-            {localStorage.getItem('token') ?  checkIfEnrolled()  ? renderCoursePage() : renderErrorMessage() : RedirectToLogin()}
+            {localStorage.getItem('token') ? checkIfEnrolled() ? renderCoursePage() : renderErrorMessage() : RedirectToLogin()}
         </React.Fragment>
     )
 }

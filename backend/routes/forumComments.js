@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ForumComment = require('../model/ForumComment')
-
+const Post = require('../model/CreateAC')
 
 // get the forum topic's comments
 router.post('/', async (req, res) => {
@@ -38,7 +38,7 @@ router.post('/addComment', async (req, res) => {
     let id = req.body.id 
     let text = req.body.text 
     let user = req.body.user 
-
+    let lauzhu = req.body.lauzhu
     let obj ={
         'code':code
     }
@@ -53,7 +53,34 @@ router.post('/addComment', async (req, res) => {
                 'date': new Date(),
                 'user':user
             }
+            // update the topic creater's ac notificaiton
+            if(user !== lauzhu){
+                Post.findOneAndUpdate(
+                    { username: lauzhu },
+                    {
+                        $push: {
+                            forumNotice: {
+                                type: 'New Reply',
+                                course: code,
+                                studentUsername: user,
+                                message: text,
+                                link: id
+                            }
+                        }
+                    },
+                    { new: true }, function (error, success) {
+                        if (error) {
+                           console.log("error")
+                        } else {
+                            console.log("success")
+                            // res.json(success)
+                        }
+                    });
 
+            }
+           
+              
+            //update the comment array 
             ForumComment.findOneAndUpdate(
                 { code: req.body.code }, 
                 {$push:  pushObj },

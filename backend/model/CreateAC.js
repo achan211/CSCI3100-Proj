@@ -1,6 +1,6 @@
 const mongoose = require ('mongoose')
 
-const Notice = mongoose.Schema({
+const sitNotice = mongoose.Schema({
     type:{
         type:String
     },
@@ -11,6 +11,31 @@ const Notice = mongoose.Schema({
         type:String
     },
     studentUsername:{
+        type:String
+    },
+    status:{
+        type:String
+    },
+    date:{
+        type: Date,
+        default: Date.now
+    }
+})
+
+const forumNotice =  mongoose.Schema({
+    type:{
+        type:String
+    },
+    course:{
+        type:String
+    },
+    message:{
+        type:String
+    },
+    studentUsername:{
+        type:String
+    },
+    link:{
         type:String
     },
     date:{
@@ -38,6 +63,10 @@ const PostSchema = mongoose.Schema({
     pw:{
         type: String
     },
+    type:{
+        type: String,
+        default: 'student'
+    },
     desc:{
         type: String
     },
@@ -47,8 +76,11 @@ const PostSchema = mongoose.Schema({
     pendingCourse:{
         type:Array
     },
-    notice:{
-        type: [Notice]
+    sitNotice:{
+        type: [sitNotice]
+    },
+    forumNotice:{
+        type: [forumNotice]
     },
     date:{
         type: Date,

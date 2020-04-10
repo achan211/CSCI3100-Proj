@@ -22,16 +22,46 @@ router.post('/edit', async (req, res) => {
 
 });
 
-//get notificaiton 
-router.get('/getNotification/:username', async (req,res)=>{
+//get all types of  notificaiton 
+router.get('/getNotification/:username', async (req, res) => {
     let username = req.params.username;
-    Post.find({'username': username}, async function (err,docs){
-        if(docs.length){
-            res.json(docs[0].notice);
+    Post.find({ 'username': username }, async function (err, docs) {
+        var courseNotice = [] //array
+        if (docs.length) {
+            let tmp = {
+                'sitNotice': [],
+                'forumNotice': [],
+                'courseNotice': []
+            }
+            tmp.sitNotice = docs[0].sitNotice
+            tmp.forumNotice = docs[0].forumNotice
+            Course.find({ 'code': docs[0].course }, async function (err, docs) {
+                if (docs.length) {
+                    tmp.courseNotice = docs[0].updates
+                    console.log(tmp.courseNotice)
+                    res.json(tmp);
+                }
+            })
+
         }
         else
-        res.json({error: 'no updates'})
+            res.json({ error: 'no updates' })
     })
+})
+
+//delete notification 
+router.delete('/deleteNotification/:username/:id/:noticeType', (req, res) => {
+    let username = req.params.username
+    let id = req.params.id
+    let noticeType = req.params.noticeType
+    Post.updateOne({ username: username }, { $pull: { 'forumNotice': { _id: id } } }, { safe: true, multi: true }, function (err, obj) {
+        if (obj)
+            res.json({ 'success': 'noti deleted' })
+        else
+            res.json({ 'error': 'server error, failed to delete post' })
+    });
+
+
 })
 
 //request to enroll for a course 
@@ -49,11 +79,11 @@ router.post('/requestAddCourse', async (req, res) => {
                     let filtered = docs[0].pendingCourse.filter(i => {
                         return i === course
                     })
-                    if(filtered.length !== 0 ){
+                    if (filtered.length !== 0) {
                         console.log('you have already requested! ');
                         res.json({ error: 'You have already requested! ' })
                     }
-                    else{
+                    else {
                         filtered = docs[0].course.filter(i => {
                             return i === course
                         })
@@ -63,7 +93,7 @@ router.post('/requestAddCourse', async (req, res) => {
                                 { username: prof },
                                 {
                                     $push: {
-                                        notice: {
+                                        sitNotice: {
                                             type: 'Sit in Course Request',
                                             course: course,
                                             studentUsername: studentUsername,
@@ -79,12 +109,20 @@ router.post('/requestAddCourse', async (req, res) => {
                                     //     res.json(success);
                                     // }
                                 });
+
                             // update student ac
                             Post.findOneAndUpdate(
                                 { username: studentUsername },
                                 {
                                     $push: {
-                                        pendingCourse: course
+                                        pendingCourse: course,
+                                        sitNotice: {
+                                            type: 'Sit in Course Request',
+                                            course: course,
+                                            studentUsername: studentUsername,
+                                            message: message,
+                                            status: 'Pending'
+                                        }
                                     }
                                 },
                                 { new: true },
@@ -92,18 +130,18 @@ router.post('/requestAddCourse', async (req, res) => {
                                     if (error) {
                                         res.json(error);
                                     } else {
-                                        res.json({message: 'Success!'});
+                                        res.json({ message: 'Success!' });
                                     }
                                 });
-                        } else{
+                        } else {
                             console.log('you have already enrolled! ');
                             res.json({ error: 'You have already enrolled! ' })
                         }
 
 
                     }
-                    
-             
+
+
                 } else {
                     console.log('no such studnet ');
                     res.json({ error: 'no such student !  ' })
@@ -120,29 +158,47 @@ router.post('/requestAddCourse', async (req, res) => {
 
 //add enrolled course for user (has to be done by teacher)
 router.post('/addEnrolledCourse', async (req, res) => {
-    let username = req.body.username //type: string
+    let username = req.body.username //type: string //studnet
     let course = req.body.course
-
+    let type = req.body.type
+    let id = req.body.id 
+    let profusername = req.body.profusername
     Post.find({ 'username': username }, async function (err, docs) {
         if (docs.length) {
-            let filtered = docs[0].course.filter(i => {
-                return i === course
-            })
-            if (filtered.length === 0) {
+            // + student to course 
                 Post.findOneAndUpdate(
                     { username: username },
-                    { $push: { course: course } },
+                    {
+                        $push: {
+                            course: course,
+                            sitNotice: {
+                                type: 'Sit in Course Request',
+                                course: course,
+                                studentUsername: username,
+                                message:  type ==='allow' ?'You can view the course materials now!' : 'Your request was declined.',
+                                status: type ==='allow'? 'Success' : 'Rejected'
+                            }
+                        },
+                        $pull: {
+                            pendingCourse: course,
+                        }
+                    },
                     { new: true },
                     function (error, success) {
                         if (error) {
-                            res.json(error);
+                            // res.json(error);
+                            console.log(error)
                         } else {
-                            res.json(success);
+                            // res.json(success);
+                            console.log("successfully added student")
                         }
                     });
-            } else {
-                res.json({ message: 'already enrolled!' })
-            }
+                    Post.updateOne({ username: profusername }, { $pull: { 'sitNotice': { _id: id } } }, { safe: true, multi: true }, function (err, obj) {
+                        if (obj)
+                            res.json({ 'success': 'student added' })
+                        else
+                            res.json({ 'error': 'server error, failed to add student' })
+                    });
 
         } else {
             console.log('no course  code! ');

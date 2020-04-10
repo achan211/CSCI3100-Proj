@@ -12,6 +12,9 @@ const Topic = mongoose.Schema({
         type: String,
         default: "1"
     },
+    lauzhu: {
+        type: String,
+    },
     context:{
         type:String
     }

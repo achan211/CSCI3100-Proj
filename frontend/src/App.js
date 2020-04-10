@@ -11,6 +11,7 @@ import Attendance from "./Container/Attendance"
 import Header from "./Component/Header"
 import Quiz from "./Container/Quiz"
 import Home from "./Container/home"
+import NotificationPage from "./Container/NotificationPage"
 import AddCourse from "./Container/AddCourse"
 import {
   BrowserRouter as Router,
@@ -60,9 +61,10 @@ function App() {
             <Route path="/:id/ForumComments" component={ForumComments} />
             <Route path="/Attendance" component={Attendance} />
             <Route path="/AddCourse" component={AddCourse} />
+            <Route path="/NotificationPage" component={NotificationPage} />
+
             <Route path="/Quiz" component={Quiz} />
             <Route path="/:id" component={CoursePage} />
-            
             <Route exact path="/" component={Home}/>
             <Route path="/" >
               <h1>404 error</h1>
