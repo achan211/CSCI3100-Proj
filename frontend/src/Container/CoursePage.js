@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Header from "../Component/Header"
@@ -12,6 +12,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import NotesIcon from '@material-ui/icons/Notes';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -39,6 +42,15 @@ const useStyles = makeStyles(theme => ({
         fontSize: 16,
     }, 
 
+    paperAnnouncement: {
+        marginTop: 150,
+        padding: theme.spacing(2),
+    }, 
+
+    Announcement: {
+        marginBottom: 15,
+    }, 
+
     app: {
         flex: 1,
         display: 'flex',
@@ -58,6 +70,88 @@ const useStyles = makeStyles(theme => ({
 
 export default function CoursePage(props){
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };    
+    const [Course, setCourse] = useState([])
+
+    let info= localStorage.getItem('info');
+    useEffect(()=>{
+        if( localStorage.getItem('token') && checkIfEnrolled() ){
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                  'code' : props.match.params.id,
+                })
+              };
+              fetch('http://localhost:5000/', requestOptions)
+                .then(response => response.json())
+                .then(response => {
+                  if(!response.error){
+                    console.log(response[0])
+                    setCourse(response[0])
+                   
+                  }
+                  else
+                  setCourse('no course yet')
+                });
+        }
+    },[])
+
+    let checkIfEnrolled = () =>{
+        let code = JSON.parse(info).course
+         let filtered = code.filter(i=>{
+            return i === props.match.params.id
+        })
+        if(filtered.length >0){
+            return true
+        }
+        else{
+            return false
+
+        }
+    }   
+
+    let renderUpdates = () =>{
+        if (Course.updates !== null){
+            return Course.map(item => {
+                return (
+                    <div key = {item.updates}></div>
+                )
+            })
+        }
+    }
+
+
+    let renderErrorMessage = () =>{
+        return(
+            <React.Fragment>
+                <div className={classes.app}>
+                    <div className={classes.main}>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <Paper className={classes.paperAnnouncement} variant="elevation">
+                                    <Typography variant="h4" align="center" justify="center" noWrap className={classes.Announcement}>
+                                    Opps! <br />
+                                    You didn't register this course. Please check your URL. <br />
+                                    Or click the button below to redirect you back to Home Page. 
+                                    </Typography>
+                                    <Button variant="contained" color="primary">Home Page</Button>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </div>
+            </React.Fragment>
+        )
+    }
 
     let renderCoursePage = () => {
         return (
@@ -66,28 +160,33 @@ export default function CoursePage(props){
                     {/* <CoursePageButton id={props.match.params.id} /> */}
                     <div className={classes.main}>
                         <Typography variant="h4" noWrap>
-                            Course Title (Could you help me fix it thanks...)
+                            {Course.code}: {Course.name}
                         </Typography>
                         <Divider className={classes.divider} />
                         <Grid container>
                             {/* Course Updates */}
                             <Grid item xs={6}>
                                 <Paper className={classes.paper} variant="elevation">
-                                    <Typography variant="h5" noWrap>Course Updates</Typography>
+                                    <Typography variant="h5" noWrap>Course Updates from {Course.code}</Typography>
                                     <Divider className={classes.divider} />
-                                    <div className={classes.paperContent}>
-                                        This is the content of the course update made by the professor. 
-                                        Only the latest will be shown. If student would like to read more, then there would be a
-                                        button "Read More" which would redirect to another page, showing all of the updates or announcements made 
-                                        by the professor.
-                                        <Divider className={classes.divider} />
-                                    </div>
-                                    <Button variant="contained" color="primary">Read More</Button>
+                                    {renderUpdates}
+                                    <Divider className={classes.divider} />
+                                    <Button variant="contained" color="primary" onClick={handleClickOpen}>Read More</Button>
                                 </Paper>
+                                {/* Dialogue */}
+                                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
+                                <DialogTitle id="form-dialog-title" align="center">Course Updates from {Course.code}: {Course.name}</DialogTitle>
+                                <DialogContent>
+                                    This is an update. 
+                                <Divider className={classes.divider} />
+                                    This is also an update. Notice that updates maybe very long. 
+                                <Divider className={classes.divider} />
+                                </DialogContent>
+                                </Dialog>
                             </Grid>
                             <Grid item xs={6}>
                                 <Paper className={classes.paper} variant="elevation">
-                                    <Typography variant="h5" noWrap>Deadlines for this course</Typography>
+                                    <Typography variant="h5" noWrap>Deadlines for {Course.code}: {Course.name}</Typography>
                                     <Divider className={classes.divider} />
                                     <div className={classes.paperContent}>
                                         I'm still wondering if it's a good idea to put the deadlines in here...
@@ -144,7 +243,7 @@ export default function CoursePage(props){
     console.log(localStorage.getItem('token'))
     return (
         <React.Fragment>
-            {localStorage.getItem('token') ? renderCoursePage() : RedirectToLogin()}
+            {localStorage.getItem('token') ?  checkIfEnrolled()  ? renderCoursePage() : renderErrorMessage() : RedirectToLogin()}
         </React.Fragment>
     )
 }
