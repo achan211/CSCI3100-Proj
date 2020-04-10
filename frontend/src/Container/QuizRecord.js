@@ -9,6 +9,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import HomeIcon from '@material-ui/icons/Home';
 
 
 const useStyles = makeStyles(theme => ({
@@ -26,13 +29,16 @@ const useStyles = makeStyles(theme => ({
     main: {
         flex: 1,
     },
+    button: {
+        margin: theme.spacing(1),
+      },
 }));
 
 
-let Quiz = (props) => {
+let Quiz_Record = (props) => {
     const classes = useStyles();
 
-    let renderQuiz = () => {
+    let renderQuizRecord = () => {
         return (
             <React.Fragment>
                 <div className={classes.app}>
@@ -57,13 +63,11 @@ let Quiz = (props) => {
                                             </List>
                                         </Grid>
                                     </Grid>
-                                    <Grid item xs={8}>
-                                        <Grid container direction="column"  alignItems="center"  justify="center">
-                                            <br/>
-                                            <Button variant="outlined" size="large" >Start Quiz</Button>
-                                           <br/>
-                                            <Button variant="outlined" size="large" onClick={()=>{window.location.href="/QuizRecord"}}>View Record</Button><br />
-                                        </Grid>   
+                                    <Grid item xs={8}>                                          
+                                            <Button className={classes.button} variant="outlined" color = "primary" startIcon={<ChevronLeftIcon /> } >Previous Quiz</Button>
+                                            <Button className={classes.button} variant="outlined" color = "primary" startIcon={<HomeIcon />} onClick={()=>{window.location.href="/home"}} >Back to Home page</Button>
+                                            <Button className={classes.button} variant="outlined" color = "primary" endIcon={<ChevronRightIcon />} >Next Quiz</Button><br />
+                                         
                                     </Grid>
                                 </Grid>
                             </Typography>
@@ -80,9 +84,9 @@ let Quiz = (props) => {
     }
     return (
         <React.Fragment>
-            {localStorage.getItem('token') ? renderQuiz() : RedirectToLogin()}
+            {localStorage.getItem('token') ? renderQuizRecord() : RedirectToLogin()}
         </React.Fragment>
     )
 }
 
-export default Quiz
+export default Quiz_Record

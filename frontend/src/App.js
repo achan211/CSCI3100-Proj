@@ -11,7 +11,7 @@ import Attendance from "./Container/Attendance"
 import Header from "./Component/Header"
 import Quiz from "./Container/Quiz"
 import Home from "./Container/home"
-import AddCourse from "./Container/AddCourse"
+import QuizRecord from "./Container/QuizRecord"
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,8 +22,7 @@ import history from './history';
 import './App.css';
 import TokenReducer from "./Reducer/TokenReducer";
 import { MyContext } from "./test"
-import Themes from "./themes";
-import { ThemeProvider } from "@material-ui/styles";
+
 function App() {
 
 
@@ -31,9 +30,6 @@ function App() {
 
   return (
     <div className="App">
-        <ThemeProvider theme={Themes.default}>
-   
-
       <Router history={history}>
         <React.Fragment>
           {/* <nav className="nav">
@@ -55,12 +51,11 @@ function App() {
             <Route path="/signup" component={SignUp} />
             <Route path="/forgetpw" component={ForgetPW} />
             <Route path="/Chatroom" component={Chatroom} />
-            <Route path="/ForumHome/:id" component={ForumHome} />
-            <Route path="/ForumHome/" component={ForumHome} />
+            <Route path="/ForumHome" component={ForumHome} />
             <Route path="/:id/ForumComments" component={ForumComments} />
             <Route path="/Attendance" component={Attendance} />
-            <Route path="/AddCourse" component={AddCourse} />
             <Route path="/Quiz" component={Quiz} />
+            <Route path="/QuizRecord" component={QuizRecord} />
             <Route path="/:id" component={CoursePage} />
             
             <Route exact path="/" component={Home}/>
@@ -70,7 +65,6 @@ function App() {
           </Switch>
         </React.Fragment>
       </Router>
-      </ThemeProvider>
     </div>
   );
 }
