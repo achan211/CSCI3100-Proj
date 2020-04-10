@@ -17,4 +17,24 @@ router.post('/', async (req, res) => {
 
 })
 
+//get all course
+router.get('/', async (req, res) => {
+    Post.find({ }, function (err, docs) {
+        if (docs.length) {
+            console.log(docs)
+            let tmp =[]
+            for (let i=0;i<docs.length;i++){
+                tmp.push({ 'code':docs[i].code , 'name':docs[i].name, 'username': docs[i].username, 'prof': docs[i].prof  })
+            }
+            res.json(   tmp )
+        } else {
+            console.log('no  course yet! ');
+            res.json({ error: 'no course yet! ' })
+        }
+    });
+
+
+})
+
+
 module.exports = router

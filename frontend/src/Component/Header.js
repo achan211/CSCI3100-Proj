@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -18,17 +18,30 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuList from '@material-ui/core/MenuList'
 import MenuItem from '@material-ui/core/MenuItem';
+import Badge from '@material-ui/core/Badge';
+import Menu from '@material-ui/core/Menu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TimerIcon from '@material-ui/icons/Timer';
 import ForumIcon from '@material-ui/icons/Forum';
 import ChatIcon from '@material-ui/icons/Chat';
 import GroupIcon from '@material-ui/icons/Group';
+import Notification from "./Notification/Notification";
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  headerMenu: {
+    marginTop: theme.spacing(7),
+  },
+  headerMenuItem: {
+    "&:hover, &:focus": {
+      backgroundColor: theme.palette.primary.main,
+      color: "white",
+    },
+  },
   root: {
     display: 'flex',
     marginBottom: "64px"
@@ -94,6 +107,10 @@ export default function Header() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  let [notificationsMenu, setNotificationsMenu] = useState(null);
+  let [notice, setNotice] = useState(null)
+  var [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -102,6 +119,31 @@ export default function Header() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  useEffect(()=>{
+    
+    if(notificationsMenu ||notice === null ){
+      if(JSON.parse(localStorage.getItem('info'))){
+        let username = JSON.parse(localStorage.getItem('info')).username
+        // get notification form server
+        fetch(`http://localhost:5000/user/getNotification/${username}`)
+          .then(response => response.json())
+          .then(response => {
+            if (!response.error) {
+              setNotice(response)
+            }
+            else {
+              setNotice(response.error)
+            }
+    
+    
+          });
+      }
+
+    }
+
+
+  }, [notificationsMenu])
 
   return (
     <div className={classes.root}>
@@ -122,12 +164,53 @@ export default function Header() {
           >
             <MenuIcon />
           </IconButton>
+          <IconButton
+            color="inherit"
+            aria-haspopup="true"
+            aria-controls="mail-menu"
+            onClick={e => {
+              setNotificationsMenu(e.currentTarget);
+              setIsNotificationsUnread(false);
+            }}
+            className={classes.headerMenuButton}
+          >
+            <Badge
+            badgeContent={isNotificationsUnread ? Array.isArray(notice) ? notice.length : null : null}
+            color="warning"
+          >
+            <NotificationsIcon classes={{ root: classes.headerIcon }} />
+            </Badge>
+          </IconButton>
+          <Menu
+            id="notifications-menu"
+            open={Boolean(notificationsMenu)}
+            anchorEl={notificationsMenu}
+            onClose={() => setNotificationsMenu(null)}
+            className={classes.headerMenu}
+            disableAutoFocusItem
+          >
+            {Array.isArray(notice) && notice.map(item => (
+              <MenuItem
+                key={item._id}
+                onClick={() => {
+                  setNotificationsMenu(null)
+                }}
+                className={classes.headerMenuItem}
+              >
+                <Notification text={"[" + item.course + "]" + " " + item.type} content={item.message} typographyVariant="inherit" />
+              </MenuItem>
+            ))}
+          </Menu>
           <Typography variant="h6" noWrap>
             CUHK Live Classroom
           </Typography>
+
+
+
+
           <section className={classes.rightToolBar}>
-          <IconButton color="inherit"><ExitToAppIcon /></IconButton>
-        </section>
+            <IconButton color="inherit"><ExitToAppIcon /></IconButton>
+          </section>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -146,11 +229,11 @@ export default function Header() {
         </div>
         <Divider />
         <MenuList>
-          <MenuItem  color="inherit" >
+          <MenuItem color="inherit" >
             <ListItem  >
               <ListItemIcon><AccountCircleIcon /></ListItemIcon>
               <ListItemText primary="User Profile" />
-              </ListItem>
+            </ListItem>
           </MenuItem>
 
           <Divider />
@@ -159,33 +242,33 @@ export default function Header() {
             <ListItem>
               <ListItemIcon><AssignmentIcon /></ListItemIcon>
               <ListItemText primary="My Courses" />
-              </ListItem>
+            </ListItem>
           </MenuItem>
           <MenuItem component={Link} to="/Attendance" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><GroupIcon /></ListItemIcon>
               <ListItemText primary="Attendance" />
-              </ListItem>
+            </ListItem>
           </MenuItem>
           <MenuItem component={Link} to="/Chatroom" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><ChatIcon /></ListItemIcon>
               <ListItemText primary="Chatroom" />
-              </ListItem>
+            </ListItem>
           </MenuItem>
           <MenuItem component={Link} to="/ForumHome" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><ForumIcon /></ListItemIcon>
               <ListItemText primary="Forum" />
-              </ListItem>
+            </ListItem>
           </MenuItem>
           <MenuItem component={Link} to="/Quiz" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><TimerIcon /></ListItemIcon>
               <ListItemText primary="Quiz" />
-              </ListItem>
+            </ListItem>
           </MenuItem>
-          <Divider/>
+          <Divider />
         </MenuList>
       </Drawer>
     </div>

@@ -32,14 +32,30 @@ export default function Notification({ variant, ...props }) {
       >
         <ForumIcon />
       </div>
-      <div className={classes.messageContainer}>
+      <div 
+      // className={classes.messageContainer}
+      >
         <Typography
-          className={classnames({
-            [classes.containedTypography]: variant === "contained",
-          })}
-          variant={props.typographyVariant}
+          // className={classnames({
+          //   [classes.containedTypography]: variant === "contained",
+          // })}
+          // variant={props.typographyVariant}
+          weight="medium" gutterBottom
+          className={classes.text}
         >
           {props.text}
+        
+        </Typography>
+        <Typography
+          // className={classnames({
+          //   [classes.containedTypography]: variant === "contained",
+          // })}
+          // variant={props.typographyVariant}
+          className={classes.text}
+
+          color="text" colorBrightness="secondary"
+        >
+          {props.content}
         </Typography>
       </div>
     </div>

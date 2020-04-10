@@ -3,30 +3,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
-// import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-// import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { ListItem, ListItemAvatar, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core';
+import { ListItem, ListItemAvatar, ListItemText, Menu, MenuItem } from '@material-ui/core';
 import DehazeIcon from '@material-ui/icons/Dehaze';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import CreateIcon from '@material-ui/icons/Create';
 import Tooltip from '@material-ui/core/Tooltip';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Notification from "../Component/Notification/Notification";
-import {  Button } from "../Component/Wrappers/Wrappers";
-import { fade } from "@material-ui/core/styles/colorManipulator";
-import { Link } from "react-router-dom";
 import CommentModal from "../Component/CommentModal"
 import NewTopicModal from "../Component/NewTopicModal"
 
@@ -128,7 +117,7 @@ export default function ForumHome(props) {
   const handleCloseComment = () => {
     setOpent(false);
   };
-  
+
   let info = localStorage.getItem('info');
   // console.log(info)
 
@@ -195,29 +184,29 @@ export default function ForumHome(props) {
   }, [CurrentFourmTopicId])
 
   //post a new topic to server
-let handleAddTopic = (Topic,Context)=> {
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          'code': CurrentCourse,
-          'topic': Topic,
-          'context': Context
-        })
-      };
-      fetch('http://localhost:5000/forum/addTopic', requestOptions)
-        .then(response => response.json())
-        .then(response => {
-          if (!response.error) {
-            console.log(response)
-            setCurrentFourmTopicId(response)
-          }
-          else {
-            console.log(response)
-          }
+  let handleAddTopic = (Topic, Context) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        'code': CurrentCourse,
+        'topic': Topic,
+        'context': Context
+      })
+    };
+    fetch('http://localhost:5000/forum/addTopic', requestOptions)
+      .then(response => response.json())
+      .then(response => {
+        if (!response.error) {
+          console.log(response)
+          setCurrentFourmTopicId(response)
+        }
+        else {
+          console.log(response)
+        }
 
-        });
-    
+      });
+
 
   }
 
@@ -275,7 +264,7 @@ let handleAddTopic = (Topic,Context)=> {
   }
 
   let renderForumTopic = () => {
-    if (ErrorValue === null && Course ) {
+    if (ErrorValue === null && Course) {
       return (
         Course.map(item => {
           return (
@@ -314,11 +303,11 @@ let handleAddTopic = (Topic,Context)=> {
                   </Tooltip>
                 </ListItem>
                 {/* Dialogue for Comments */}
-               <CommentModal 
-               handleCloseComment={handleCloseComment}
-               Opent={Opent}
-               handleAddComment={handleAddComment}
-               />
+                <CommentModal
+                  handleCloseComment={handleCloseComment}
+                  Opent={Opent}
+                  handleAddComment={handleAddComment}
+                />
 
               </TableCell>
             </TableRow>
@@ -412,9 +401,9 @@ let handleAddTopic = (Topic,Context)=> {
                               </Menu>
                               <ListItemText align="center" className={classes.tableHead}>{CurrentCourse}</ListItemText>
 
-                            <NewTopicModal
-                            handleAddTopic={handleAddTopic}
-                            />
+                              <NewTopicModal
+                                handleAddTopic={handleAddTopic}
+                              />
                             </ListItem>
 
 

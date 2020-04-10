@@ -2,20 +2,25 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles(theme => ({
   notificationContainer: {
+    minWidth: '300px',
+    maxWidth: '300px',
+
     display: "flex",
     alignItems: "center",
   },
   notificationContained: {
     borderRadius: 45,
-    height: 45,
-    boxShadow: theme.customShadows.widgetDark,
+    // height: 45,
+    // boxShadow: theme.customShadows.widgetDark,
+    boxShadow: 'none !important',
+
   },
   notificationContainedShadowless: {
     boxShadow: "none",
   },
   notificationIconContainer: {
     minWidth: 45,
-    height: 45,
+    // height: 45,
     borderRadius: 45,
     display: "flex",
     alignItems: "center",
@@ -44,4 +49,8 @@ export default makeStyles(theme => ({
       background: "transparent",
     },
   },
+  text: {
+    whiteSpace: "normal !important "
+
+  }
 }));

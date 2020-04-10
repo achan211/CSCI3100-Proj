@@ -22,11 +22,23 @@ router.post('/edit', async (req, res) => {
 
 });
 
+//get notificaiton 
+router.get('/getNotification/:username', async (req,res)=>{
+    let username = req.params.username;
+    Post.find({'username': username}, async function (err,docs){
+        if(docs.length){
+            res.json(docs[0].notice);
+        }
+        else
+        res.json({error: 'no updates'})
+    })
+})
+
 //request to enroll for a course 
 router.post('/requestAddCourse', async (req, res) => {
-    let studentUsername = req.body.username //type: string
-    let course = req.body.course
-    let message = req.body.course
+    let studentUsername = req.body.studentusername //type: string
+    let course = req.body.code
+    let message = req.body.message
 
     Course.find({ 'code': course }, async function (err, docs) {
         if (docs.length) {
@@ -37,58 +49,71 @@ router.post('/requestAddCourse', async (req, res) => {
                     let filtered = docs[0].pendingCourse.filter(i => {
                         return i === course
                     })
-                    if (filtered.length === 0) {
-                        // update prof ac
-                        Post.findOneAndUpdate(
-                            { username: prof },
-                            {
-                                $push: {
-                                    notice: {
-                                        type: 'enrol request',
-                                        course: course,
-                                        studentUsername: studentUsername,
-                                        message: message
-                                    }
-                                }
-                            },
-                            { new: true },
-                            function (error, success) {
-                                // if (error) {
-                                //     res.json(error);
-                                // } else {
-                                //     res.json(success);
-                                // }
-                            });
-                        // update student ac
-                        Post.findOneAndUpdate(
-                            { username: studentUsername },
-                            {
-                                $push: {
-                                    pendingCourse: course
-                                }
-                            },
-                            { new: true },
-                            function (error, success) {
-                                if (error) {
-                                    res.json(error);
-                                } else {
-                                    res.json(success);
-                                }
-                            });
-                    } else {
-                        console.log('already requested! ');
-                        res.json({ message: 'already requested! ' })
+                    if(filtered.length !== 0 ){
+                        console.log('you have already requested! ');
+                        res.json({ error: 'You have already requested! ' })
                     }
+                    else{
+                        filtered = docs[0].course.filter(i => {
+                            return i === course
+                        })
+                        if (filtered.length === 0) {
+                            // update prof ac
+                            Post.findOneAndUpdate(
+                                { username: prof },
+                                {
+                                    $push: {
+                                        notice: {
+                                            type: 'Sit in Course Request',
+                                            course: course,
+                                            studentUsername: studentUsername,
+                                            message: message
+                                        }
+                                    }
+                                },
+                                { new: true },
+                                function (error, success) {
+                                    // if (error) {
+                                    //     res.json(error);
+                                    // } else {
+                                    //     res.json(success);
+                                    // }
+                                });
+                            // update student ac
+                            Post.findOneAndUpdate(
+                                { username: studentUsername },
+                                {
+                                    $push: {
+                                        pendingCourse: course
+                                    }
+                                },
+                                { new: true },
+                                function (error, success) {
+                                    if (error) {
+                                        res.json(error);
+                                    } else {
+                                        res.json({message: 'Success!'});
+                                    }
+                                });
+                        } else{
+                            console.log('you have already enrolled! ');
+                            res.json({ error: 'You have already enrolled! ' })
+                        }
+
+
+                    }
+                    
+             
                 } else {
-                    console.log('no user  code! ');
-                    res.json({ message: 'no user  code!  ' })
+                    console.log('no such studnet ');
+                    res.json({ error: 'no such student !  ' })
                 }
             })
 
 
         } else {
             console.log('no course  code! ');
-            res.json({ message: 'no course  code!  ' })
+            res.json({ error: 'no course  code!  ' })
         }
     });
 });
