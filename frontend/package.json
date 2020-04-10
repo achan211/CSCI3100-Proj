@@ -3,18 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.9.5",
+    "@material-ui/core": "^4.9.9",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.48",
+    "@material-ui/styles": "^4.9.6",
     "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.1",
+    "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "classnames": "^2.2.6",
     "history": "^4.10.1",
     "node-sass": "^4.13.1",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "sass": "^1.26.3",
+    "tinycolor2": "^1.4.1",
     "yarn": "^1.22.4"
   },
   "scripts": {
@@ -39,7 +43,7 @@
     ]
   },
   "devDependencies": {
-    "css-loader": "^3.4.2",
+    "css-loader": "^3.5.1",
     "style-loader": "^1.1.3"
   }
 }

@@ -1,5 +1,24 @@
 const mongoose = require ('mongoose')
 
+const Notice = mongoose.Schema({
+    type:{
+        type:String
+    },
+    course:{
+        type:String
+    },
+    message:{
+        type:String
+    },
+    studentUsername:{
+        type:String
+    },
+    date:{
+        type: Date,
+        default: Date.now
+    }
+})
+
 const PostSchema = mongoose.Schema({
     id:{
         type:String
@@ -29,7 +48,7 @@ const PostSchema = mongoose.Schema({
         type:Array
     },
     notice:{
-        type: Array
+        type: [Notice]
     },
     date:{
         type: Date,

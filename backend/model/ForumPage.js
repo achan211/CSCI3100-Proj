@@ -11,6 +11,9 @@ const Topic = mongoose.Schema({
     page: {
         type: String,
         default: "1"
+    },
+    context:{
+        type:String
     }
 })
 

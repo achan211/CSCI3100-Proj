@@ -4,7 +4,7 @@ const ForumComment = require('../model/ForumComment')
 
 
 // get the forum topic's comments
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
 
 
     // let tmp ={}
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
             res.json(   docs[0].comment[req.body.id] )
         } else {
             console.log('no such commnet yet! ');
-            res.json({ message: 'no such commnet yet! ' })
+            res.json({ error: 'no such commnet yet! ' })
         }
     });
 
@@ -33,10 +33,12 @@ router.get('/', async (req, res) => {
 
 
 // To add a comment to the forum topic to the server
-router.post('/', async (req, res) => {
+router.post('/addComment', async (req, res) => {
     let code = req.body.code 
     let id = req.body.id 
     let text = req.body.text 
+    let user = req.body.user 
+
     let obj ={
         'code':code
     }
@@ -46,7 +48,11 @@ router.post('/', async (req, res) => {
             let pushObj={
                
             }
-            pushObj['comment.'+id]  = text
+            pushObj['comment.'+id]  = {
+                'text': text,
+                'date': new Date(),
+                'user':user
+            }
 
             ForumComment.findOneAndUpdate(
                 { code: req.body.code }, 
@@ -54,16 +60,16 @@ router.post('/', async (req, res) => {
                 {new: true},
                function (error, success) {
                      if (error) {
-                        res.json(error);
+                        res.json( {error: 'unknown error'});
                      } else {
                     //    let length= success.topic.length
-                       res.json(success)
+                       res.json(success.comment[req.body.id])
                         // res.json(success.topic[length-1]);
                      }
                  });
         } else {
             console.log('no course  code! ');
-            res.json({ message: 'no course  code!  ' })
+            res.json({ error: 'no course  code!  ' })
         }
     });
 

@@ -6,11 +6,14 @@ require('dotenv/config')
 var cors = require('cors');
 var port = 5000
 app.use(cors());
+var session = require("express-session");
+var cookieParser = require('cookie-parser')
 
 var bodyParser = require('body-parser');
+var middleware =require('./middleware')
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-
+// app.use(middleware.sessionChecker);
 
 
 //import routes
@@ -26,31 +29,66 @@ const user = require('./routes/user')
 
 
 
+app.use(cookieParser());
+app.use(session({
+  key: 'user_sid',
+  secret: 'somerandonstuffs',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    expires: 600000
+  }
+}));
 
+// app.use((req, res, next) => {
+//   if (req.cookies.user_sid && !req.session.user) {
+//     res.clearCookie('user_sid');
+//   }
+//   next();
+// });
+ sessionChecker1 = (req, res, next) => {
+  if (req.session.user && req.cookies.user_sid) {
+    console.log(req.session.user)
+    next();
+  } else {
+   console.log("no cookies")
+   
+  }
+};
 
+app.get('/ahome', sessionChecker1, (req, res) => {
+ console.log("hello")
+ res.json('hello')
+});
 
+app.route('/alogin')
+  .get((req, res) => {
+    // var username = req.body.username
+    // var password = req.body.password;
+    res.session.user ='test'
+    res.redirect('/ahome')
+  }); 
 
 app.use('/createAC', createAC)
 app.use('/login', loginAC)
 app.use('/', homePage)
 
-app.use('/forum', forumPage) 
-app.use('/attendance', attendance) 
-app.use('/quiz', quiz) 
-app.use("/forumComments",forumComments)
-app.use("/user",user)
+app.use('/forum', forumPage)
+app.use('/attendance', attendance)
+app.use('/quiz', quiz)
+app.use("/forumComments", forumComments)
+app.use("/user", user)
 
 
 
 
 
-
-
-app.listen(port, function () { 
+app.listen(port, function () {
   console.log('Example app listening on port 5000!');
 });
 
-mongoose.connect(process.env.DB_CONNECTION, {useNewUrlParser: true,useUnifiedTopology: true }, ()=>{
+mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
   console.log("connected to DB!")
 })
+
 
