@@ -12,9 +12,8 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import TokenReducer from "../Reducer/TokenReducer";
-import { MyContext } from "../test"
-import { Redirect } from 'react-router-dom';
+// import TokenReducer from "../Reducer/TokenReducer";
+import { UserInfo } from "../test"
 
 function Copyright() {
   return (
@@ -67,7 +66,7 @@ let LoginPage = (props) => {
   }
   const [username, setusername] = useState('');
   const [pw, setpw] = useState('');
-  // const { state, stateDispatch } =  useContext(MyContext);
+  const { userinfo, userinfoDispatch } = useContext(UserInfo);
 
   let handleSubmit = () => {
     if (username.length > 0 && pw.length > 0) {
@@ -88,16 +87,14 @@ let LoginPage = (props) => {
             HandleMapSateToProps(response)
             history.push('/');
           }
-
           else
             alert("Wrong PW or AC!")
-
         });
     }
   }
 
   let HandleMapSateToProps = (studentDetails) => {
-    // stateDispatch({ type: 'ADD_TOKEN', payload: { 'token': token} })
+    userinfoDispatch({ type: 'ADD_USERINFO', payload: studentDetails})
     localStorage.setItem('info', JSON.stringify(studentDetails))
     localStorage.setItem('token', studentDetails._id)
 

@@ -230,7 +230,7 @@ export default function Header() {
                 to="/NotificationPage"
                 className={classes.headerMenuItem}
               >
-                <Typography gutterBottom variant="p" component="p">
+                <Typography gutterBottom variant="body1" component="p">
                    -------- No New Message --------
                                     </Typography>
               </MenuItem>

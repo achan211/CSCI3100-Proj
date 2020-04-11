@@ -1,11 +1,11 @@
 
 
-let TokenReducer = (state, action) =>{
+let UserCourseListReducer = (state, action) =>{
     switch (action.type) {
-        case 'ADD_TOKEN':
+        case 'ADD_COURSE':
           return action.payload;
         default:
           throw new Error();
       }
 }
-export default TokenReducer
+export default UserCourseListReducer

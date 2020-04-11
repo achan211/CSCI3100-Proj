@@ -1,5 +1,4 @@
-import React, { useState, useReducer, useContext, createContext } from 'react';
-import logo from './logo.svg';
+import React, { useState, useReducer, useEffect, useContext, createContext } from 'react';
 import LoginPage from "./Container/LoginPage"
 import SignUp from "./Container/Signup"
 import ForgetPW from "./Container/forgetPW"
@@ -23,47 +22,81 @@ import {
 } from "react-router-dom";
 import history from './history';
 import './App.css';
-import TokenReducer from "./Reducer/TokenReducer";
-import { MyContext } from "./test"
+import UserCourseListReducer from "./Reducer/UserCourseListReducer";
+import UserInfoReducer from "./Reducer/UserInfoReducer";
+
+import { UserCourseList, UserInfo } from "./test"
 
 function App() {
+  var tmpCourseList;
 
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      // get user's course 
+      let code = localStorage.getItem('info');
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          // 'code': JSON.parse(code).course,
+          'code': JSON.parse(code).course,
 
-  // const [state, stateDispatch] = useReducer(TokenReducer, {});
+        })
+      };
+      fetch('http://localhost:5000/', requestOptions)
+        .then(response => response.json())
+        .then(response => {
+          if (!response.error) {
+            courselistDispatch({ type: 'ADD_COURSE', payload: response })
+          }
+        });
+    }
 
+  }, [])
+
+  
+
+  const [courselist, courselistDispatch] = useReducer(UserCourseListReducer, []);
+  const [userinfo, userinfoDispatch] = useReducer(UserInfoReducer, {});
+  console.log(courselist)
   return (
     <div className="App">
       <Router history={history}>
         <React.Fragment>
-          {/* <nav className="nav">
-            <Link className="link" to="/">Home</Link>
-            <Link className="link" to="/login">Login</Link>
-            <Link className="link" to="/TEST/ForumHome">Forum Home</Link>
-            <Link className="link" to="/TEST/ForumComments">Forum Thread Comments</Link>
-          </nav> */}
           <Header />
           <Switch>
-            {/* <Route path="/login" render={(props)=><MyContext.Provider value={{
-                state: state,
-                stateDispatch
+            <Route path="/Attendance" render={(props) =>
+              <UserCourseList.Provider value={{
+                courselist: courselist,
+                courselistDispatch
               }}>
-                <LoginPage {...props} />
-              </MyContext.Provider>}
-            /> */}
-            <Route path="/login" component={LoginPage} />
+                <UserInfo.Provider value={{
+                  userinfo: userinfo,
+                  userinfoDispatch
+                }}>
+                  <Attendance {...props} />
+                </UserInfo.Provider>
+              </UserCourseList.Provider>}
+            />
+            <Route path="/login" render={(props) => <UserInfo.Provider value={{
+              userinfo: userinfo,
+              userinfoDispatch
+            }}>
+              <LoginPage {...props} />
+            </UserInfo.Provider>}
+            />
             <Route path="/signup" component={SignUp} />
             <Route path="/forgetpw" component={ForgetPW} />
             <Route path="/Chatroom" component={Chatroom} />
             <Route path="/ForumHome" component={ForumHome} />
             <Route path="/:id/ForumComments" component={ForumComments} />
-            <Route path="/Attendance" component={Attendance} />
             <Route path="/NotificationPage" component={NotificationPage} />
-
+            <Route path="/AddCourse" component={AddCourse} />
             <Route path="/Quiz" component={Quiz} />
             <Route path="/QuizRecord" component={QuizRecord} />
             <Route path="/userProfile" component={UserProfile} />
             <Route path="/:id" component={CoursePage} />
-            <Route exact path="/" component={Home}/>
+            <Route exact path="/" component={Home} />
             <Route path="/" >
               <h1>404 error</h1>
             </Route>

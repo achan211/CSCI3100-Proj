@@ -79,7 +79,6 @@ router.post('/addComment', async (req, res) => {
 
             }
            
-              
             //update the comment array 
             ForumComment.findOneAndUpdate(
                 { code: req.body.code }, 

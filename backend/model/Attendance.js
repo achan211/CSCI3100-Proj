@@ -1,5 +1,9 @@
 const mongoose = require ('mongoose')
 
+// const Student= mongoose.Schema({
+
+// })
+
 const AttendanceSchema = mongoose.Schema({
     courseCode:{
         type:String
@@ -14,6 +18,7 @@ const AttendanceSchema = mongoose.Schema({
         type: Boolean
     },
     student:{
+        // type: [Student]
         type: Object
     }
 })
