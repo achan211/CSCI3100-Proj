@@ -60,7 +60,7 @@ let Quiz = (props) => {
                                     <Grid item xs={8}>
                                         <Grid container direction="column"  alignItems="center"  justify="center">
                                             <br/>
-                                            <Button variant="outlined" size="large" >Start Quiz</Button>
+                                            <Button variant="outlined" size="large" onClick={()=>{window.location.href="/StartQuiz"}}>Start Quiz</Button>
                                            <br/>
                                             <Button variant="outlined" size="large" onClick={()=>{window.location.href="/QuizRecord"}}>View Record</Button><br />
                                         </Grid>   

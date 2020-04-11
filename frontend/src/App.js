@@ -14,6 +14,7 @@ import NotificationPage from "./Container/NotificationPage"
 import AddCourse from "./Container/AddCourse"
 import UserProfile from "./Container/userProfile"
 import QuizRecord from "./Container/QuizRecord"
+import StartQuiz from "./Container/StartQuiz"
 import {
   BrowserRouter as Router,
   Switch,
@@ -94,6 +95,7 @@ function App() {
             <Route path="/AddCourse" component={AddCourse} />
             <Route path="/Quiz" component={Quiz} />
             <Route path="/QuizRecord" component={QuizRecord} />
+            <Route path="/StartQuiz" component={StartQuiz} />
             <Route path="/userProfile" component={UserProfile} />
             <Route path="/:id" component={CoursePage} />
             <Route exact path="/" component={Home} />
