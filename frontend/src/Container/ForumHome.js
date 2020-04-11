@@ -18,6 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Notification from "../Component/Notification/Notification";
 import CommentModal from "../Component/CommentModal"
 import NewTopicModal from "../Component/NewTopicModal"
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 
 
 const useStyles = makeStyles(theme => ({
@@ -377,7 +378,7 @@ export default function ForumHome(props) {
                                 }}
                                 className={classes.headerMenuButton}
                               >
-                                <DehazeIcon classes={{ root: classes.headerIcon }} />
+                                <FormatListBulletedIcon classes={{ root: classes.headerIcon }} />
                               </IconButton>
                               <Menu
                                 id="notifications-menu"
