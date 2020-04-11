@@ -27,7 +27,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 import GroupIcon from '@material-ui/icons/Group';
 import Notification from "./Notification/Notification";
 import NotificationsIcon from '@material-ui/icons/Notifications';
-
+import PostAddIcon from '@material-ui/icons/PostAdd';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const drawerWidth = 240;
@@ -275,7 +275,7 @@ export default function Header() {
 
           <MenuItem color="inherit" component={Link} to="/NotificationPage" onClick={handleDrawerClose}>
             <ListItem  >
-              <ListItemIcon><AccountCircleIcon /></ListItemIcon>
+              <ListItemIcon><NotificationsIcon /></ListItemIcon>
               <ListItemText primary="Notification" />
             </ListItem>
           </MenuItem>
@@ -284,8 +284,8 @@ export default function Header() {
 
           <MenuItem component={Link} to="/AddCourse" onClick={handleDrawerClose} color="inherit">
             <ListItem>
-              <ListItemIcon><AssignmentIcon /></ListItemIcon>
-              <ListItemText primary="Sit In On A Course" />
+              <ListItemIcon><PostAddIcon /></ListItemIcon>
+              <ListItemText primary="Sit-in a Course" />
             </ListItem>
           </MenuItem>
           <MenuItem component={Link} to="/" onClick={handleDrawerClose} color="inherit">
