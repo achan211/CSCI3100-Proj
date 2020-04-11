@@ -9,6 +9,8 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar'
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -97,12 +99,26 @@ export default function UserProfile() {
         minor: 'Computer Science'
       });
 
-      const handleChange = event => {
+    const [open, setOpen] = React.useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+
+        setOpen(false);
+    };
+
+    const handleChange = event => {
         setValues({
           ...users,
           [event.target.name]: event.target.value
         });
-      };
+    };
 
 
     let renderProfileInfo = () => {
@@ -148,7 +164,23 @@ export default function UserProfile() {
                             </Grid>
                             <Divider className={classes.divider} />
                         </div>
-                        <Button color="primary" variant="contained">Save Details</Button>
+                        <Button color="primary" variant="contained" onClick={handleClick}>Save Details</Button>
+                        <Snackbar anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}
+                            open={open}
+                            autoHideDuration={6000}
+                            onClose={handleClose}
+                            message="Details Saved"
+                            action={
+                            <React.Fragment>
+                                <Button color="secondary" size="small" onClick={handleClose}>
+                                UNDO
+                                </Button>
+                                <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                                <CloseIcon fontSize="small" />
+                                </IconButton>
+                            </React.Fragment>
+                            }
+                        />
                     </Paper>
                 </Grid>
             </React.Fragment>
