@@ -77,17 +77,17 @@ let Quiz_Record = (props) => {
                             <Grid container>
                                 <Grid item xs={2}>
                                     <Grid container>
-                                        <List>
-                                            <ListItem button component={Link} to="/Quiz">
-                                                <ListItemText primary="CSCI3100" />
-                                            </ListItem>
-                                            <ListItem button button component={Link} to="/Quiz">
-                                                <ListItemText primary="CSCI4430" />
-                                            </ListItem >
-                                            <ListItem button button component={Link} to="/Quiz">
-                                                <ListItemText primary="ENGG1120" />
-                                            </ListItem>
-                                        </List>
+                                    <List>
+                                        <ListItem button component={Link} to="/Quiz">
+                                            <ListItemText primary="CSCI3100" />
+                                        </ListItem>
+                                        <ListItem button button component={Link} to="/Quiz">
+                                            <ListItemText primary="CSCI4430" />
+                                        </ListItem >
+                                        <ListItem button button component={Link} to="/Quiz">
+                                            <ListItemText primary="ENGG1120" />
+                                        </ListItem>
+                                    </List>
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={10}>

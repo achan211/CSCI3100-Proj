@@ -105,7 +105,7 @@ let StartQuiz = (props) => {
                                 </Paper>
                                 <br />
                                 <Button variant="outlined" size="large" type='submit' onClick={() => { window.location.href = "/Attendance" }}>Summit</Button>
-                                <Button variant="outlined" size="large" type="reset" >Reset</Button>
+                                <Button variant="outlined" size="large"  >Reset</Button>
                             </Grid>
                         </Grid>
                     </div>

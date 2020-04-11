@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-let Quiz = (props) => {
+let ProfessorQuiz = (props) => {
     const classes = useStyles();
 
     let renderQuiz = () => {
@@ -44,7 +44,8 @@ let Quiz = (props) => {
                                 </Typography>
                                 <Grid container>
                                     <Grid item xs={4}>
-                                    <List>
+                                        <Grid container>
+                                        <List>
                                         <ListItem button component={Link} to="/Quiz">
                                             <ListItemText primary="CSCI3100" />
                                         </ListItem>
@@ -55,14 +56,17 @@ let Quiz = (props) => {
                                             <ListItemText primary="ENGG1120" />
                                         </ListItem>
                                     </List>
+                                        </Grid>
                                     </Grid>
                                     <Grid item xs={8}>
-                                    <Button variant="outlined" size="large" onClick={()=>{window.location.href="/ProfessorQuiz"}}>Professor Page</Button>
                                         <Grid container direction="column"  alignItems="center"  justify="center">
+                                        <Button variant="outlined" size="large" onClick={()=>{window.location.href="/Quiz"}}>Back to student Quiz page</Button><br />
                                             <br/>
-                                            <Button variant="outlined" size="large" onClick={()=>{window.location.href="/StartQuiz"}}>Start Quiz</Button>
+                                            <Button variant="outlined" size="large" onClick={()=>{window.location.href="/CreateQuiz"}}>Create Quiz</Button><br />
                                            <br/>
-                                            <Button variant="outlined" size="large" onClick={()=>{window.location.href="/QuizRecord"}}>View Record</Button><br />
+                                            <Button variant="outlined" size="large" onClick={()=>{window.location.href="/ProfessorStartQuiz"}}>Start Quiz</Button><br />
+                                            <br/>
+                                            <Button variant="outlined" size="large" onClick={()=>{window.location.href="/QuizRecord"}}>View Student Statistics</Button><br />
                                         </Grid>   
                                     </Grid>
                                 </Grid>
@@ -85,4 +89,4 @@ let Quiz = (props) => {
     )
 }
 
-export default Quiz
+export default ProfessorQuiz
