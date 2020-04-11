@@ -47,6 +47,7 @@ let Quiz = (props) => {
                         <br />
                         <form noValidate autoComplete="off">
                             <h2>Create New Quiz</h2>
+                            
                             Enter question here: 
                             <TextField required id="standard-required" /><br />
                             <Input defaultValue="Option A" inputProps={{ 'aria-label': 'description' }} />

@@ -74,7 +74,6 @@ let StartQuiz = (props) => {
                                             <FormControlLabel value="liu" control={<Radio />} label="Liu" />
                                         </RadioGroup>
                                     </FormControl>
-
                                 </Paper>
                                 <br />
                                 <Paper>

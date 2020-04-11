@@ -29,7 +29,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
 let ProfessorQuiz = (props) => {
     const classes = useStyles();
 
