@@ -15,6 +15,36 @@ const updates =  mongoose.Schema({
         default: Date.now
     }
 })
+const LecTut=mongoose.Schema({
+    name:{
+        type:String
+    },
+    link:{
+        type:String
+    }
+})
+const Asg=mongoose.Schema({
+    name:{
+        type:String
+    },
+    deadline:{
+        type:String
+    },
+    link:{
+        type:String
+    }
+})
+const materials=mongoose.Schema({
+    LectureNotes:{
+        type:[LecTut]
+    },
+    Assignment:{
+        type:[Asg]
+    },
+    Tutorial:{
+        type:[LecTut]
+    }
+})
 const CourseSchema = mongoose.Schema({
     id:{
         type:String
@@ -36,6 +66,9 @@ const CourseSchema = mongoose.Schema({
     },
     updates:{
         type: [updates]
+    },
+    materials:{
+        type : {materials}
     },
     date:{
         type: Date,

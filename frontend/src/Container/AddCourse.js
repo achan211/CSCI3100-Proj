@@ -141,7 +141,7 @@ let AddCourse = (props) => {
 
                 <Button variant="contained" color="primary" href="#contained-buttons" onClick={handleSubmit}>
                   Submit Request
-                            </Button>
+                  </Button>
               </div>
             </Paper>
             {/* </div> */}

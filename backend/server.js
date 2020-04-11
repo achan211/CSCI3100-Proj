@@ -26,6 +26,10 @@ const quiz = require('./routes/quiz')
 const forumComments = require('./routes/forumComments')
 const user = require('./routes/user')
 const uploadPropic = require('./routes/uploadPropic')
+const rating = require('./routes/rating')
+const addUpdate = require('./routes/addUpdate')
+
+
 
 
 
@@ -73,12 +77,14 @@ app.route('/alogin')
 app.use('/createAC', createAC)
 app.use('/login', loginAC)
 app.use('/', homePage)
-
+app.use('/', addUpdate)
 app.use('/forum', forumPage)
 app.use('/attendance', attendance)
 app.use('/quiz', quiz)
 app.use("/forumComments", forumComments)
 app.use("/user", user)
+app.use("/", rating)
+
 app.use('/',uploadPropic)
 
 
