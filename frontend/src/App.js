@@ -15,6 +15,9 @@ import AddCourse from "./Container/AddCourse"
 import UserProfile from "./Container/userProfile"
 import QuizRecord from "./Container/QuizRecord"
 import StartQuiz from "./Container/StartQuiz"
+import ProfessorQuiz from "./Container/ProfessorQuiz"
+import ProfessorStartQuiz from "./Container/ProfessorStartQuiz"
+import CreateQuiz from "./Container/CreateQuiz"
 import {
   BrowserRouter as Router,
   Switch,
@@ -97,6 +100,9 @@ function App() {
             <Route path="/QuizRecord" component={QuizRecord} />
             <Route path="/StartQuiz" component={StartQuiz} />
             <Route path="/userProfile" component={UserProfile} />
+            <Route path="/ProfessorQuiz" component={ProfessorQuiz} />
+            <Route path="/ProfessorStartQuiz" component={ProfessorStartQuiz} />
+            <Route path="/CreateQuiz" component={CreateQuiz} />
             <Route path="/:id" component={CoursePage} />
             <Route exact path="/" component={Home} />
             <Route path="/" >

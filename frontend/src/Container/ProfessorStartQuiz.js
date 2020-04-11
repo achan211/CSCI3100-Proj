@@ -30,21 +30,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-let Quiz = (props) => {
+let ProfessorStartQuiz = (props) => {
     const classes = useStyles();
 
     let renderQuiz = () => {
         return (
             <React.Fragment>
                 <div className={classes.app}>
-                    <div className={classes.main}>                     
-                            <Typography variant="h4" align="center" noWrap>
-                                <Typography variant="h4" align="left" noWrap>
-                                    <Grid item xs={12}>Select Course</Grid>
-                                </Typography>
-                                <Grid container>
-                                    <Grid item xs={4}>
-                                    <List>
+                    <div className={classes.main}>
+
+
+                        <Grid container >
+                            <Grid item xs={2}>
+                                <Grid container direction="column" alignItems="center" justify="center">
+                                <List>
                                         <ListItem button component={Link} to="/Quiz">
                                             <ListItemText primary="CSCI3100" />
                                         </ListItem>
@@ -55,19 +54,19 @@ let Quiz = (props) => {
                                             <ListItemText primary="ENGG1120" />
                                         </ListItem>
                                     </List>
-                                    </Grid>
-                                    <Grid item xs={8}>
-                                    <Button variant="outlined" size="large" onClick={()=>{window.location.href="/ProfessorQuiz"}}>Professor Page</Button>
-                                        <Grid container direction="column"  alignItems="center"  justify="center">
-                                            <br/>
-                                            <Button variant="outlined" size="large" onClick={()=>{window.location.href="/StartQuiz"}}>Start Quiz</Button>
-                                           <br/>
-                                            <Button variant="outlined" size="large" onClick={()=>{window.location.href="/QuizRecord"}}>View Record</Button><br />
-                                        </Grid>   
-                                    </Grid>
                                 </Grid>
-                            </Typography>
-                        
+                            </Grid>
+                            <Grid item xs={10}>
+                                <Grid container direction="column" alignItems="center" justify="center">
+                                    <br />
+                                    <h2>Quiz now is Started.</h2>
+                                    <br />
+                                    <Button variant="outlined" size="large" onClick={() => { window.location.href = "/ProfessorQuiz" }}>End Quiz</Button><br />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+
                     </div>
                 </div>
             </React.Fragment>
@@ -85,4 +84,4 @@ let Quiz = (props) => {
     )
 }
 
-export default Quiz
+export default ProfessorStartQuiz

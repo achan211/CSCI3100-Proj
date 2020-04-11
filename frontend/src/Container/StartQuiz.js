@@ -14,7 +14,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { Link } from 'react-router-dom';
-
+import Box from '@material-ui/core/Box'
 
 const useStyles = makeStyles(theme => ({
     app: {
@@ -31,10 +31,8 @@ const useStyles = makeStyles(theme => ({
     main: {
         flex: 1,
     },
+
 }));
-
-
-
 
 let StartQuiz = (props) => {
     const classes = useStyles();
@@ -44,7 +42,6 @@ let StartQuiz = (props) => {
             <React.Fragment>
                 <div className={classes.app}>
                     <div className={classes.main}>
-
                         <Typography variant="h4" align="left" noWrap>
                             <Grid item xs={12}>Select Course</Grid>
                         </Typography>
@@ -66,51 +63,51 @@ let StartQuiz = (props) => {
                             </Grid>
                             <Grid item xs={10}>
                                 <Typography variant="h4" align="center" noWrap>Quiz <br /></Typography>
-                                <Typography align="center">
-                                    <Paper>
-                                        <Typography align="left">Question 1:</Typography>
-                                        <FormControl component="fieldset">
-                                            <FormLabel component="legend">Who is CSCI3100 Professor?</FormLabel>
-                                            <RadioGroup aria-label="Q1answer" name="Q1answer" >
-                                                <FormControlLabel value="zili" control={<Radio />} label="Zili" />
-                                                <FormControlLabel value="paktric" control={<Radio />} label="Paktric" />
-                                                <FormControlLabel value="liu" control={<Radio />} label="Liu" />
-                                            </RadioGroup>
-                                        </FormControl>
-                                    </Paper>
-                                    <br />
-                                    <Paper>
-                                        <Typography align="left">Question 2:</Typography>
-                                        <FormControl component="fieldset">
-                                            <FormLabel component="legend">Extract Question From Database</FormLabel>
-                                            <RadioGroup aria-label="Q1answer" name="Q1answer" >
-                                                <FormControlLabel value="a" control={<Radio />} label="A" />
-                                                <FormControlLabel value="b" control={<Radio />} label="B" />
-                                                <FormControlLabel value="c" control={<Radio />} label="C" />
-                                            </RadioGroup>
-                                        </FormControl>
-                                    </Paper>
-                                    <br />
-                                    <Paper>
-                                        <Typography align="left">Question 3:</Typography>
-                                        <FormControl component="fieldset">
-                                            <FormLabel component="legend">Any Stupid Question?</FormLabel>
-                                            <RadioGroup aria-label="Q1answer" name="Q1answer" >
-                                                <FormControlLabel value="stop" control={<Radio />} label="Stop" />
-                                                <FormControlLabel value="bothering" control={<Radio />} label="Bothering" />
-                                                <FormControlLabel value="me" control={<Radio />} label="Me" />
-                                            </RadioGroup>
-                                        </FormControl>
-                                    </Paper>
-                                </Typography>
+                                <Paper>
+                                    <Typography align="left">Question 1:</Typography>
+
+                                    <FormControl margin="normal" component="fieldset">
+                                        <FormLabel component="legend">Who is CSCI3100 Professor?</FormLabel>
+                                        <RadioGroup aria-label="Q1answer" name="Q1answer" >
+                                            <FormControlLabel value="zili" control={<Radio />} label="Zili" />
+                                            <FormControlLabel value="paktric" control={<Radio />} label="Paktric" />
+                                            <FormControlLabel value="liu" control={<Radio />} label="Liu" />
+                                        </RadioGroup>
+                                    </FormControl>
+
+                                </Paper>
+                                <br />
+                                <Paper>
+                                    <Typography align="left">Question 2:</Typography>
+
+                                    <FormControl component="fieldset">
+                                        <FormLabel component="legend">Extract Question From Database</FormLabel>
+                                        <RadioGroup aria-label="Q1answer" name="Q1answer" >
+                                            <FormControlLabel value="a" control={<Radio />} label="A" />
+                                            <FormControlLabel value="b" control={<Radio />} label="B" />
+                                            <FormControlLabel value="c" control={<Radio />} label="C" />
+                                        </RadioGroup>
+                                    </FormControl>
+
+                                </Paper>
+                                <br />
+                                <Paper>
+                                    <Typography align="left">Question 3:</Typography>
+
+                                    <FormControl component="fieldset">
+                                        <FormLabel component="legend">Any Stupid Question?</FormLabel>
+                                        <RadioGroup aria-label="Q1answer" name="Q1answer" >
+                                            <FormControlLabel value="stop" control={<Radio />} label="Stop" />
+                                            <FormControlLabel value="bothering" control={<Radio />} label="Bothering" />
+                                            <FormControlLabel value="me" control={<Radio />} label="Me" />
+                                        </RadioGroup>
+                                    </FormControl>
+                                </Paper>
                                 <br />
                                 <Button variant="outlined" size="large" type='submit' onClick={() => { window.location.href = "/Attendance" }}>Summit</Button>
-                                <Button variant="outlined" size="large" type="reset" >Reset</Button>
-
+                                <Button variant="outlined" size="large"  >Reset</Button>
                             </Grid>
                         </Grid>
-
-
                     </div>
                 </div>
             </React.Fragment>
