@@ -15,7 +15,7 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 // app.use(middleware.sessionChecker);
 
-
+var multer = require('multer')
 //import routes
 const createAC = require('./routes/createAC')
 const loginAC = require('./routes/loginAC')
@@ -25,7 +25,7 @@ const attendance = require('./routes/attendance')
 const quiz = require('./routes/quiz')
 const forumComments = require('./routes/forumComments')
 const user = require('./routes/user')
-
+const uploadPropic = require('./routes/uploadPropic')
 
 
 
@@ -56,6 +56,7 @@ app.use(session({
   }
 };
 
+
 app.get('/ahome', sessionChecker1, (req, res) => {
  console.log("hello")
  res.json('hello')
@@ -78,6 +79,7 @@ app.use('/attendance', attendance)
 app.use('/quiz', quiz)
 app.use("/forumComments", forumComments)
 app.use("/user", user)
+app.use('/',uploadPropic)
 
 
 

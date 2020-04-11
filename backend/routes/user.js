@@ -4,13 +4,11 @@ const Post = require('../model/CreateAC')
 const Course = require('../model/Course')
 
 //edit user details (except username)
-router.post('/edit', async (req, res) => {
-    let username = req.body.username //type: string
-    let obj = {}
-    obj[req.body.type] = req.body.value
+router.post('/edit/:username', async (req, res) => {
+    let username = req.params.username //type: string
     Post.findOneAndUpdate(
         { username: username },
-        { $set: obj },
+        { $set: req.body },
         { new: true },
         function (error, success) {
             if (error) {
@@ -21,6 +19,48 @@ router.post('/edit', async (req, res) => {
         });
 
 });
+
+//edit user pw
+router.post('/editpw/:username', async (req, res) => {
+    let username = req.params.username //type: string
+    console.log(req.body)
+    let obj = {}
+    obj[req.body.type] = req.body.value
+    Post.find({ username:username, pw: req.body.oldpw }, function (err, docs) {
+        if (docs.length) {
+            Post.findOneAndUpdate(
+                { username: username },
+                { $set: { 'pw': req.body.newpw }},
+                { new: true },
+                function (error, success) {
+                    if (error) {
+                        res.json('unknown error occured!');
+                    } else {
+                        res.json('successfully changed passord!');
+                    }
+                });
+
+        } else {
+            console.log('no user: ');
+            res.json({ error: 'wrong pw!' })
+        }
+    });
+
+    
+
+});
+
+router.get('/info/:username', async (req, res) => {
+    Post.find({ username: req.params.username}, function (err, docs) {
+        if (docs.length) {
+            docs[0].pw = undefined;
+            res.json(   docs[0] )
+        } else {
+            console.log('no user: ');
+            res.json({ error: 'no user' })
+        }
+    });
+})
 
 //get all types of  notificaiton 
 router.get('/getNotification/:username', async (req, res) => {

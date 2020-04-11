@@ -20,11 +20,9 @@ router.post('/', middleware.sessionChecker, async (req, res) => {
         } else {
             console.log('no user: ');
 
-            res.json({ message: 'no use' })
+            res.json({ error: 'no user' })
         }
     });
-
-
 })
 
 

@@ -38,8 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   headerMenuItem: {
     "&:hover, &:focus": {
-      backgroundColor: theme.palette.primary.main,
-      color: "white",
+      backgroundColor: theme.palette.action.hover,
     },
   },
   root: {
@@ -195,7 +194,7 @@ export default function Header() {
           >
             <Badge
               badgeContent={isNotificationsUnread ? Array.isArray(notice) ? notice.length : null : null}
-              color="warning"
+              color="default"
             >
               <NotificationsIcon classes={{ root: classes.headerIcon }} />
             </Badge>

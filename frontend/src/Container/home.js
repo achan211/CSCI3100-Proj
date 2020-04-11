@@ -34,7 +34,8 @@ const useStyles = makeStyles(theme => ({
     },
 
     card: {
-        padding: theme.spacing(1)
+        padding: theme.spacing(1),
+        margin: theme.spacing(1),
     },
     Button: {
         margin: theme.spacing(1),
@@ -87,14 +88,14 @@ export default function Home(props) {
         return Course.map((item, index) => {
             return (
                 <React.Fragment key={item.code}>
-                    <Grid xs={1} ></Grid>
-                    <Grid item xs={10}>
+                    <Grid item md={4} xs={1} ></Grid>
+                    <Grid item md={4} xs={10}>
                         <Card className={classes.card}>
                             <Link className="link" to={`/${item.code}`}>
                                 <CardActionArea>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            {item.name}
+                                        {item.code} {item.name}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
                                             {item.department}
@@ -104,80 +105,24 @@ export default function Home(props) {
                             </Link>
                         </Card>
                     </Grid>
-                    <Grid xs={1}></Grid>
+                    <Grid item md={4} xs={1} ></Grid>
                 </React.Fragment>
             )
         })
 
     }
 
-    let renderProfUpdate = () => {
-        if(Course ){
-            return Course.map((item, index) => {
-                return (
-                    <React.Fragment key={item.code}>
-                        <Grid xs={2}></Grid>
-                        <Grid item xs={8}>
-                            <Card className={classes.card}>
-                                <Link className="link" to={`/${item.code}`}>
-                                    <CardActionArea >
-                                        <CardContent >
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {item.name}
-                                            </Typography>
-                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                {/* {item.updates} */} nend fix
-                                                {/* note: updates is an array */}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Link>
-    
-                            </Card>
-                        </Grid>
-                        <Grid xs={2}></Grid>
-    
-    
-                    </React.Fragment>
-                )
-            })
-        }
-
-
-    }
-
-    function FormRow() {
-        return (
-            <React.Fragment>
-                <Grid item xs={4}>
-                    <Paper className={classes.paper}>sadabdesdbdsbd</Paper>
-                </Grid>
-                <Grid item xs={8}>
-                    <Paper className={classes.paper}>item</Paper>
-                </Grid>
-            </React.Fragment>
-        );
-    }
     let loginnedHome = (
         // <React.Fragment>
         //     <CssBaseline />
         <div className={classes.root}>
             <Grid container >
-                <Grid item xs={4} spacing={3} >
+                <Grid item xs={12} >
                     <Typography variant="h4" noWrap className={classes.title}>
                         My Courses
                         </Typography>
-                    <Grid container spacing={3} >
+                    <Grid container  >
                         {renderCourseCard()}
-                    </Grid>
-                </Grid>
-
-                <Grid item xs={8} spacing={3} >
-                    <Typography variant="h4" noWrap className={classes.title}>
-                        Updates from My Courses
-                        </Typography>
-                    <Grid container xs={12} spacing={3} >
-                        {renderProfUpdate()}
                     </Grid>
                 </Grid>
             </Grid>
