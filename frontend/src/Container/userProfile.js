@@ -8,6 +8,8 @@ import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar'
+
 const useStyles = makeStyles(theme => ({
     root: {
         width: 900,
@@ -65,12 +67,21 @@ const useStyles = makeStyles(theme => ({
         maxHeight: " calc(100vh - 64px )",
     },
 
-    avatar: {
-        marginLeft: 'auto',
-        height: 100,
-        width: 90,
-        flexGrow: 0
+    uploadButton: {
+        marginRight: theme.spacing(2),
+        marginTop: theme.spacing(1),
     },
+
+    button: {
+        marginTop: theme.spacing(1),
+    },
+
+    large: {
+        width: theme.spacing(9),
+        height: theme.spacing(9),
+        display: 'flex',
+        marginLeft: theme.spacing(37),
+      },
 
 }));
 
@@ -99,7 +110,7 @@ export default function UserProfile() {
             <React.Fragment>
                 <Grid item xs={6}>
                     <Paper className={classes.paper}>
-                        <AccountCircleIcon fontSize="large" color="body2" />
+                        <AccountCircleIcon fontSize="large" color="inherit" />
                         <Typography variant="h5" noWrap>My Profile</Typography>
                         <Divider className={classes.divider} />
                         <div className={classes.paperContent}>
@@ -149,11 +160,16 @@ export default function UserProfile() {
             <React.Fragment>
                 <Grid item xs={6}>
                     <Paper className={classes.paper}>
-                        <Typography variant="h5" noWrap>{users.firstName} {users.lastName}</Typography>
+                        <Typography variant="h5" noWrap>My Avatar</Typography>
                         <Divider className={classes.divider} />
-                        <div className={classes.paperContent}>
-                        I don't know arrrr...
-                        </div>
+                        <Avatar className={classes.large} />
+                        <Typography variant="h6" gutterBottom>{users.firstName} {users.lastName}</Typography>
+                        <Typography variant="body1" gutterBottom>{users.major}</Typography>
+                        <Divider className={classes.divider} />
+                        <Button className={classes.uploadButton} color="primary" variant="contained">
+                            Upload picture
+                        </Button>
+                        <Button variant="text" className={classes.button}>Remove picture</Button>
                     </Paper>
                 </Grid>
             </React.Fragment>
