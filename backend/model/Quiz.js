@@ -1,6 +1,6 @@
 const mongoose = require ('mongoose')
 
-const QuizeQSchema = mongoose.Schema({
+const QuizeQuestionSchema = mongoose.Schema({
     question:{
         type: Array
     },
@@ -19,8 +19,11 @@ const QuizeSchema = mongoose.Schema({
     courseCode:{
         type:String
     },
+    mode:{
+        type:String
+    },
     quiz:{
-        type: Array
+        type: [QuizeQuestionSchema]
     },
 })
 
