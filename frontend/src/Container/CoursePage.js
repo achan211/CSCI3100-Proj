@@ -523,9 +523,7 @@ export default function CoursePage(props) {
                                     success={success}
                                     Open={openAlert}
                                     AlertMessage={alertMessage}
-                                    handleClose={() => {
-
-                                        setOpenAlert(false)
+                                    handleClose={() => {setOpenAlert(false)
                                     }}
                                 />
                             </Grid>

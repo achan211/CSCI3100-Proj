@@ -29,6 +29,7 @@ import Notification from "./Notification/Notification";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
 const drawerWidth = 240;
 
@@ -38,7 +39,8 @@ const useStyles = makeStyles((theme) => ({
   },
   headerMenuItem: {
     "&:hover, &:focus": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.primary.main,
+      color: "white",
     },
   },
   root: {
@@ -194,7 +196,7 @@ export default function Header() {
           >
             <Badge
               badgeContent={isNotificationsUnread ? Array.isArray(notice) ? notice.length : null : null}
-              color="default"
+              color="warning"
             >
               <NotificationsIcon classes={{ root: classes.headerIcon }} />
             </Badge>
@@ -317,6 +319,16 @@ export default function Header() {
               <ListItemText primary="Quiz" />
             </ListItem>
           </MenuItem>
+
+          <Divider />
+
+          <MenuItem component={Link} to="/adminInput" onClick={handleDrawerClose} color="inherit">
+            <ListItem>
+              <ListItemIcon><SupervisorAccountIcon /></ListItemIcon>
+              <ListItemText primary="Admin Input" />
+            </ListItem>
+          </MenuItem>
+
           <Divider />
         </MenuList>
       </Drawer>

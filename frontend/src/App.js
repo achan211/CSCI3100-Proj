@@ -19,6 +19,7 @@ import ProfessorQuiz from "./Container/ProfessorQuiz"
 import ProfessorStartQuiz from "./Container/ProfessorStartQuiz"
 import CreateQuiz from "./Container/CreateQuiz"
 import CourseRating from "./Component/rating"
+import AdminInput from './Container/adminInput'
 import {
   BrowserRouter as Router,
   Switch,
@@ -33,8 +34,7 @@ import UserInfoReducer from "./Reducer/UserInfoReducer";
 import { UserCourseList, UserInfo } from "./test"
 
 function App() {
-  var tmpCourseList;
-
+  //get the course that user enrolled
   useEffect(() => {
     if (localStorage.getItem('token')) {
       // get user's course 
@@ -59,7 +59,7 @@ function App() {
 
   }, [])
 
-  
+
 
   const [courselist, courselistDispatch] = useReducer(UserCourseListReducer, []);
   const [userinfo, userinfoDispatch] = useReducer(UserInfoReducer, {});
@@ -69,48 +69,66 @@ function App() {
       <Router history={history}>
         <React.Fragment>
           <Header />
-          <Switch>
-            <Route path="/Attendance" render={(props) =>
-              <UserCourseList.Provider value={{
-                courselist: courselist,
-                courselistDispatch
-              }}>
-                <UserInfo.Provider value={{
-                  userinfo: userinfo,
-                  userinfoDispatch
-                }}>
-                  <Attendance {...props} />
-                </UserInfo.Provider>
-              </UserCourseList.Provider>}
-            />
-            <Route path="/login" render={(props) => <UserInfo.Provider value={{
+
+          <UserCourseList.Provider value={{
+            courselist: courselist,
+            courselistDispatch
+          }}>
+            <UserInfo.Provider value={{
               userinfo: userinfo,
               userinfoDispatch
             }}>
-              <LoginPage {...props} />
-            </UserInfo.Provider>}
-            />
-            <Route path="/signup" component={SignUp} />
-            <Route path="/forgetpw" component={ForgetPW} />
-            <Route path="/Chatroom" component={Chatroom} />
-            <Route path="/ForumHome" component={ForumHome} />
-            <Route path="/:id/ForumComments" component={ForumComments} />
-            <Route path="/NotificationPage" component={NotificationPage} />
-            <Route path="/AddCourse" component={AddCourse} />
-            <Route path="/Quiz" component={Quiz} />
-            <Route path="/QuizRecord" component={QuizRecord} />
-            <Route path="/StartQuiz" component={StartQuiz} />
-            <Route path="/userProfile" component={UserProfile} />
-            <Route path="/ProfessorQuiz" component={ProfessorQuiz} />
-            <Route path="/ProfessorStartQuiz" component={ProfessorStartQuiz} />
-            <Route path="/CreateQuiz" component={CreateQuiz} />
-			<Route path="/rating" component={CourseRating} />
-            <Route path="/:id" component={CoursePage} />
-            <Route exact path="/" component={Home} />
-            <Route path="/" >
-              <h1>404 error</h1>
-            </Route>
-          </Switch>
+              <Switch>
+
+
+                <Route path="/Attendance" render={(props) =>
+                  // <UserCourseList.Provider value={{
+                  //   courselist: courselist,
+                  //   courselistDispatch
+                  // }}>
+                  // <UserInfo.Provider value={{
+                  //   userinfo: userinfo,
+                  //   userinfoDispatch
+                  // }}>
+                    <Attendance {...props} />
+                  // </UserInfo.Provider>
+                  // </UserCourseList.Provider>
+                }
+                />
+                <Route path="/login" render={(props) => 
+                // <UserInfo.Provider value={{
+                //   userinfo: userinfo,
+                //   userinfoDispatch
+                // }}>
+                  <LoginPage {...props} />
+                /* </UserInfo.Provider> */
+                }
+                />
+                <Route path="/signup" component={SignUp} />
+                <Route path="/forgetpw" component={ForgetPW} />
+                <Route path="/Chatroom" component={Chatroom} />
+                <Route path="/ForumHome" component={ForumHome} />
+                <Route path="/:id/ForumComments" component={ForumComments} />
+                <Route path="/NotificationPage" component={NotificationPage} />
+                <Route path="/AddCourse" component={AddCourse} />
+                <Route path="/Quiz" component={Quiz} />
+                <Route path="/QuizRecord" component={QuizRecord} />
+                <Route path="/StartQuiz" component={StartQuiz} />
+                <Route path="/userProfile" component={UserProfile} />
+                <Route path="/ProfessorQuiz" component={ProfessorQuiz} />
+                <Route path="/ProfessorStartQuiz" component={ProfessorStartQuiz} />
+                <Route path="/CreateQuiz" component={CreateQuiz} />
+
+  				<Route path="/rating" component={CourseRating} />
+ 	   			<Route path="/adminInput" component={AdminInput} />
+                <Route path="/:id" component={CoursePage} />
+                <Route exact path="/" component={Home} />
+                <Route path="/" >
+                  <h1>404 error</h1>
+                </Route>
+              </Switch>
+            </UserInfo.Provider>
+          </UserCourseList.Provider>
         </React.Fragment>
       </Router>
     </div>

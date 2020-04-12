@@ -1,13 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useTheme } from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
-import Badge from '@material-ui/core/Badge';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -15,21 +13,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button'
 import PeopleIcon from '@material-ui/icons/People';
-import TextField from '@material-ui/core/TextField';
+import CourseTable from "../Component/CourseTable";
 import PinInput from "react-pin-input";
 import SnackBar from "../Component/SnackBar"
 import { UserCourseList, UserInfo } from "../test"
 import {
     ResponsiveContainer,
     ComposedChart,
-    AreaChart,
-    LineChart,
-    Line,
     Area,
-    PieChart,
     Tooltip,
     Pie,
-    Cell,
     YAxis,
     XAxis,
 } from "recharts";
@@ -78,10 +71,10 @@ const useStyles = makeStyles(theme => ({
     attendancePaper: {
         minHeight: '45vh'
     },
-    profgenCodePaper:{
+    profgenCodePaper: {
         float: 'right',
         minHeight: '45vh'
-    }, 
+    },
     paperContent: {
         textAlign: 'left',
         justify: 'justified',
@@ -119,7 +112,6 @@ const useStyles = makeStyles(theme => ({
 
 
 let Attendance = (props) => {
-    var theme = useTheme();
     const classes = useStyles();
     let [pin, setPin] = useState()
     let [course, setCourse] = useState()
@@ -293,37 +285,13 @@ let Attendance = (props) => {
                     <div className={classes.main}>
                         <Grid container>
                             {/* List of Courses registered by the user / professor */}
-                            <Grid item xs={6}>
-                                <Paper className={ JSON.parse(localStorage.getItem('info')).type === 'student' ? 
-                                 `${classes.courseListPaper} ${classes.paper}` : `${classes.profgenCodePaper} ${classes.paper}`}>
-                                    <TableContainer className={classes.container}>
-                                        <Table stickyHeader aria-label="sticky table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell className={classes.tableHead}>
-                                                        <Typography variant="h6" noWrap>My Courses</Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            {/* User's Course List */}
-                                            <TableBody>
-                                                {courselist && courselist.map(item => {
-                                                    return (
-                                                        <TableRow className={classes.tableRow}
-                                                            onClick={() => {
-                                                                setChartOpen(false)
-                                                                setCourse(item.code)
-                                                            }}>
-                                                            <TableCell className={classes.tablecell}>{item.code} {item.name}</TableCell>
-                                                        </TableRow>
 
-                                                    )
-                                                })}
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-                                </Paper>
-                            </Grid>
+                            <CourseTable
+                                courselist={courselist}
+                                setChartOpen={setChartOpen}
+                                setCourse={setCourse}
+                                type={'Attendance'}
+                            />
                             {/* If a Course is selected and prof is taking attendance, show below, 
                         otherwise return "No attendance required for this course"*/}
                             {course ? JSON.parse(localStorage.getItem('info')).type === 'student' ?
@@ -374,17 +342,15 @@ let Attendance = (props) => {
                                             </React.Fragment>
                                         }
                                     </Paper>
-                                    {/* <Paper className={`${classes.checkAttendancePaper} ${classes.paper}`}>
-                                        <Typography variant="h4" component="h4">Check {course} Attendance Record</Typography>
-                                        <Divider className={classes.divider} />
-                                        <Button variant="contained" onClick={handleCheckRecord} color="primary">Check Record</Button>
-                                    </Paper> */}
                                 </Grid>
-                                : <div></div>
+                                : <Grid item xs={6}>
+                                    <Paper className={`${classes.attendancePaper} ${classes.paper}`}>
+                                    </Paper>
+                                </Grid>
                             }
 
                         </Grid>
-                        {chartOpen ? JSON.parse(localStorage.getItem('info')).type === 'prof'  ?  renderProfChart() : renderStudentChart() : <div></div>}
+                        {chartOpen ? JSON.parse(localStorage.getItem('info')).type === 'prof' ? renderProfChart() : renderStudentChart() : <div></div>}
 
 
                     </div>
@@ -433,7 +399,7 @@ let Attendance = (props) => {
                                         tickLine={false}
                                         label={{ value: "Lecture", position: "insideLeft", angle: 0, dx: 10, dy: 10 }}
                                     />
-                                            <Tooltip />
+                                    <Tooltip />
 
                                     <Area
                                         type="natural"
@@ -493,9 +459,9 @@ let Attendance = (props) => {
                     </Grid>
                 </Grid>
             )
-            else{
-                return <div><h3>Loading...</h3></div>
-            }
+        else {
+            return <div><h3>Loading...</h3></div>
+        }
     }
 
     let renderStudentChart = () => {
@@ -532,7 +498,7 @@ let Attendance = (props) => {
                                         tickLine={false}
                                         label={{ value: "Lecture", position: "insideLeft", angle: 0, dx: 10, dy: 10 }}
                                     />
-                                            <Tooltip />
+                                    <Tooltip />
                                     <Area
                                         type="natural"
                                         dataKey="userRate"
@@ -584,9 +550,9 @@ let Attendance = (props) => {
                     </Grid>
                 </Grid>
             )
-            else{
-                return <div><h3>Loading...</h3></div>
-            }
+        else {
+            return <div><h3>Loading...</h3></div>
+        }
     }
 
     let RedirectToLogin = () => {

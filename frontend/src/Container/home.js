@@ -81,7 +81,6 @@ export default function Home(props) {
         
                 });
         }
-
     },[])
 
     let renderCourseCard = () => {
@@ -109,7 +108,6 @@ export default function Home(props) {
                 </React.Fragment>
             )
         })
-
     }
 
     let loginnedHome = (
