@@ -75,14 +75,14 @@ function Button({ children, color, className, ...props }) {
     },
     contained: {
       backgroundColor: getColor(color, theme),
-      boxShadow: theme.customShadows.widget,
+      // boxShadow: theme.customShadows.widget,
       color: `${color ? "white" : theme.palette.text.primary} !important`,
       "&:hover": {
         backgroundColor: getColor(color, theme, "light"),
-        boxShadow: theme.customShadows.widgetWide,
+        // boxShadow: theme.customShadows.widgetWide,
       },
       "&:active": {
-        boxShadow: theme.customShadows.widgetWide,
+        // boxShadow: theme.customShadows.widgetWide,
       },
     },
     outlined: {
@@ -163,12 +163,12 @@ function getFontSize(size, variant = "", theme) {
       break;
   }
 
-  var defaultSize =
-    variant && theme.typography[variant]
-      ? theme.typography[variant].fontSize
-      : theme.typography.fontSize + "px";
+  // var defaultSize =
+  //   variant && theme.typography[variant]
+  //     ? theme.typography[variant].fontSize
+  //     : theme.typography.fontSize + "px";
 
-  return `calc(${defaultSize} * ${multiplier})`;
+  // return `calc(${defaultSize} * ${multiplier})`;
 }
 
 function createStyled(styles, options) {

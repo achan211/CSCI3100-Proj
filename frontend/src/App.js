@@ -18,6 +18,7 @@ import StartQuiz from "./Container/StartQuiz"
 import ProfessorQuiz from "./Container/ProfessorQuiz"
 import ProfessorStartQuiz from "./Container/ProfessorStartQuiz"
 import CreateQuiz from "./Container/CreateQuiz"
+import CourseRating from "./Component/rating"
 import {
   BrowserRouter as Router,
   Switch,
@@ -103,6 +104,7 @@ function App() {
             <Route path="/ProfessorQuiz" component={ProfessorQuiz} />
             <Route path="/ProfessorStartQuiz" component={ProfessorStartQuiz} />
             <Route path="/CreateQuiz" component={CreateQuiz} />
+			<Route path="/rating" component={CourseRating} />
             <Route path="/:id" component={CoursePage} />
             <Route exact path="/" component={Home} />
             <Route path="/" >

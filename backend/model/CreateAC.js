@@ -48,10 +48,22 @@ const PostSchema = mongoose.Schema({
     id:{
         type:String
     },
+    pic:{
+        type:String
+    },
     firstname:{
         type:String
     },
     lastname:{
+        type: String
+    },
+    intro:{
+        type: String
+    },
+    major:{
+        type: String
+    },
+    minor:{
         type: String
     },
     username:{

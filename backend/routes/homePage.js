@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../model/Course')
 
-
+//get 1 course
 router.post('/', async (req, res) => {
     Post.find({ code : { $in : req.body.code }  }, function (err, docs) {
         if (docs.length) {

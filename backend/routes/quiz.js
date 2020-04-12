@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Quiz = require('../model/Quiz')
 
-
-
 // get quiz question
 router.post('/student', async (req, res) => {
     Quiz.find({'courseCode':req.body.courseCode},  async function (err, docs) {

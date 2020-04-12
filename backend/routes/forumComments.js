@@ -5,12 +5,6 @@ const Post = require('../model/CreateAC')
 
 // get the forum topic's comments
 router.post('/', async (req, res) => {
-
-
-    // let tmp ={}
-    // tmp.code = req.body.code
-    // tmp[req.body.forumTopicId] = req.body.forumTopicId
-    // console.log(tmp)
     
     let id = req.body.id 
     let code = req.body.code 
@@ -22,6 +16,7 @@ router.post('/', async (req, res) => {
     ForumComment.find(obj, function (err, docs) {
         if (docs.length) {
             console.log(docs[0])
+            
             res.json(   docs[0].comment[req.body.id] )
         } else {
             console.log('no such commnet yet! ');
