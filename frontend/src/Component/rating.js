@@ -1,20 +1,9 @@
 import React from "react";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-//import Link from '@material-ui/core/Link';
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import Link from '@material-ui/core/Link';
 import Button from "@material-ui/core/Button";
 import Slider from "@material-ui/core/Slider";
 import TextField from "@material-ui/core/TextField";
@@ -56,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function valuetext(value) {
-  return `${value}°C`;
+  return `${value}Â°C`;
 }
 
 export default function Rating() {
@@ -167,10 +156,10 @@ export default function Rating() {
             </Grid>
 
             <Button
-              variant="contained"
-              color="primary"
-              className={classes.newQuiz}
-            >
+                variant="contained"
+                color="primary"
+                onClick={() => { window.location.href = "/ratingComplete" }}
+                >
               Submit
             </Button>
           </div>
