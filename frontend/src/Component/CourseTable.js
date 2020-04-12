@@ -10,21 +10,28 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { UserType,UserCourseList } from "../test"
+
 const useStyles = makeStyles(theme => ({
     paper: {
         padding: theme.spacing(2),
         margin: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.text.primary,
-        width: '80%',
-
+        [theme.breakpoints.up('md')]: {
+            width: '80%',
+          },
     },
     courseListPaper: {
-        float: 'right',
+        [theme.breakpoints.up('md')]: {
+            float: 'right',
+          },
         minHeight: '60vh'
     },
     profgenCodePaper: {
-        float: 'right',
+        [theme.breakpoints.up('md')]: {
+            float: 'right',
+          },
         minHeight: '45vh'
     },
     tableHead: {
@@ -41,25 +48,31 @@ const useStyles = makeStyles(theme => ({
         fontSize: 16,
         textAlign: 'center',
     },
+    container:{
+        marginBottom: '35px'
+    }
 }));
 let CourseTable = (props) => {
+    const { userType, userTypeDispatch } = useContext(UserType);
+    const { courselist, courselistDispatch } = useContext(UserCourseList);
+
+
     const classes = useStyles();
     return (
-        <Grid item xs={6}>
-            <Paper className={JSON.parse(localStorage.getItem('info')).type === 'student' ?
+            <Paper className={ userType === 'student' ?
                 `${classes.courseListPaper} ${classes.paper}` : `${classes.profgenCodePaper} ${classes.paper}`}>
                 <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
                                 <TableCell className={classes.tableHead}>
-                                    <Typography variant="h6" noWrap>Select Your Course</Typography>
+                                    <Typography variant="h6" noWrap>Select Your Courses</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         {/* User's Course List */}
                         <TableBody>
-                            {props.courselist && props.courselist.map(item => {
+                            {courselist && courselist.map(item => {
                                 return (
                                     <TableRow className={classes.tableRow}
                                         onClick={() => {
@@ -74,8 +87,8 @@ let CourseTable = (props) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                {props.children}
             </Paper>
-        </Grid>
     )
 }
 export default CourseTable

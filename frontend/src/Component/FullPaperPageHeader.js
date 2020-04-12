@@ -1,0 +1,73 @@
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+
+import Autocomplete from '@material-ui/lab/Autocomplete';
+const useStyles = makeStyles(theme => ({
+    title: {
+        color: '#B9B9B9',
+        paddingTop: '15px',
+        paddingBottom: '15px'
+    },
+    paper: {
+        padding: theme.spacing(2),
+        margin: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.primary,
+        minHeight: 'calc(100vh - 80px)'
+    },
+
+    paperContent: {
+        textAlign: 'left',
+        justify: 'justified',
+        
+        [theme.breakpoints.up('md')]: {
+            width: '60%',
+          },
+        margin: '0 auto'
+    },
+    message: {
+        paddingBottom: '25px',
+    }
+
+
+}));
+let FullPaperPageHeader = (props) => {
+    const classes = useStyles();
+
+    return (
+        <React.Fragment>
+            <Grid container>
+
+                <Grid item xs={12}>
+                    <Paper className={classes.paper}>
+                        <div className={classes.paperContent}>
+                            <Typography variant="h4" noWrap className={classes.title}>
+                                {props.title}
+                  </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                {props.body1}
+                  </Typography>
+                            <Typography variant="body1" gutterBottom>
+                            {props.body2}
+
+                                
+                  </Typography>
+                            {props.children}
+                        </div>
+                    </Paper>
+                    {/* </div> */}
+                </Grid>
+
+            </Grid>
+        </React.Fragment>
+    )
+}
+
+export default FullPaperPageHeader

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect,useContext, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
@@ -7,8 +7,9 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Link } from "react-router-dom";
-import Divider from '@material-ui/core/Divider'
-import Paper from '@material-ui/core/Paper';
+import axios from "axios"
+import { UserCourseList } from "../test"
+
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
@@ -55,36 +56,27 @@ const useStyles = makeStyles(theme => ({
 // This is the homepage for user that have log into their accounts
 export default function Home(props) {
     const classes = useStyles();
-    const [Course, setCourse] = useState([])
+    const [Course, setCourse] = useState()
+    const { courselist, courselistDispatch } = useContext(UserCourseList);
 
+    // useEffect(()=>{
 
-    let code= localStorage.getItem('info');
-    useEffect(()=>{
-        if(localStorage.getItem('token') ){
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                  'code' : JSON.parse(code).course,
-                })
-              };
-              fetch('http://localhost:5000/', requestOptions)
-                .then(response => response.json())
-                .then(response => {
-                  if(!response.error){
-                      console.log(response)
-                      
-                    setCourse(response)
-                  }
-                  else
-                  setCourse('no course yet')
+    //             axios.post('http://localhost:5000/', {}, {withCredentials: true}).then(response => response.data).then((response)=>{
+                  
+    //               console.log(response)
+    //               if(response.redirectURL){
+    //               //back to login
+    //                 window.location.href = 'http://localhost:3000' + response.redirectURL
+    //               }
+    //               else{
+    //                 setCourse(response)
+    //               }
+    //             })
         
-                });
-        }
-    },[])
+    // },[])
 
     let renderCourseCard = () => {
-        return Course.map((item, index) => {
+        return courselist.map((item, index) => {
             return (
                 <React.Fragment key={item.code}>
                     <Grid item md={4} xs={1} ></Grid>
@@ -120,7 +112,7 @@ export default function Home(props) {
                         My Courses
                         </Typography>
                     <Grid container  >
-                        {renderCourseCard()}
+                        {courselist ? Array.isArray(courselist) ? renderCourseCard() :<div>no course yet!</div>  : <div>loading...</div>}
                     </Grid>
                 </Grid>
             </Grid>
@@ -134,7 +126,7 @@ export default function Home(props) {
     }
     return (
         <React.Fragment>
-            {localStorage.getItem('token') ? loginnedHome : RedirectToLogin()}
+            {loginnedHome }
         </React.Fragment>
     )
 }

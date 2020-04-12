@@ -16,7 +16,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import CourseTable from "../Component/CourseTable";
 import PinInput from "react-pin-input";
 import SnackBar from "../Component/SnackBar"
-import { UserCourseList, UserInfo } from "../test"
+import { UserCourseList } from "../test"
+
 import {
     ResponsiveContainer,
     ComposedChart,
@@ -118,7 +119,6 @@ let Attendance = (props) => {
     let [attendanceRecord, setAttendanceRecord] = useState()
     let [generatedPin, setGeneratedPin] = useState(false)
     const { courselist, courselistDispatch } = useContext(UserCourseList);
-    const { userinfo, userinfoDispatch } = useContext(UserInfo);
 
     let [Open, setOpen] = useState('')
     let [AlertMessage, setAlertMessage] = useState()
@@ -285,13 +285,15 @@ let Attendance = (props) => {
                     <div className={classes.main}>
                         <Grid container>
                             {/* List of Courses registered by the user / professor */}
+                            <Grid item md={6} xs={12}>
 
-                            <CourseTable
-                                courselist={courselist}
-                                setChartOpen={setChartOpen}
-                                setCourse={setCourse}
-                                type={'Attendance'}
-                            />
+                                <CourseTable
+                                    courselist={courselist}
+                                    setChartOpen={setChartOpen}
+                                    setCourse={setCourse}
+                                    type={'Attendance'}
+                                />
+                            </Grid>
                             {/* If a Course is selected and prof is taking attendance, show below, 
                         otherwise return "No attendance required for this course"*/}
                             {course ? JSON.parse(localStorage.getItem('info')).type === 'student' ?

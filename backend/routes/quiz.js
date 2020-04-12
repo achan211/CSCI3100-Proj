@@ -7,12 +7,12 @@ router.post('/student', async (req, res) => {
     Quiz.find({ 'courseCode': req.body.courseCode }, async function (err, docs) {
         if (docs.length) {
             let len = docs[0].quiz.length
-            if (docs[0].quiz[len - 1].score && docs[0].quiz[len - 1].score[req.body.username]) {
+            if (docs[0].quiz[len - 1].score && docs[0].quiz[len - 1].score[req.session.user]) {
                 res.json({ error: 'you have already submitted!' })
             } else if (docs[0].mode === '0') {
                 res.json({ error: 'Professor has not started  a new quiz!' })
             } else {
-                res.json(docs[0].quiz[len - 1].question)
+                res.json({ docs: docs[0].quiz[len - 1].question })
             }
         } else {
             console.log('no quiz yet! ');
@@ -45,7 +45,7 @@ router.post('/student/submit', async (req, res) => {
             let len = docs[0].quiz.length
             let id = docs[0].quiz[len - 1]._id
             let ans = req.body.ans
-            let username = req.body.username
+            let username = req.session.user
             let NumberOfQ = docs[0].quiz[len - 1].ans.length
             let score = 0
 
@@ -72,7 +72,7 @@ router.post('/student/submit', async (req, res) => {
                             res.json(error);
                         } else {
                             data = success.quiz[len - 1].score[username]
-                            res.json(data);
+                            res.json({ docs: data });
                         }
                     });
             }
@@ -90,26 +90,37 @@ router.get('/result/:courseCode', async (req, res) => {
     Quiz.find({ 'courseCode': req.params.courseCode }, async function (err, docs) {
         if (docs.length) {
             if (docs[0].quiz) {
+                // render general quiz result by course (no user details)
                 let arr = []
-                let avScore = 0;
+                let avScore = [];
                 let quizlen = docs[0].quiz.length
+                let usersocre = []
+                let ans = []
+                let question = []
                 for (let i = 0; i < quizlen; i++) {
                     let qlen = docs[0].quiz[i].ans.length
                     let studentNum = docs[0].quiz[i].score ? Object.keys(docs[0].quiz[i].score).length : 0
-                    avScore = 0
+                    avScore = []
+                    ans.push(docs[0].quiz[i].ans)
+                    question.push(docs[0].quiz[i].question)
                     for (key in docs[0].quiz[i].score) {
-                        avScore += parseFloat(docs[0].quiz[i].score[key].score)
+                        avScore.push(parseFloat(docs[0].quiz[i].score[key].score))
+
+                        if (key === req.session.user) {
+                            usersocre.push(docs[0].quiz[i].score[key])
+                        }
                     }
                     if (studentNum !== 0) {
-                        avScore = parseFloat(avScore) / parseFloat(studentNum) / parseFloat(qlen)
                         arr.push(avScore)
                     }
                 }
-                res.json({'socre':arr})
-            }else{
+                res.json({ docs: { 'socredist': arr, 'userscore': usersocre, 'question': question, 'ans': ans } })
+                // res.json(docs[0].quiz)
+
+            } else {
                 res.json({ error: 'no quiz yet!  ' })
             }
-           
+
         } else {
             console.log('no quiz yet! ');
             res.json({ error: 'no quiz yet!  ' })
@@ -136,7 +147,7 @@ router.post('/teacher', async (req, res) => {
                     if (error) {
                         res.json(error);
                     } else {
-                        res.json(success);
+                        res.json({ docs: success });
                     }
                 });
         } else {

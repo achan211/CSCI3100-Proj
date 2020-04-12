@@ -5,10 +5,9 @@ const mongoose = require("mongoose")
 require('dotenv/config')
 var cors = require('cors');
 var port = 5000
-app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 var session = require("express-session");
 var cookieParser = require('cookie-parser')
-
 var bodyParser = require('body-parser');
 var middleware =require('./middleware')
 app.use(bodyParser.json()); // support json encoded bodies
@@ -40,9 +39,14 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    expires: 600000
+    // expires: 600000,
+    httpOnly: false,
+    secure: false,
   }
 }));
+
+
+
 
 // app.use((req, res, next) => {
 //   if (req.cookies.user_sid && !req.session.user) {
@@ -50,29 +54,32 @@ app.use(session({
 //   }
 //   next();
 // });
- sessionChecker1 = (req, res, next) => {
-  if (req.session.user && req.cookies.user_sid) {
-    console.log(req.session.user)
-    next();
-  } else {
-   console.log("no cookies")
-   
-  }
-};
+
+// sessionChecker1 = (req, res, next) => {
+//   if (req.session.user && req.cookies.user_sid) {
+//     console.log(req.session.user)
+//     console.log('has cookirse!')
+//    next();
+
+//   } else {
+//    console.log("no cookies")
+//    res.redirect('/alogin');
+// };
+// }
 
 
-app.get('/ahome', sessionChecker1, (req, res) => {
- console.log("hello")
- res.json('hello')
-});
+// app.get('/ahome',sessionChecker1, (req, res) => {
+//  console.log("hello")
+//  res.json('hello')
+// });
 
-app.route('/alogin')
-  .get((req, res) => {
-    // var username = req.body.username
-    // var password = req.body.password;
-    res.session.user ='test'
-    res.redirect('/ahome')
-  }); 
+// app.route('/alogin')
+//   .get(( req, res) => {
+//     // var username = req.body.username
+//     // var password = req.body.password;
+//     req.session.user ='test'
+//     res.redirect('/ahome')
+//   }); 
 
 app.use('/createAC', createAC)
 app.use('/login', loginAC)

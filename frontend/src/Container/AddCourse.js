@@ -45,7 +45,7 @@ let AddCourse = (props) => {
   let [Course, setCourse] = useState()
   let [Message, setMessage] = useState('')
   let [Open, setOpen] = useState('')
-  let [AlertMessage, setAlertMessage] =useState()
+  let [AlertMessage, setAlertMessage] = useState()
 
 
   useEffect(() => {
@@ -84,12 +84,12 @@ let AddCourse = (props) => {
             setAlertMessage('Success!')
             setOpen(true)
           }
-          else{
+          else {
             setMessage('')
             setAlertMessage(response.error)
             setOpen(true)
           }
-         
+
 
         });
     } else {
@@ -121,27 +121,32 @@ let AddCourse = (props) => {
                   If professor approves your sit in request, you will be able to visit the course page and use the course materials
 
                             </Typography>
-                <Autocomplete
-                  id="combo-box-demo"
-                  options={AvaCourse}
-                  autoFocus
-                  className={classes.completeBox}
-                  getOptionLabel={(AvaCourse) => AvaCourse.code}
-                  onChange={(e, value) => setCourse(value)}
-                  renderInput={(params) => <TextField {...params} label="Search or select for a course" variant="outlined" />}
-                />
-                <TextField
-                  className={classes.message}
-                  
-                  value={Message}
-                  onChange={e => setMessage(e.target.value)}
-                  margin="dense" id="comments"
-                  variant="outlined" label="Anything you would like to tell professsor" type="text" rows="15"
-                  fullWidth multiline />
+                {Array.isArray(AvaCourse) &&
+                  <React.Fragment>
+                    <Autocomplete
+                      id="combo-box-demo"
+                      options={AvaCourse}
+                      autoFocus
+                      className={classes.completeBox}
+                      getOptionLabel={(AvaCourse) => AvaCourse.code}
+                      onChange={(e, value) => setCourse(value)}
+                      renderInput={(params) => <TextField {...params} label="Search or select for a course" variant="outlined" />}
+                    />
+                    <TextField
+                      className={classes.message}
 
-                <Button variant="contained" color="primary" href="#contained-buttons" onClick={handleSubmit}>
-                  Submit Request
+                      value={Message}
+                      onChange={e => setMessage(e.target.value)}
+                      margin="dense" id="comments"
+                      variant="outlined" label="Anything you would like to tell professsor" type="text" rows="15"
+                      fullWidth multiline />
+
+                    <Button variant="contained" color="primary" href="#contained-buttons" onClick={handleSubmit}>
+                      Submit Request
                   </Button>
+                  </React.Fragment>
+                }
+
               </div>
             </Paper>
             {/* </div> */}
@@ -155,7 +160,7 @@ let AddCourse = (props) => {
           open={Open}
           onClose={handleClose}>
           <SnackbarContent style={{
-            backgroundColor: AlertMessage === "Success!"  ? '#84DE02' : '#FFBF00'  ,
+            backgroundColor: AlertMessage === "Success!" ? '#84DE02' : '#FFBF00',
           }}
             message={<span id="client-snackbar">{AlertMessage}!</span>}
           />

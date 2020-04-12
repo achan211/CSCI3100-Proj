@@ -16,12 +16,14 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import { UserCourseList } from "../test"
+import { UserCourseList, UserType } from "../test"
 import CourseTable from "../Component/CourseTable"
 import Divider from '@material-ui/core/Divider';
 import PeopleIcon from '@material-ui/icons/People';
 import TextField from '@material-ui/core/TextField'
 import StartQuiz from './StartQuiz';
+import { Link } from "react-router-dom";
+import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
 
@@ -30,7 +32,9 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.text.primary,
-        width: '80%',
+        [theme.breakpoints.up('md')]: {
+            width: '80%',
+          },
 
     },
     chartPaper: {
@@ -45,7 +49,10 @@ const useStyles = makeStyles(theme => ({
         marginTop: 8,
     },
     quizqContainer: {
-        width: '50% !important',
+        [theme.breakpoints.up('md')]: {
+            width: '50% !important',
+          },
+       
         margin: '0 auto'
     },
     questionfield: {
@@ -65,7 +72,7 @@ let profquestion = [{}]
 let answer = []
 let Quiz = (props) => {
     const classes = useStyles();
-    const { courselist, courselistDispatch } = useContext(UserCourseList);
+    const { userType } = useContext(UserType)
     const [Course, setCourse] = useState()
     const [createQuiz, setCreateQuiz] = useState()
     const [questionNubmer, setQuestionNubmer] = useState(1)
@@ -74,50 +81,51 @@ let Quiz = (props) => {
     let [success, setSuccess] = useState()
     let [alertMessage, setAlertMessage] = useState()
     let [openAlert, setOpenAlert] = useState()
-    const [modalOpen,setModalOpen]=useState(false)
-    const [score,setScore]=useState(null)
-    const [startQuiz, setStartQuiz]=useState(false)
+    const [modalOpen, setModalOpen] = useState(false)
+    const [score, setScore] = useState(null)
+    const [startQuiz, setStartQuiz] = useState(false)
 
-    useEffect(()=>{
-        let username = JSON.parse(localStorage.getItem('info')).username
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                'courseCode': Course,
-                'username': username
-            })
-        };
-        fetch(`http://localhost:5000/quiz/student`, requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                if (!response.error) {
-                    console.log(response)
-                    setQuestion(response)
-                    setStartQuiz(true)
-                }
-                else {
-                    setQuestion(response)
-                }
-            });
-    },[Course])
+
+    useEffect(() => {
+        axios.post('http://localhost:5000/quiz/student/', { 'courseCode': Course }, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+            else if (!response.error) {
+                setQuestion(response.docs)
+                setStartQuiz(true)
+            }
+            else {
+                setQuestion(response)
+            }
+        })
+    }, [Course])
     let profSendQuizQuestion = () => {
         profquestion = profquestion.slice(0, questionNubmer)
         answer = answer.slice(0, questionNubmer)
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                'courseCode': Course,
-                'question': profquestion,
+        // const requestOptions = {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({
+        //         'courseCode': Course,
+        //         'question': profquestion,
+        //         'ans': answer
+        //     })
+        // };
+        axios.post('http://localhost:5000/quiz/teacher',
+            {
+                'courseCode': Course, 'question': profquestion,
                 'ans': answer
-            })
-        };
-        fetch(`http://localhost:5000/quiz/teacher`, requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                if (!response.error) {
+            },
+            { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
                     console.log(response)
+
                     setSuccess(true)
                     setAlertMessage('Create Successfully!')
                     setOpenAlert(true)
@@ -128,7 +136,23 @@ let Quiz = (props) => {
                     setAlertMessage(response.error)
                     setOpenAlert(true)
                 }
-            });
+            })
+        // fetch(`http://localhost:5000/quiz/teacher`, requestOptions)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (!response.error) {
+        //             console.log(response)
+        //             setSuccess(true)
+        //             setAlertMessage('Create Successfully!')
+        //             setOpenAlert(true)
+        //         }
+        //         else {
+        //             console.log(response)
+        //             setSuccess(false)
+        //             setAlertMessage(response.error)
+        //             setOpenAlert(true)
+        //         }
+        //     });
 
     }
     let studSendQuizQuestion = () => {
@@ -138,23 +162,69 @@ let Quiz = (props) => {
             setOpenAlert(true)
             return
         }
-        let username = JSON.parse(localStorage.getItem('info')).username
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                'username': username,
+        // const requestOptions = {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({
+        //         'username': username,
+        //         'ans': answer,
+        //     })
+        // };
+        axios.post('http://localhost:5000/quiz/student/submit',
+            {
                 'ans': answer,
                 'courseCode': Course
-            })
-        };
-        fetch(`http://localhost:5000/quiz/student/submit`, requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                if (!response.error) {
+            },
+            { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
                     console.log(response)
                     setModalOpen(true)
-                    setScore(response.score)
+                    setScore(response.docs.score)
+                }
+                else {
+                    console.log(response.docs)
+                    setSuccess(false)
+                    setAlertMessage(response.error)
+                    setOpenAlert(true)
+                }
+            })
+        // fetch(`http://localhost:5000/quiz/student/submit`, requestOptions)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (!response.error) {
+        //             console.log(response)
+        //             setModalOpen(true)
+        //             setScore(response.score)
+        //         }
+        //         else {
+        //             console.log(response)
+        //             setSuccess(false)
+        //             setAlertMessage(response.error)
+        //             setOpenAlert(true)
+        //         }
+        //     });
+
+    }
+    let checkQuizHistory = (type) => {
+        props.history.push(`/Quiz/history/${Course}`)
+    }
+    let handleStartOrEndQuiz = (value) => {
+        setStartQuiz(value)
+        axios.get(`http://localhost:5000/quiz/start/${Course}/${value}`,
+            { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
+                    console.log(response.message)
+                    setOpenAlert(true)
+                    setSuccess(true)
+                    setAlertMessage(response.message)
                 }
                 else {
                     console.log(response)
@@ -162,30 +232,23 @@ let Quiz = (props) => {
                     setAlertMessage(response.error)
                     setOpenAlert(true)
                 }
-            });
-
-    }
-    let checkQuizHistory = ()=>{
-        
-    }
-    let handleStartOrEndQuiz =(value)=>{
-        setStartQuiz(value)
-        fetch(`http://localhost:5000/quiz/start/${Course}/${value}`)
-        .then(response => response.json())
-        .then(response => {
-            if (!response.error) {
-                console.log(response.message)
-                setOpenAlert(true)
-                setSuccess(true)
-                setAlertMessage(response.message)
-            }
-            else {
-                console.log(response)
-                setSuccess(false)
-                setAlertMessage(response.error)
-                setOpenAlert(true)
-            }
-        });
+            })
+        // fetch(`http://localhost:5000/quiz/start/${Course}/${value}`)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (!response.error) {
+        //             console.log(response.message)
+        //             setOpenAlert(true)
+        //             setSuccess(true)
+        //             setAlertMessage(response.message)
+        //         }
+        //         else {
+        //             console.log(response)
+        //             setSuccess(false)
+        //             setAlertMessage(response.error)
+        //             setOpenAlert(true)
+        //         }
+        //     });
     }
     let handleQusChnage = (e, index) => {
         profquestion[index] = { ...profquestion[index] }
@@ -198,13 +261,18 @@ let Quiz = (props) => {
         return (
             <React.Fragment>
                 <Grid container>
-                    <CourseTable
-                        courselist={courselist}
-                        setChartOpen={setCourse}
-                        setCourse={setCourse}
-                    />
-                    {Course ? JSON.parse(localStorage.getItem('info')).type === 'prof' ?
-                        <Grid item xs={6}>
+                    <Grid item md={6} xs={12}>
+
+                        <CourseTable
+                            setChartOpen={setCourse}
+                            setCourse={setCourse}
+                        >
+                            <Button variant="contained" color="default" onClick={checkQuizHistory}>Check Course Quiz Record</Button>
+                        </CourseTable>
+                    </Grid>
+
+                    {Course ? userType === 'prof' ?
+                        <Grid item md={6} xs={12}>
                             <Paper className={`${classes.attendancePaper} ${classes.paper}`}>
                                 <PeopleIcon fontSize="large" /><br />
                                 <Typography variant="h4" component="h4">{Course} Quiz</Typography>
@@ -214,28 +282,28 @@ let Quiz = (props) => {
                                 <Button variant="contained" onClick={() => setCreateQuiz(true)} >Create Quiz</Button>
                                 <Divider className={classes.divider} />
 
-                                {startQuiz ? <Button variant="contained" color="secondary" onClick={()=>handleStartOrEndQuiz(0)}>End Quiz</Button> : 
-                                <Button variant="contained" color="primary" onClick={()=>handleStartOrEndQuiz(1)}>Start Quiz</Button>}
+                                {startQuiz ? <Button variant="contained" color="secondary" onClick={() => handleStartOrEndQuiz(0)}>End Quiz</Button> :
+                                    <Button variant="contained" color="primary" onClick={() => handleStartOrEndQuiz(1)}>Start Quiz</Button>}
                                 <Divider className={classes.divider} />
-                                <Button variant="contained" onClick={()=>checkQuizHistory('prof')}>Check Course Quiz Record</Button>
+                                <Button variant="contained" color="default" onClick={checkQuizHistory}>Check Course Quiz Record</Button>
                             </Paper>
                         </Grid>
-                        : <Grid item xs={6}>
+                        : <Grid item md={6} xs={12}>
                             <Paper className={`${classes.attendancePaper} ${classes.paper}`}>
                                 <PeopleIcon fontSize="large" /><br />
                                 <Typography variant="h4" component="h4">{Course} Quiz</Typography>
                                 <Divider className={classes.divider} />
                                 <Typography variant="h6" component="h5">Selected Course: {Course}</Typography>
                                 <Divider className={classes.divider} />
-                                {question &&  Array.isArray(question) && score === null ? <Button variant="contained" onClick={()=>setStudQuizQ(true)} color="primary">Start Quiz</Button> 
-                            : <Button variant="contained" onClick={()=>setStudQuizQ(true)} color="secondary">Submitted</Button>     
-                            }
-                               
+                                {question && Array.isArray(question) && score === null ? <Button variant="contained" onClick={() => setStudQuizQ(true)} color="primary">Start Quiz</Button>
+                                    : <Button variant="contained" onClick={() => setStudQuizQ(true)} color="secondary">Submitted</Button>
+                                }
+
                                 <Divider className={classes.divider} />
-                                <Button variant="contained" color="default" onClick={()=>checkQuizHistory('student')}>Check Course Quiz Record</Button>
+                                <Button variant="contained" color="default" onClick={checkQuizHistory}>Check Course Quiz Record</Button>
                             </Paper>
                         </Grid>
-                        : <Grid item xs={6}>
+                        : <Grid item md={6} xs={12}>
                             <Paper className={`${classes.attendancePaper} ${classes.paper}`}>
                             </Paper>
                         </Grid>
@@ -256,7 +324,9 @@ let Quiz = (props) => {
                     <DialogTitle id="form-dialog-title">Submitted Successfully! Your Score: </DialogTitle>
                     <DialogContent>
                         <h4> {score}/{question.length} </h4>
-                        <Button variant="contained" color="default" onClick={checkQuizHistory}>Check Course Quiz Record</Button>
+                        <Link to="Quiz/history">
+                            <Button variant="contained" color="default" onClick={checkQuizHistory}>Check Course Quiz Record</Button>
+                        </Link>
                     </DialogContent>
                 </Dialog>}
             </React.Fragment>
@@ -356,14 +426,9 @@ let Quiz = (props) => {
             </Grid>
         )
     }
-    let RedirectToLogin = () => {
-        alert("You have not yet login!");
-        const { history } = props;
-        history.push('/login');
-    }
     return (
         <React.Fragment>
-            {localStorage.getItem('token') ? renderQuiz() : RedirectToLogin()}
+            {renderQuiz()}
         </React.Fragment>
     )
 }

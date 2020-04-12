@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useContext } from 'react';
+import React, { useState, useEffect, useReducer, useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 // import TokenReducer from "../Reducer/TokenReducer";
-import { UserInfo } from "../test"
+import axios from "axios"
 
 function Copyright() {
   return (
@@ -66,40 +66,41 @@ let LoginPage = (props) => {
   }
   const [username, setusername] = useState('');
   const [pw, setpw] = useState('');
-  const { userinfo, userinfoDispatch } = useContext(UserInfo);
+  const [renderLogin,setRenderLogin]=useState()
 
+  useEffect(() => {
+    axios.post('http://localhost:5000/', {}, { withCredentials: true }).then(response => response.data).then((response) => {
+
+      console.log(response)
+      if (!response.redirectURL) {
+        //back to home
+        window.location.href = 'http://localhost:3000' 
+      }else{
+        //has not loginned in 
+        setRenderLogin(true)
+      }
+    })
+  },[])
   let handleSubmit = () => {
     if (username.length > 0 && pw.length > 0) {
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          'username': username,
-          'pw': pw
-        })
-      };
-      fetch('http://localhost:5000/login', requestOptions)
-        .then(response => response.json())
-        .then(response => {
-          const { history } = props;
-          if (response._id) {
-            alert("Success!!");
-            HandleMapSateToProps(response)
-            history.push('/');
-          }
-          else
-            alert("Wrong PW or AC!")
-        });
+
+      axios.post('http://localhost:5000/login', {
+        'username': username,
+        'pw': pw
+      }, { withCredentials: true }).then(response => response.data).then((response) => {
+        // const { history } = props;
+        console.log(response)
+        if (response.redirectURL) {
+          window.location.href = 'http://localhost:3000' + response.redirectURL
+
+        }
+        else {
+          alert('wrong pw!')
+        }
+      })
     }
   }
 
-  let HandleMapSateToProps = (studentDetails) => {
-    userinfoDispatch({ type: 'ADD_USERINFO', payload: studentDetails})
-    localStorage.setItem('info', JSON.stringify(studentDetails))
-    localStorage.setItem('token', studentDetails._id)
-
-    console.log(localStorage.getItem("token"))
-  }
 
   let RedirectToHome = () => {
     alert("You have already loginned!");
@@ -192,7 +193,7 @@ let LoginPage = (props) => {
 
   return (
     <React.Fragment>
-      {localStorage.getItem('token') ? RedirectToHome() : LoginPage()}
+      {renderLogin ? LoginPage(): <div>loading...</div>}
     </React.Fragment>
 
   );
