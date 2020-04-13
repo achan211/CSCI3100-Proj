@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 let FullPaperPageHeader = (props) => {
+    let width = props.width?props.width:'70%'
+    let minheight = props.minheight ? props.minheight :  'calc(100vh - 172px)'
     const useStyles = makeStyles(theme => ({
         title: {
             color: '#B9B9B9',
@@ -16,7 +18,7 @@ let FullPaperPageHeader = (props) => {
             margin: theme.spacing(1),
             textAlign: 'center',
             color: theme.palette.text.primary,
-            minHeight: 'calc(100vh - 172px)',
+            minHeight: minheight,
         },
     
         paperContent: {
@@ -24,9 +26,7 @@ let FullPaperPageHeader = (props) => {
             justify: 'justified',
             
             [theme.breakpoints.up('md')]: {
-                
-
-                width: `${props.width}` ,
+                width: width ,
               },
             margin: '0 auto'
         },

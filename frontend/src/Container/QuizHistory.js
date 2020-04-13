@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { std } from 'mathjs'
+import Grid from '@material-ui/core/Grid';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import FullPaperPageHeader from '../Component/FullPaperPageHeader'
@@ -10,25 +11,27 @@ import axios from "axios"
 import BarChart from "../Component/BarChart"
 import MixedChart from "../Component/MixedChart"
 import QuizQuestion from "../Component/QuizQuestion"
-const useStyles = makeStyles(theme => ({
-    title: {
-        color: '#B9B9B9',
-        paddingTop: '15px',
-        paddingBottom: '15px'
-    },
-    completeBox: {
-        padding: '30px 0',
-        [theme.breakpoints.up('md')]: {
-            width: '70%',
-          },
-    },
-    message: {
-        paddingBottom: '25px',
-    }
 
-
-}));
 let QuizHistory = (props) => {
+    let width = props.width?props.width:'70%'
+    const useStyles = makeStyles(theme => ({
+        title: {
+            color: '#B9B9B9',
+            paddingTop: '15px',
+            paddingBottom: '15px'
+        },
+        completeBox: {
+            padding: '30px 0',
+            [theme.breakpoints.up('md')]: {
+                width: width,
+              },
+        },
+        message: {
+            paddingBottom: '25px',
+        }
+    
+    
+    }));
     const classes = useStyles();
     let [AvaCourse, setAvaCourse] = useState()
     let [Course, setCourse] = useState(props.match.params.course && props.match.params.course)
@@ -116,7 +119,7 @@ let QuizHistory = (props) => {
 
         return (
             <React.Fragment>
-                <FullPaperPageHeader width={props.width ? props.width :'70%'} title={`${props.match.params.course === undefined ? '' : Course} Quiz Record`} body1={'Select Course To View Your Quiz Result!'}>
+                <FullPaperPageHeader minheight={props.minheight && props.minheight } width={props.width ? props.width :'70%'} title={`${props.match.params.course === undefined ? '' : Course} Quiz Record`} body1={'Select Course To View Your Quiz Result!'}>
                     <div>
                         {Array.isArray(courselist) &&
                             <Autocomplete
@@ -136,14 +139,17 @@ let QuizHistory = (props) => {
 
                         {result && result.userscore &&
                             <React.Fragment>
-                                {userType === 'student' &&
+                                <Grid container>
+                                    <Grid item md={6}>
+                                    {userType === 'student' &&
                                     <BarChart
                                         data={result.userscore.map(i => i.score)}
                                         label={result.userscore.map((i, index) => index + 1)}
                                         title={`Your Score Record`}
                                     />}
-
-                                <MixedChart
+                                    </Grid>
+                                    <Grid item md={6}>
+                                    <MixedChart
                                     data0={result.socredist.map(i => std(i))}
                                     data1={calAverage()}
                                     label={result.userscore.map((i, index) => (index + 1))}
@@ -151,7 +157,10 @@ let QuizHistory = (props) => {
                                     label1={'SD'}
                                     label0={'Class Average'}
                                 />
-                                {userType === 'student' &&
+                                    </Grid>
+                                    <Grid item md={6}>
+                                  
+                                    {userType === 'student' &&
                                     <MixedChart
                                         data0={result.userscore.map(i => i.score)}
                                         data1={calAverage()}
@@ -159,10 +168,10 @@ let QuizHistory = (props) => {
                                         title={`Compare To Overall Class (Your Score VS Overall Class)`}
                                         label0={'Your Score'}
                                         label1={'Class Average'}
-                                    />
-                                }
-
-                                {userType === 'student' &&
+                                    />}
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                    {userType === 'student' &&
                                     <Autocomplete
                                         id="combo-box-demo"
                                         options={result.userscore.map((i, index) => 'Quiz No.' + (index + 1))}
@@ -173,6 +182,11 @@ let QuizHistory = (props) => {
                                         renderInput={(params) => <TextField {...params} label="Check Quiz Question And Answer " variant="outlined" />}
                                     />
                                 }
+                                    </Grid>
+                                </Grid>
+                                
+
+                              
 
                             </React.Fragment>
                         }

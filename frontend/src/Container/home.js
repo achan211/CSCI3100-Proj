@@ -250,7 +250,7 @@ export default function Home(props) {
                                         <Typography variant="h6" className={classes.title}>
                                             New Notificaiton</Typography>
                                         {renderUpdates()}
-                                        {notice&& notice.length < itemNumber * 5 ?
+                                        {notice && notice.length < itemNumber * 5 ?
                                             <div>
                                                 <Typography variant="body1" >-------No More Updates-------</Typography>
                                                 <Divider className={classes.divider} />
@@ -275,7 +275,7 @@ export default function Home(props) {
                                     <Button style={{ margin: '15px' }} variant="contained" color="default" onClick={() => setOpenQuiz(!openQuiz)} >Check Course Quiz Record</Button>
                                     <Button style={{ margin: '15px' }} variant="contained" color="default"><a href="#regression">Regression Analysis</a></Button>
 
-                                    
+
 
                                 </div>
                             </Paper>
@@ -292,8 +292,11 @@ export default function Home(props) {
                                     })}
                                 </Grid>
                             </Paper>
-                                        <div id='regression'>
-                            <RegressionAnalysis {...props} />
+                            <div id='regression'>
+                                <RegressionAnalysis {...props} minheight='0' width='100%' />
+                            </div>
+                            <div id="quizhistory">
+                                <QuizHistory  {...props}  minheight='0' width='100%' />
                             </div>
 
                         </Grid>
