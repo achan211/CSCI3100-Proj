@@ -131,7 +131,6 @@ export default function UserProfile() {
                 console.log(response)
             }
             else {
-                console.log('ok')
                 console.log(response.error)
             }
         })

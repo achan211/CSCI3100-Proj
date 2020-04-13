@@ -713,28 +713,6 @@ export default function CoursePage(props) {
             </List>
         )
     }
-    let renderErrorMessage = () => {
-        return (
-            <React.Fragment>
-                <div className={classes.app}>
-                    <div className={classes.main}>
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <Paper className={classes.paperAnnouncement} variant="elevation">
-                                    <Typography variant="h4" align="center" justify="center" noWrap className={classes.Announcement}>
-                                        Opps! <br />
-                                You didn't register this course. Please check your URL. <br />
-                                Or click the button below to redirect you back to Home Page.
-                                </Typography>
-                                    <Button variant="contained" color="primary">Home Page</Button>
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </div>
-            </React.Fragment>
-        )
-    }
     return (
         <React.Fragment>
             {checkifEnrolled() ? renderCoursePage() : <div>Looading...</div>}
