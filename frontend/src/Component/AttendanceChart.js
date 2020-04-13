@@ -21,15 +21,6 @@ const useStyles = makeStyles(theme => ({
     root: {
         width: 900,
     },
-    mainChartHeaderLabels: {
-        display: "flex",
-        alignItems: "center",
-    },
-    mainChartLegentElement: {
-        fontSize: "18px !important",
-        marginLeft: theme.spacing(1),
-    },
-
     app: {
         flex: 1,
         display: 'flex',

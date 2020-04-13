@@ -326,19 +326,27 @@ export default function Header() {
           </MenuItem>
 
           <Divider />
+          <MenuItem component={Link} to="/home" onClick={handleDrawerClose} color="inherit">
+            <ListItem>
+              <ListItemIcon><AssignmentIcon /></ListItemIcon>
+              <ListItemText primary="DashBoard" />
+            </ListItem>
+          </MenuItem>
+          <Divider />
 
+          <MenuItem component={Link} to="/course" onClick={handleDrawerClose} color="inherit">
+            <ListItem>
+              <ListItemIcon><PostAddIcon /></ListItemIcon>
+              <ListItemText primary="My Course" />
+            </ListItem>
+          </MenuItem>
           <MenuItem component={Link} to="/AddCourse" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><PostAddIcon /></ListItemIcon>
               <ListItemText primary="Sit-in a Course" />
             </ListItem>
           </MenuItem>
-          <MenuItem component={Link} to="/home" onClick={handleDrawerClose} color="inherit">
-            <ListItem>
-              <ListItemIcon><AssignmentIcon /></ListItemIcon>
-              <ListItemText primary="My Courses" />
-            </ListItem>
-          </MenuItem>
+        
           <MenuItem component={Link} to="/Attendance" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><GroupIcon /></ListItemIcon>

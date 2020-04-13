@@ -25,6 +25,7 @@ import CourseRating from "./Component/rating"
 import AdminInput from './Container/adminInput'
 import Errorpage from './Container/Errorpage'
 import Footer from './Component/Footer'
+import CourseList from "./Container/CourseList"
 import {
   BrowserRouter as Router,
   Switch,
@@ -133,12 +134,16 @@ return false
                 <Route path="/RegressionAnalysis" component={RegressionAnalysis} />
                 <Route path="/rating" component={CourseRating} />
                 <Route path="/adminInput" component={AdminInput} />
+                <Route path="/CourseList" component={CourseList} />
                 <Route path="/404" component={Errorpage} />
                 <Route path="/home/:id" component={CoursePage} />
                 <Route exact path="/home" component={Home} />
                 <Route path="/welcome" >
                   <h1>welcome PAge</h1>
                   <p>login : /login</p>
+                </Route>
+                <Route path="/:id" >
+                  <div>ERROR </div>
                 </Route>
                 <Route path="/" >
                 <idv>redirecting...</idv>

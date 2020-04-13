@@ -28,7 +28,13 @@ let QuizHistory = (props) => {
         },
         message: {
             paddingBottom: '25px',
-        }
+        },
+        completeBox: {
+            padding: '30px 0',
+            [theme.breakpoints.up('md')]: {
+                width: '70%',
+            },
+        },
     
     
     }));

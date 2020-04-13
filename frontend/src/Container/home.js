@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     },
     paper: {
         padding: theme.spacing(2),
-        margin: theme.spacing(1),
+        // margin: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.text.primary,
     },
@@ -222,7 +222,7 @@ export default function Home(props) {
                 </Grid>
                 <Grid item xs={12} >
 
-                    <Grid container spacing={3}>
+                    <Grid container >
                         <Grid item xs={12} md={4}>
                             <Grid container>
                                 <Grid item xs={12}>
@@ -279,11 +279,10 @@ export default function Home(props) {
 
                                 </div>
                             </Paper>
-                            {/* {openQuiz && <QuizHistory {...props} width='100%' />} */}
                             <Paper className={classes.paper}>
 
                                 <Typography variant="h6" className={classes.title}>
-                                    My Attendance
+                                    My Attendance Rate (in %)
                         </Typography>
                                 <Grid container spacing={1}>
 
@@ -296,7 +295,7 @@ export default function Home(props) {
                                 <RegressionAnalysis {...props} minheight='0' width='100%' />
                             </div>
                             <div id="quizhistory">
-                                <QuizHistory  {...props}  minheight='0' width='100%' />
+                                <QuizHistory  {...props} minheight='0' width='100%' />
                             </div>
 
                         </Grid>
