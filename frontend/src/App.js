@@ -12,6 +12,7 @@ import Header from "./Component/Header"
 import Quiz from "./Container/Quiz"
 import QuizHistory from "./Container/QuizHistory"
 import Home from "./Container/home"
+import RegressionAnalysis from "./Container/RegressionAnalysis"
 import NotificationPage from "./Container/NotificationPage"
 import AddCourse from "./Container/AddCourse"
 import UserProfile from "./Container/userProfile"
@@ -129,7 +130,7 @@ return false
                 <Route path="/ProfessorQuiz" component={ProfessorQuiz} />
                 <Route path="/ProfessorStartQuiz" component={ProfessorStartQuiz} />
                 <Route path="/CreateQuiz" component={CreateQuiz} />
-
+                <Route path="/RegressionAnalysis" component={RegressionAnalysis} />
                 <Route path="/rating" component={CourseRating} />
                 <Route path="/adminInput" component={AdminInput} />
                 <Route path="/404" component={Errorpage} />

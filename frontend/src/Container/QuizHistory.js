@@ -116,7 +116,7 @@ let QuizHistory = (props) => {
 
         return (
             <React.Fragment>
-                <FullPaperPageHeader title={`${props.match.params.course === undefined ? '' : Course} Quiz Record`} body1={'Select Course To View Your Quiz Result!'}>
+                <FullPaperPageHeader width={props.width ? props.width :'70%'} title={`${props.match.params.course === undefined ? '' : Course} Quiz Record`} body1={'Select Course To View Your Quiz Result!'}>
                     <div>
                         {Array.isArray(courselist) &&
                             <Autocomplete
@@ -125,7 +125,7 @@ let QuizHistory = (props) => {
                                 autoFocus
                                 className={classes.completeBox}
                                 getOptionLabel={(courselist) => courselist.code}
-                                onChange={(e, value) => setCourse(value.code)}
+                                onChange={(e, value) => setCourse(value && value.code)}
                                 renderInput={(params) => <TextField {...params} label="Search or select for a course" variant="outlined" />}
                             />
                         }
@@ -169,7 +169,7 @@ let QuizHistory = (props) => {
                                         autoFocus
                                         className={classes.completeBox}
                                         getOptionLabel={(e) => e}
-                                        onChange={(e, value) => setQuizNumber(value.slice(8))}
+                                        onChange={(e, value) => setQuizNumber(value && value.slice(8))}
                                         renderInput={(params) => <TextField {...params} label="Check Quiz Question And Answer " variant="outlined" />}
                                     />
                                 }

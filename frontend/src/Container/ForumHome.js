@@ -22,7 +22,6 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import axios from "axios"
 import { UserType, UserCourseList } from "../test"
 
-
 const useStyles = makeStyles(theme => ({
   headerMenu: {
     marginTop: theme.spacing(7),

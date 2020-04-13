@@ -94,7 +94,7 @@ export default function AdminInput() {
     const handleDepartmentChange = (event, value) => {
         SetCourse({
             ...course,
-            department: value.long
+            department: value && value.long 
         });
     }
     console.log(course)

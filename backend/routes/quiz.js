@@ -129,6 +129,25 @@ router.get('/result/:courseCode', middleware.sessionChecker,async (req, res) => 
     })
 })
 
+// get all quiz data course (to analysis)
+router.get('/result/all/:courseCode', middleware.sessionChecker,async (req, res) => {
+    Quiz.find({ 'courseCode': req.params.courseCode }, async function (err, docs) {
+        if (docs.length) {
+            if (docs[0].quiz) {
+                // render quiz result by course (with user details)
+                res.json({docs : docs[0].quiz})
+
+            } else {
+                res.json({ error: 'no quiz yet!  ' })
+            }
+
+        } else {
+            console.log('no quiz yet! ');
+            res.json({ error: 'no quiz yet!  ' })
+        }
+    })
+})
+
 // Used by teacher. used to uplaod quiz question and answer. 
 router.post('/teacher' , middleware.sessionChecker, async (req, res) => {
     let question = req.body.question // type: array of object

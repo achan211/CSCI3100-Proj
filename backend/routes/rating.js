@@ -92,4 +92,17 @@ router.post('/rating/post', middleware.sessionChecker,async (req, res) => {
 
 })
 
+// get all rating by course
+router.get('/rating/result/:code', middleware.sessionChecker,async (req, res) => {
+    Rating.find({ code: req.params.code }, async function (err, docs) {
+        if (docs.length) {
+            
+            res.json({docs: docs })
+        } else {
+            console.log('cannot find course!');
+            res.json({ error: 'cannot find course!' })
+        }
+    });
+})
+
 module.exports = router
