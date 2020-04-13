@@ -1,48 +1,159 @@
-import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Paper, List, ListItem } from "@material-ui/core";
-import Dialog from "../Component/Dialog";
-import Chat from "../Component/chat";
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { Avatar, Card, Grid, TextField } from '@material-ui/core'
+import { blue } from '@material-ui/core/colors'
+import SendIcon from '@material-ui/icons/Send';
 
-const useStyle = makeStyles({
-  paper: {
-    marginLeft: '50px',
-    marginRight: '50px',
-  }
-})
-let Chatroom = (props) => {
-  const classes = useStyle()
-  return (
-    <React.Fragment>
-      <div className="generalGridContainer">
-        <div>
-          <Paper className={classes.paper}>
-            <div><h1>Course ID:{props.match.params.id}</h1></div>
-            <div style={{ textAlign: 'left' }}><h1 style={{ color: 'blue' }}>Messenger</h1></div>
-            <Grid container>
-              <Grid item xs={5}>
-                <List>
-                  <Dialog message="Hello" name="Alice" />
-                  <Dialog message="Hello" name="Bob" />
-                  <Dialog message="Hello" name="Charlie" />
-                </List>
-              </Grid>
-              <Grid item xs={7}>
-                <List>
-                  <Chat message="hello" name="Bob" />
-                  <Chat message="Hi" name="Bob" />
-                  <Chat message="Hi you2" name="Alice" />
-                  <Chat message="8" name="Alice" />
 
-                </List>
-              </Grid>
+const useStyles = makeStyles({
+    container: {
+        padding: "13em",
+
+    },
+    Dialog: {
+        padding: "0.6em",
+        paddingTop: "0em",
+    },
+    myDialog: {
+        padding: "0.6em",
+        paddingTop: "0em",
+        background: blue[500],
+        color: "white"
+    },
+    Grid: {
+        marginTop: "1.2em",
+    },
+    userName: {
+        fontWeight: 600,
+        fontSize: 12,
+        maeginBottom: "0.0em"
+    },
+    inputGrid: {
+        marginTop: "10em",
+    },
+    inputField: {
+        marginTop: "10em",
+        '& label.Mui-focused': {
+            color: blue[500],
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: blue[500],
+        },
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderColor: 'red',
+            },
+            '&:hover fieldset': {
+                borderColor: 'yellow',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: blue[500],
+            },
+        },
+        width: "20em"
+    },
+    sendIcon: {
+        marginTop: "7.5em",
+    }
+
+
+});
+
+const OtherDialog = (props: any) => {
+    const { name, text, avatar } = props
+    const styles = useStyles()
+    return (
+        <Grid container className={styles.Grid}>
+            <Grid item>
+                <Avatar alt="Remy Sharp" src={avatar} />
             </Grid>
-          </Paper>
-        </div>
-      </div>
-    </React.Fragment>
-
-
-  );
+            <Grid item>
+                <Card className={styles.Dialog}>
+                    <p className={styles.userName}>{name}</p>
+                    {text}
+                </Card>
+            </Grid>
+        </Grid>
+    )
 }
-export default Chatroom
+
+const MyDialog = (props: any) => {
+    const { name, text, avatar } = props
+    const styles = useStyles()
+    return (
+        <Grid container justify="flex-end" className={styles.Grid}>
+            <Grid item>
+
+                <Card className={styles.myDialog}>
+                    <p className={styles.userName}>{name}</p>
+                    {text}</Card>
+            </Grid>
+            <Grid item>
+                <Avatar alt="Remy Sharp" src={avatar} />
+            </Grid>
+        </Grid>
+    )
+}
+
+
+
+export default () => {
+    const styles = useStyles()
+    const [Id, setId] = useState(2);
+    const [Text, setText] = useState("");
+
+    const [messages, setMessages] = useState([
+        {
+            id: 1,
+            text: 'Hello developer',
+            createdAt: new Date(),
+            user: {
+                id: 2,
+                name: 'React',
+                avatar: "https://material-ui.com/static/images/avatar/1.jpg",
+            },
+        },
+        {
+            id: 1,
+            text: 'Hello World',
+            createdAt: new Date(),
+            user: {
+                id: 1,
+                name: 'Remy Sharp',
+                avatar: "https://material-ui.com/static/images/avatar/1.jpg",
+            },
+        },
+    ]);
+    function sendMessage() {
+        setId(Id => Id += 1);
+
+        let message = {
+            id: Id,
+            text: Text,
+            createdAt: new Date(),
+            user: {
+                id: 2,
+                name: 'React',
+                avatar: "https://material-ui.com/static/images/avatar/1.jpg",
+            }
+        }
+        setMessages(messages => [...messages, message]);
+    }
+    return (
+        <div className={styles.container} >
+
+            {messages.map(message => message.user.id === 2 ? <MyDialog name={message.user.name} text={message.text} avatar={message.user.avatar} /> : <OtherDialog name={message.user.name} text={message.text} avatar={message.user.avatar} />)}
+            <Grid container justify="flex-end"  >
+                <Grid item>
+                    <TextField onChange={e => setText(e.target.value)} className={styles.inputField} id="standard-basic" label="Input Messages" />
+                </Grid>
+                <Grid item >
+                    <SendIcon className={styles.sendIcon} onClick={sendMessage} />
+                </Grid>
+
+            </Grid>
+
+
+        </div >
+    );
+}

@@ -41,7 +41,6 @@ const data = [
         mark: '80-100', percentage: 0.15,
     },
 ];
-
 const useStyles = makeStyles(theme => ({
     app: {
         flex: 1,
