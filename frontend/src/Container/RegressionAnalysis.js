@@ -414,7 +414,7 @@ let RegressionAnalysis = (props) => {
                                     data: regressionRatAttend
                                 }]} type="line" height={350} />
                             </div>}
-                            {rating && attendanceRecord && ratAttend && regressionRatAttend &&
+                            {rating && attendanceRecord && ratAttend  && regressionScoreRating &&
                             <div >
                                 <Typography variant="h4" className={classes.title}>
                                     Quiz Score vs Course Rating</Typography>
