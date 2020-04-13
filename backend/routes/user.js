@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../model/CreateAC')
 const Course = require('../model/Course')
+middleware = require("../middleware")
 
 //edit user details (except username)
-router.post('/edit/:username', async (req, res) => {
-    let username = req.params.username //type: string
+router.post('/edit', middleware.sessionChecker, async (req, res) => {
+    let username = req.session.user //type: string
     Post.findOneAndUpdate(
         { username: username },
         { $set: req.body },
@@ -14,29 +15,29 @@ router.post('/edit/:username', async (req, res) => {
             if (error) {
                 res.json(error);
             } else {
-                res.json(success);
+                res.json({ docs: success });
             }
         });
 
 });
 
 //edit user pw
-router.post('/editpw/:username', async (req, res) => {
-    let username = req.params.username //type: string
+router.post('/editpw', middleware.sessionChecker, async (req, res) => {
+    let username = req.session.user //type: string
     console.log(req.body)
     let obj = {}
     obj[req.body.type] = req.body.value
-    Post.find({ username:username, pw: req.body.oldpw }, function (err, docs) {
+    Post.find({ username: username, pw: req.body.oldpw }, function (err, docs) {
         if (docs.length) {
             Post.findOneAndUpdate(
                 { username: username },
-                { $set: { 'pw': req.body.newpw }},
+                { $set: { 'pw': req.body.newpw } },
                 { new: true },
                 function (error, success) {
                     if (error) {
-                        res.json('unknown error occured!');
+                        res.json({ error: 'unknown error occured!' });
                     } else {
-                        res.json('successfully changed passord!');
+                        res.json({ docs: 'successfully changed passord!' });
                     }
                 });
 
@@ -46,15 +47,15 @@ router.post('/editpw/:username', async (req, res) => {
         }
     });
 
-    
+
 
 });
 
-router.get('/info/:username', async (req, res) => {
-    Post.find({ username: req.params.username}, function (err, docs) {
+router.get('/info', middleware.sessionChecker, async (req, res) => {
+    Post.find({ username: req.session.user }, function (err, docs) {
         if (docs.length) {
             docs[0].pw = undefined;
-            res.json(   docs[0] )
+            res.json({ docs: docs[0] })
         } else {
             console.log('no user: ');
             res.json({ error: 'no user' })
@@ -63,8 +64,8 @@ router.get('/info/:username', async (req, res) => {
 })
 
 //get all types of  notificaiton 
-router.get('/getNotification/:username', async (req, res) => {
-    let username = req.params.username;
+router.get('/getNotification', middleware.sessionChecker, async (req, res) => {
+    let username = req.session.user;
     Post.find({ 'username': username }, async function (err, docs) {
         var courseNotice = [] //array
         if (docs.length) {
@@ -77,9 +78,13 @@ router.get('/getNotification/:username', async (req, res) => {
             tmp.forumNotice = docs[0].forumNotice
             Course.find({ 'code': docs[0].course }, async function (err, docs) {
                 if (docs.length) {
-                    tmp.courseNotice = docs[0].updates
+                    let len = docs.length
+                    for(let i=0;i<len;i++){
+                        tmp.courseNotice = [...tmp.courseNotice, ...docs[i].updates]
+
+                    }
                     console.log(tmp.courseNotice)
-                    res.json(tmp);
+                    res.json({ docs: tmp });
                 }
             })
 
@@ -90,13 +95,13 @@ router.get('/getNotification/:username', async (req, res) => {
 })
 
 //delete notification 
-router.delete('/deleteNotification/:username/:id/:noticeType', (req, res) => {
-    let username = req.params.username
+router.delete('/deleteNotification/:id/:noticeType', middleware.sessionChecker, (req, res) => {
+    let username = req.session.user
     let id = req.params.id
     let noticeType = req.params.noticeType
     Post.updateOne({ username: username }, { $pull: { 'forumNotice': { _id: id } } }, { safe: true, multi: true }, function (err, obj) {
         if (obj)
-            res.json({ 'success': 'noti deleted' })
+            res.json({ 'docs': 'noti deleted' })
         else
             res.json({ 'error': 'server error, failed to delete post' })
     });
@@ -105,8 +110,8 @@ router.delete('/deleteNotification/:username/:id/:noticeType', (req, res) => {
 })
 
 //request to enroll for a course 
-router.post('/requestAddCourse', async (req, res) => {
-    let studentUsername = req.body.studentusername //type: string
+router.post('/requestAddCourse', middleware.sessionChecker, async (req, res) => {
+    let studentUsername = req.session.user //type: string
     let course = req.body.code
     let message = req.body.message
 
@@ -170,7 +175,7 @@ router.post('/requestAddCourse', async (req, res) => {
                                     if (error) {
                                         res.json(error);
                                     } else {
-                                        res.json({ message: 'Success!' });
+                                        res.json({ success: 'Success!' });
                                     }
                                 });
                         } else {
@@ -197,52 +202,60 @@ router.post('/requestAddCourse', async (req, res) => {
 });
 
 //add enrolled course for user (has to be done by teacher)
-router.post('/addEnrolledCourse', async (req, res) => {
+router.post('/addEnrolledCourse', middleware.sessionChecker, async (req, res) => {
     let username = req.body.username //type: string //studnet
     let course = req.body.course
     let type = req.body.type
-    let id = req.body.id 
-    let profusername = req.body.profusername
+    let id = req.body.id
+    let profusername = req.session.user
+    console.log(username, course, type, id, profusername)
     Post.find({ 'username': username }, async function (err, docs) {
         if (docs.length) {
             // + student to course 
+            Post.findOneAndUpdate(
+                { username: username },
+                {
+                    $push: {
+                        course: course,
+                        sitNotice: {
+                            type: 'Sit in Course Request',
+                            course: course,
+                            studentUsername: username,
+                            message: type === 'allow' ? 'You can view the course materials now!' : 'Your request was declined.',
+                            status: type === 'allow' ? 'Success' : 'Rejected'
+                        }
+                    },
+                    $pull: {
+                        pendingCourse: course,
+                    }
+                },
+                { new: true }, function (err,obj){
+
+                });
+            if (type === 'allow') {
                 Post.findOneAndUpdate(
                     { username: username },
                     {
                         $push: {
                             course: course,
-                            sitNotice: {
-                                type: 'Sit in Course Request',
-                                course: course,
-                                studentUsername: username,
-                                message:  type ==='allow' ?'You can view the course materials now!' : 'Your request was declined.',
-                                status: type ==='allow'? 'Success' : 'Rejected'
-                            }
-                        },
-                        $pull: {
-                            pendingCourse: course,
                         }
                     },
-                    { new: true },
-                    function (error, success) {
-                        if (error) {
-                            // res.json(error);
-                            console.log(error)
-                        } else {
-                            // res.json(success);
-                            console.log("successfully added student")
-                        }
-                    });
-                    Post.updateOne({ username: profusername }, { $pull: { 'sitNotice': { _id: id } } }, { safe: true, multi: true }, function (err, obj) {
-                        if (obj)
-                            res.json({ 'success': 'student added' })
-                        else
-                            res.json({ 'error': 'server error, failed to add student' })
-                    });
+                    { new: true }, function(err,obj){
+
+                    })
+            }
+
+            //remove noti for prof
+            Post.updateOne({ username: profusername }, { $pull: { 'sitNotice': { _id: id } } }, { safe: true, multi: true }, function (err, obj) {
+                if (obj)
+                    res.json({ 'success': 'student added' })
+                else
+                    res.json({ 'error': 'server error, failed to add student' })
+            });
 
         } else {
             console.log('no course  code! ');
-            res.json({ message: 'no course  code!  ' })
+            res.json({ error: 'no course  code!  ' })
         }
     });
 });

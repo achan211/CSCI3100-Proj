@@ -21,6 +21,7 @@ import ProfessorStartQuiz from "./Container/ProfessorStartQuiz"
 import CreateQuiz from "./Container/CreateQuiz"
 import CourseRating from "./Component/rating"
 import AdminInput from './Container/adminInput'
+import Errorpage from './Container/Errorpage'
 import {
   BrowserRouter as Router,
   Switch,
@@ -122,6 +123,7 @@ function App() {
 
                 <Route path="/rating" component={CourseRating} />
                 <Route path="/adminInput" component={AdminInput} />
+                <Route path="/404" component={Errorpage} />
                 <Route path="/:id" component={CoursePage} />
                 <Route exact path="/" component={Home} />
                 <Route path="/" >

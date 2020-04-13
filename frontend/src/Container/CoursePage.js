@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -11,7 +10,8 @@ import Slider from "@material-ui/core/Slider";
 // import AddIcon from '@material-ui/icons/Add';
 // import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '../Component/SnackBar';
-
+import axios from "axios"
+import { UserType, UserCourseList } from "../test"
 import DateFnsUtils from '@date-io/date-fns';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -85,24 +85,28 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function CoursePage(props) {
+    const classes = useStyles();
     let [selectedFile, setSelectedFile] = useState()
     const [selectedDate, setSelectedDate] = React.useState(new Date('2020-05-18T21:11:54'));
     let [message, setMessage] = useState('')
-    const classes = useStyles();
+
     const [open, setOpen] = React.useState(false);
     const [addMaterialsOpen, setAddMaterialsOpen] = useState(false)
     const [itemNumber, setItemNubmer] = React.useState(1);
     const [rating, setRating] = useState()
     const [ratingScore, setRatingScore] = useState()
-    const [addUpdatesOpen,setAddUpdatesOpen] = useState()
+    const [addUpdatesOpen, setAddUpdatesOpen] = useState()
     const [addType, setAddType] = useState()
     let [loading, setLoading] = useState()
     const [Course, setCourse] = useState([])
     let [success, setSuccess] = useState()
     let [alertMessage, setAlertMessage] = useState()
     let [openAlert, setOpenAlert] = useState()
-    const [MessageType,setMessageType] =useState()
+    const [MessageType, setMessageType] = useState()
+    const { courselist, courselistDispatch } = useContext(UserCourseList);
+    const { userType } = useContext(UserType)
 
+    let filtered;
 
     const handleClickOpen = (type) => {
         setOpen(type);
@@ -110,105 +114,167 @@ export default function CoursePage(props) {
     const handleClose = () => {
         setOpen(false);
     };
-    let info = localStorage.getItem('info');
-    useEffect(() => {
-        if (localStorage.getItem('token') && checkIfEnrolled()) {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    'code': props.match.params.id,
-                })
-            };
-            fetch('http://localhost:5000/', requestOptions)
-                .then(response => response.json())
-                .then(response => {
-                    if (!response.error) {
-                        response[0].updates && response[0].updates.sort(function (a, b) {
-                            if (a.date > b.date) //sort  descending
-                                return -1
-                            else
-                                return 1
-                        })
-                        setCourse(response[0])
-                    }
-                    else
-                        setCourse('no course yet')
-                });
-        }
-    }, [])
 
-    useEffect(()=>{
-        fetch(`http://localhost:5000/rating/checkRatingMode/${Course.code}`)
-                .then(response => response.json())
-                .then(response => {
-                    if (!response.error) {
-                        if(response.mode === 'Available')
-                        setRating(response.id)
-                        else
-                        setRating(false)
-                    }
-                });
-    },[Course])
-
-    let checkIfEnrolled = () => {
-        let code = JSON.parse(info).course
-        let filtered = code.filter(i => {
-            return i === props.match.params.id
+    let checkifEnrolled =()=>{
+        filtered = courselist.length > 0 && courselist.filter(i => {
+            return i.code === props.match.params.id
         })
-        if (filtered.length > 0) {
-            return true
-        }
-        else {
-            return false
-
+        if ( filtered.length > 0) {
+            return true 
+        }else if (courselist.length > 0 ){
+            window.location.href = 'http://localhost:3000/404'
         }
     }
-    let hanldeAddUpdates = () =>{
+
+    useEffect(() => {
+        if ( checkifEnrolled()) {
+            setCourse(filtered[0])
+        }
+
+       
+        // if (checkIfEnrolled()) {
+            // axios.post(`http://localhost:5000/`, { 'code': props.match.params.id }, { withCredentials: true }).then(response => response.data).then((response) => {
+            //     if (response.redirectURL) {
+            //         //back to login
+            //         window.location.href = 'http://localhost:3000' + response.redirectURL
+            //     }
+            //     else if (!response.error) {
+            //         response.docs[0].updates && response.docs[0].updates.sort(function (a, b) {
+            //             if (a.date > b.date) //sort  descending
+            //                 return -1
+            //             else
+            //                 return 1
+            //         })
+            //         setCourse(response.docs[0])
+            //     }
+            //     else {
+            //         setCourse('no course yet')
+            //     }
+            // })
+
+            // const requestOptions = {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({
+            //         'code': props.match.params.id,
+            //     })
+            // };
+            // fetch('http://localhost:5000/', requestOptions)
+            //     .then(response => response.json())
+            //     .then(response => {
+            //         if (!response.error) {
+            //             response[0].updates && response[0].updates.sort(function (a, b) {
+            //                 if (a.date > b.date) //sort  descending
+            //                     return -1
+            //                 else
+            //                     return 1
+            //             })
+            //             setCourse(response[0])
+            //         }
+            //         else
+            //             setCourse('no course yet')
+            //     });
+        // }
+    }, [courselist])
+
+    useEffect(() => {
+        axios.get(`http://localhost:5000/rating/checkRatingMode/${Course.code}`, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+            else if (!response.error) {
+                if (response.mode === 'Available')
+                    setRating(response.id)
+                else
+                    setRating(false)
+            }
+        })
+        // fetch(`http://localhost:5000/rating/checkRatingMode/${Course.code}`)
+        //         .then(response => response.json())
+        //         .then(response => {
+        //             if (!response.error) {
+        //                 if(response.mode === 'Available')
+        //                 setRating(response.id)
+        //                 else
+        //                 setRating(false)
+        //             }
+        //         });
+    }, [Course])
+
+
+    let hanldeAddUpdates = () => {
         setLoading(true)
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                'course': Course.code,
-                'messagetype': MessageType,
-                'message':message
-            })
-        };
-        fetch('http://localhost:5000/updates/postUpdates', requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                if (response !== null && !response.error) {
-                    setSuccess(true)
-                    console.log(response)
-                    setAlertMessage('Success!')
-                    setOpenAlert(true)
-                    setLoading(false)
-                }
-                else{
-                    console.log(response)
-                    setSuccess(false)
-                    setAlertMessage(response.error)
-                    setLoading(false)
-                    setOpenAlert(true)
-                }
-            });
+        axios.post(`http://localhost:5000/updates/postUpdates`, {
+            'course': Course.code,
+            'messagetype': MessageType,
+            'message': message
+        }, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+            else if (!response.error) {
+                setSuccess(true)
+                console.log(response)
+                setAlertMessage('Success!')
+                setOpenAlert(true)
+                setLoading(false)
+            } else {
+                console.log(response)
+                setSuccess(false)
+                setAlertMessage(response.error)
+                setLoading(false)
+                setOpenAlert(true)
+            }
+        })
+        // const requestOptions = {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({
+        //         'course': Course.code,
+        //         'messagetype': MessageType,
+        //         'message':message
+        //     })
+        // };
+        // fetch('http://localhost:5000/updates/postUpdates', requestOptions)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (response !== null && !response.error) {
+        //             setSuccess(true)
+        //             console.log(response)
+        //             setAlertMessage('Success!')
+        //             setOpenAlert(true)
+        //             setLoading(false)
+        //         }
+        //         else{
+        //             console.log(response)
+        //             setSuccess(false)
+        //             setAlertMessage(response.error)
+        //             setLoading(false)
+        //             setOpenAlert(true)
+        //         }
+        //     });
     }
     let hanldeUploadDoc = () => {
         //addtype
         setLoading(true)
         const formData = new FormData()
-        let username = JSON.parse(localStorage.getItem('info')).username
+        // let username = JSON.parse(localStorage.getItem('info')).username
 
         formData.append('recfile', selectedFile)
         const requestOptions = {
             method: 'POST',
             body: formData
         };
-        fetch(`http://localhost:5000/uplloadMaterial/${Course.code}/${addType}/${message}/${selectedDate.toISOString()}`, requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                if (!response.error) {
+        axios.post(`http://localhost:5000/uplloadMaterial/${Course.code}/${addType}/${message}/${selectedDate.toISOString()}`,
+            formData
+            , { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
                     setSuccess(true)
                     console.log(response)
                     setAlertMessage('Success!')
@@ -216,66 +282,131 @@ export default function CoursePage(props) {
                     setLoading(false)
                     setAddMaterialsOpen(false)
                     setAddType(false)
-                }
-                else {
+                } else {
                     console.log(response)
                     setSuccess(false)
                     setAlertMessage(response.error)
                     setLoading(false)
                     setOpenAlert(true)
                 }
-            });
+            })
+        // fetch(`http://localhost:5000/uplloadMaterial/${Course.code}/${addType}/${message}/${selectedDate.toISOString()}`, requestOptions)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (!response.error) {
+        //             setSuccess(true)
+        //             console.log(response)
+        //             setAlertMessage('Success!')
+        //             setOpenAlert(true)
+        //             setLoading(false)
+        //             setAddMaterialsOpen(false)
+        //             setAddType(false)
+        //         }
+        //         else {
+        //             console.log(response)
+        //             setSuccess(false)
+        //             setAlertMessage(response.error)
+        //             setLoading(false)
+        //             setOpenAlert(true)
+        //         }
+        //     });
 
     }
     let handleTurnOnOffRating = (type) => {
-        fetch(type ? `http://localhost:5000/rating/declare/${Course.code}` : `http://localhost:5000/rating/close/${rating}`)
-            .then(response => response.json())
-            .then(response => {
-                if (!response.error) {
+        axios.get(type ? `http://localhost:5000/rating/declare/${Course.code}` : `http://localhost:5000/rating/close/${rating}`,
+            { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
                     setSuccess(true)
                     console.log(response)
                     setAlertMessage('Success!')
                     setOpenAlert(true)
                     setLoading(false)
-                    setRating(type )
-                }
-                else {
+                    setRating(type ? response.docs._id : 0)
+                } else {
                     console.log(response)
                     setSuccess(false)
                     setLoading(false)
                     setOpenAlert(true)
                     setAlertMessage(response.error)
                 }
-            });
+            })
+
+        // fetch(type ? `http://localhost:5000/rating/declare/${Course.code}` : `http://localhost:5000/rating/close/${rating}`)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (!response.error) {
+        //             setSuccess(true)
+        //             console.log(response)
+        //             setAlertMessage('Success!')
+        //             setOpenAlert(true)
+        //             setLoading(false)
+        //             setRating(type )
+        //         }
+        //         else {
+        //             console.log(response)
+        //             setSuccess(false)
+        //             setLoading(false)
+        //             setOpenAlert(true)
+        //             setAlertMessage(response.error)
+        //         }
+        //     });
     }
-    let handleRateScoreSubmit =()=>{
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                'username': JSON.parse(localStorage.getItem('info')).username,
-                'ratingScore': ratingScore,
-                'id': rating 
-              })
-        };
-        fetch( `http://localhost:5000/rating/post`,requestOptions)
-        .then(response => response.json())
-        .then(response => {
-            if (response !== null && !response.error  ) {
-                setSuccess(true)
-                console.log(response)
-                setAlertMessage('Success!')
-                setOpenAlert(true)
-                setLoading(false)
-            }
-            else {
-                console.log(response)
-                setSuccess(false)
-                setLoading(false)
-                setOpenAlert(true)
-                setAlertMessage(response.error)
-            }
-        });
+    let handleRateScoreSubmit = () => {
+        // const requestOptions = {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({
+        //         'username': JSON.parse(localStorage.getItem('info')).username,
+        //         'ratingScore': ratingScore,
+        //         'id': rating
+        //     })
+        // };
+        axios.post(`http://localhost:5000/rating/post`, {
+            'ratingScore': ratingScore,
+            'id': rating
+        }
+            ,
+            { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
+                    setSuccess(true)
+                    console.log(response)
+                    setAlertMessage('Success!')
+                    setOpenAlert(true)
+                    setLoading(false)
+                } else {
+                    console.log(response)
+                    setSuccess(false)
+                    setLoading(false)
+                    setOpenAlert(true)
+                    setAlertMessage(response.error)
+                }
+            })
+        // fetch(`http://localhost:5000/rating/post`, requestOptions)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (response !== null && !response.error) {
+        //             setSuccess(true)
+        //             console.log(response)
+        //             setAlertMessage('Success!')
+        //             setOpenAlert(true)
+        //             setLoading(false)
+        //         }
+        //         else {
+        //             console.log(response)
+        //             setSuccess(false)
+        //             setLoading(false)
+        //             setOpenAlert(true)
+        //             setAlertMessage(response.error)
+        //         }
+        //     });
     }
 
     let renderUpdates = () => {
@@ -318,7 +449,7 @@ export default function CoursePage(props) {
                             <Grid item xs={6}>
                                 <Paper className={`${classes.paper} ${classes.materialspaper}`} variant="elevation">
                                     <Typography variant="h5" noWrap>Course Materials</Typography>
-                                    {JSON.parse(info).type === 'prof' && <Button onClick={() => setAddMaterialsOpen(true)} variant="contained" >Add Materials</Button>}
+                                    {userType === 'prof' && <Button onClick={() => setAddMaterialsOpen(true)} variant="contained" >Add Materials</Button>}
                                     <Divider className={classes.divider} />
                                     <div className={classes.paperContent}>
                                         <ListItem onClick={() => handleClickOpen('LectureNotes')} className={classes.listitemHover}>
@@ -353,7 +484,7 @@ export default function CoursePage(props) {
                                     <Divider className={classes.divider} />
                                     <Typography id="discrete-slider" gutterBottom>{Course.code}  {Course.name} </Typography>
 
-                                    {JSON.parse(info).type === 'prof' ?
+                                    {userType === 'prof' ?
                                         <React.Fragment>
                                             {rating ?
                                                 <React.Fragment>
@@ -388,8 +519,8 @@ export default function CoursePage(props) {
                                                 { value: 3, label: '3' }, { value: 4, label: '4' }, { value: 5, label: '5' }
                                                     , { value: 6, label: '6' }, { value: 7, label: '7' }, { value: 8, label: '8' }, { value: 9, label: '9' }, { value: 10, label: '10' },]}
                                             />
-                                            <Button variant="contained" color="primary" 
-                                                disabled={rating ? false : true }
+                                            <Button variant="contained" color="primary"
+                                                disabled={rating ? false : true}
                                                 onClick={handleRateScoreSubmit}
                                             >
                                                 Submit </Button>
@@ -405,7 +536,7 @@ export default function CoursePage(props) {
                             <Grid item xs={6}>
                                 <Paper className={`${classes.paper} ${classes.updatespaper}`} variant="elevation">
                                     <Typography variant="h5" noWrap>Course Updates</Typography>
-                                    {JSON.parse(info).type === 'prof' && <Button onClick={() => setAddUpdatesOpen(true)} variant="contained" >Add Updates</Button>}
+                                    {userType === 'prof' && <Button onClick={() => setAddUpdatesOpen(true)} variant="contained" >Add Updates</Button>}
                                     <Divider className={classes.divider} />
                                     {renderUpdates()}
                                     {Course && Course.updates && Course.updates.length < itemNumber * 4 ?
@@ -417,7 +548,7 @@ export default function CoursePage(props) {
                                     }
                                 </Paper>
                                 {/* Dialogue */}
-                                {open &&<Dialog fullWidth={true} maxWidth={'md'} open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                                {open && <Dialog fullWidth={true} maxWidth={'md'} open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                                     <DialogTitle id="form-dialog-title">{open}</DialogTitle>
                                     <DialogContent>
                                         {Course && Course.materials && Course.materials[open] && Course.materials[open].length ? renderCourseMaterials() :
@@ -523,7 +654,8 @@ export default function CoursePage(props) {
                                     success={success}
                                     Open={openAlert}
                                     AlertMessage={alertMessage}
-                                    handleClose={() => {setOpenAlert(false)
+                                    handleClose={() => {
+                                        setOpenAlert(false)
                                     }}
                                 />
                             </Grid>
@@ -603,14 +735,9 @@ export default function CoursePage(props) {
             </React.Fragment>
         )
     }
-    let RedirectToLogin = () => {
-        alert("You have not yet login!");
-        const { history } = props;
-        history.push('/login');
-    }
     return (
         <React.Fragment>
-            {localStorage.getItem('token') ? checkIfEnrolled() ? renderCoursePage() : renderErrorMessage() : RedirectToLogin()}
+            {checkifEnrolled() ? renderCoursePage() : <div>Looading...</div>}
         </React.Fragment>
     )
 }

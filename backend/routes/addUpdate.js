@@ -1,9 +1,10 @@
 const Course = require('../model/Course')
 const express = require('express');
 const router = express.Router();
+middleware = require("../middleware")
 
 
-router.post('/updates/postUpdates', async (req, res) => {
+router.post('/updates/postUpdates',middleware.sessionChecker, async (req, res) => {
     let updates = {}
     updates = {
         course: req.body.course,
@@ -18,7 +19,7 @@ router.post('/updates/postUpdates', async (req, res) => {
             if (error) {
                 res.json({error: 'error occured'});
             } else {
-                res.json(success);
+                res.json({docs:success});
             }
         });
 })

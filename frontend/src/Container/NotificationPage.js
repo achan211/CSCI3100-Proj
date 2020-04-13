@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -14,6 +14,9 @@ import ClearIcon from '@material-ui/icons/Clear';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import axios from "axios"
+import { UserType } from "../test"
+
 const useStyles = makeStyles(theme => ({
     title: {
         color: '#B9B9B9',
@@ -58,108 +61,187 @@ const useStyles = makeStyles(theme => ({
 }));
 let NotificationPage = (props) => {
     const classes = useStyles();
+    const { userType } = useContext(UserType)
 
     let [notice, setNotice] = useState({})
-  let [Open, setOpen] = useState('')
-  let [AlertMessage, setAlertMessage] =useState()
-  const handleClose = () => {
-    setOpen(false)
-  };
+    let [Open, setOpen] = useState('')
+    let [AlertMessage, setAlertMessage] = useState()
+    const handleClose = () => {
+        setOpen(false)
+    };
     useEffect(() => {
+        axios.get(`http://localhost:5000/user/getNotification`, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+            else if (!response.error) {
+                console.log(response)
+                response.docs.sitNotice.sort(function (a, b) {
+                    if (a.date > b.date) //sort  descending
+                        return -1
+                    else
+                        return 1
+                })
+                response.docs.forumNotice.sort(function (a, b) {
+                    if (a.date > b.date) //sort  descending
+                        return -1
+                    else
+                        return 1
+                })
+                response.docs.courseNotice.sort(function (a, b) {
+                    if (a.date > b.date) //sort  descending
+                        return -1
+                    else
+                        return 1
+                })
+                setNotice(response.docs)
+            }
+            else {
+                setNotice(response.error)
+            }
+        })
+        // if (JSON.parse(localStorage.getItem('info'))) {
+        //     let username = JSON.parse(localStorage.getItem('info')).username
+        //     // get notification form server
+        //     fetch(`http://localhost:5000/user/getNotification/${username}`, )
+        //         .then(response => response.json())
+        //         .then(response => {
+        //             if (!response.error) {
+        //                 console.log(response)
+        //                 response.sitNotice.sort(function (a, b) {
+        //                     if (a.date > b.date) //sort  descending
+        //                         return -1
+        //                     else
+        //                         return 1
+        //                 })
+        //                 response.forumNotice.sort(function (a, b) {
+        //                     if (a.date > b.date) //sort  descending
+        //                         return -1
+        //                     else
+        //                         return 1
+        //                 })
+        //                 response.courseNotice.sort(function (a, b) {
+        //                     if (a.date > b.date) //sort  descending
+        //                         return -1
+        //                     else
+        //                         return 1
+        //                 })
+        //                 setNotice(response)
 
-        if (JSON.parse(localStorage.getItem('info'))) {
-            let username = JSON.parse(localStorage.getItem('info')).username
-            // get notification form server
-            fetch(`http://localhost:5000/user/getNotification/${username}`, )
-                .then(response => response.json())
-                .then(response => {
-                    if (!response.error) {
-                        console.log(response)
-                        response.sitNotice.sort(function (a, b) {
-                            if (a.date > b.date) //sort  descending
-                                return -1
-                            else
-                                return 1
-                        })
-                        response.forumNotice.sort(function (a, b) {
-                            if (a.date > b.date) //sort  descending
-                                return -1
-                            else
-                                return 1
-                        })
-                        response.courseNotice.sort(function (a, b) {
-                            if (a.date > b.date) //sort  descending
-                                return -1
-                            else
-                                return 1
-                        })
-                        setNotice(response)
-
-                    }
-                    else {
-                        setNotice(response.error)
-                    }
+        //             }
+        //             else {
+        //                 setNotice(response.error)
+        //             }
 
 
-                });
-        }
+        //         });
+        // }
     }, [])
 
     let handleDeleteNoti = (id, noticeType) => {
-        let username = JSON.parse(localStorage.getItem('info')).username
-        fetch(`http://localhost:5000/user/deleteNotification/${username}/${id}/${noticeType}`, { method: 'DELETE'})
-            .then(response => response.json())
-            .then(response => {
-                if (response.success) {
-                    setAlertMessage('Deleted!')
-                    let tmpArray = notice[noticeType].filter(item=>{
-                        return item._id !== id
-                    })
-                    console.log(tmpArray)
-                    setNotice({...notice, [noticeType] : tmpArray })
-                    setOpen(true)
-                } else{
-                    setAlertMessage('Fail to delete')
-                    setOpen(true)
-                  }
-            })
-    }
-
-    let handleSitInApprove = (id, studentUsername, course, type)=>{
-    
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              'course': course,
-              'username': studentUsername,
-              'profusername': JSON.parse(localStorage.getItem('info')).username,
-              'type': type,
-              'id':id //noti id
-            })
-          };
-          fetch('http://localhost:5000/user/addEnrolledCourse', requestOptions)
-            .then(response => response.json())
-            .then(response => {
-              if (!response.error) {
-                if(type === 'disallow')
-                setAlertMessage('Successfully Removed!')
-                else
-                setAlertMessage('Successfully Added!')
-                let tmpArray = notice.sitNotice.filter(item=>{
+        axios.delete(`http://localhost:5000/user/deleteNotification/${id}/${noticeType}`, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+            else if (!response.error) {
+                setAlertMessage('Deleted!')
+                let tmpArray = notice[noticeType].filter(item => {
                     return item._id !== id
                 })
                 console.log(tmpArray)
-                setNotice({...notice,  sitNotice : tmpArray })
+                setNotice({ ...notice, [noticeType]: tmpArray })
                 setOpen(true)
-              }
-              else{
-                setAlertMessage(response.error)
+            }
+            else {
+                setAlertMessage('Fail to delete')
                 setOpen(true)
-              }
-             
-    
-            });
+            }
+        })
+
+        // let username = JSON.parse(localStorage.getItem('info')).username
+        // fetch(`http://localhost:5000/user/deleteNotification/${username}/${id}/${noticeType}`, { method: 'DELETE'})
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (response.docs) {
+        //             setAlertMessage('Deleted!')
+        //             let tmpArray = notice[noticeType].filter(item=>{
+        //                 return item._id !== id
+        //             })
+        //             console.log(tmpArray)
+        //             setNotice({...notice, [noticeType] : tmpArray })
+        //             setOpen(true)
+        //         } else{
+        //             setAlertMessage('Fail to delete')
+        //             setOpen(true)
+        //           }
+        //     })
+    }
+
+    let handleSitInApprove = (id, studentUsername, course, type) => {
+        axios.post(`http://localhost:5000/user/addEnrolledCourse`,
+            {
+                'course': course,
+                'username': studentUsername,
+                'type': type,
+                'id': id //noti id
+            },
+            { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
+                    if (type === 'disallow')
+                    setAlertMessage('Successfully Removed!')
+                else
+                    setAlertMessage('Successfully Added!')
+                let tmpArray = notice.sitNotice.filter(item => {
+                    return item._id !== id
+                })
+                console.log(tmpArray)
+                setNotice({ ...notice, sitNotice: tmpArray })
+                setOpen(true)
+                }
+                else {
+                    setAlertMessage(response.error)
+                    setOpen(true)
+                }
+            })
+        // const requestOptions = {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({
+        //         'course': course,
+        //         'username': studentUsername,
+        //         'profusername': JSON.parse(localStorage.getItem('info')).username,
+        //         'type': type,
+        //         'id': id //noti id
+        //     })
+        // };
+        // fetch('http://localhost:5000/user/addEnrolledCourse', requestOptions)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (!response.error) {
+        //             if (type === 'disallow')
+        //                 setAlertMessage('Successfully Removed!')
+        //             else
+        //                 setAlertMessage('Successfully Added!')
+        //             let tmpArray = notice.sitNotice.filter(item => {
+        //                 return item._id !== id
+        //             })
+        //             console.log(tmpArray)
+        //             setNotice({ ...notice, sitNotice: tmpArray })
+        //             setOpen(true)
+        //         }
+        //         else {
+        //             setAlertMessage(response.error)
+        //             setOpen(true)
+        //         }
+
+
+        //     });
     }
 
     let renderNotiMessage = (type) => {
@@ -179,9 +261,9 @@ let NotificationPage = (props) => {
                                         <p>Date: {item.date.slice(0, 10)} </p>
                                         {type !== 'courseNotice' && <p>User: {item.studentUsername} </p>}
                                         <p> Message: {item.message}</p>
-                                        {JSON.parse(localStorage.getItem('info')).type === 'student'
+                                        {userType === 'student'
                                             && type === 'sitNotice'
-                                            && <p style={{ color:  item.status === 'Success'  ?  '#84DE02': '#FFBF00' }}>Status: {item.status} </p>}
+                                            && <p style={{ color: item.status === 'Success' ? '#84DE02' : '#FFBF00' }}>Status: {item.status} </p>}
 
 
                                     </React.Fragment>
@@ -189,16 +271,16 @@ let NotificationPage = (props) => {
                             />
                             <ListItemSecondaryAction>
                                 {type === 'sitNotice'
-                                    && JSON.parse(localStorage.getItem('info')).type === 'prof'
+                                    && userType === 'prof'
                                     && <React.Fragment>
                                         <IconButton edge="end" aria-label="delete"
-                                         onClick={() => handleSitInApprove(item._id, item.studentUsername, item.course, 'allow')}
+                                            onClick={() => handleSitInApprove(item._id, item.studentUsername, item.course, 'allow')}
                                         >
                                             <CheckIcon />
                                         </IconButton>
                                         <IconButton edge="end" aria-label="delete"
-                                         onClick={() => handleSitInApprove(item._id, item.studentUsername,item.course, 'disallow')}
-                                        
+                                            onClick={() => handleSitInApprove(item._id, item.studentUsername, item.course, 'disallow')}
+
                                         >
                                             <ClearIcon />
                                         </IconButton>
@@ -251,7 +333,7 @@ let NotificationPage = (props) => {
                                 <List dense={false}>
                                     {renderNotiMessage('forumNotice')}
                                 </List>
-                                {JSON.parse(localStorage.getItem('info')).type === 'student' && <List dense={false}>
+                                {userType=== 'student' && <List dense={false}>
                                     <Typography variant="h4" noWrap className={classes.sectitle} > Course Updates</Typography>
 
 
@@ -271,7 +353,7 @@ let NotificationPage = (props) => {
                     open={Open}
                     onClose={handleClose}>
                     <SnackbarContent style={{
-                        backgroundColor:( AlertMessage === "Deleted!" || AlertMessage === 'Successfully Added!' ) ? '#84DE02' : '#FFBF00',
+                        backgroundColor: (AlertMessage === "Deleted!" || AlertMessage === 'Successfully Added!') ? '#84DE02' : '#FFBF00',
                     }}
                         message={<span id="client-snackbar">{AlertMessage}!</span>}
                     />
@@ -281,11 +363,6 @@ let NotificationPage = (props) => {
         )
     }
 
-    let RedirectToLogin = () => {
-        alert("You have not yet login!");
-        const { history } = props;
-        history.push('/login');
-    }
     return (
         <React.Fragment>
             {renderNoti()}

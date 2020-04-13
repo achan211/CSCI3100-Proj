@@ -16,7 +16,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import CourseTable from "../Component/CourseTable";
 import PinInput from "react-pin-input";
 import SnackBar from "../Component/SnackBar"
-import { UserCourseList } from "../test"
+import { UserType,UserCourseList } from "../test"
+import axios from "axios"
 
 import {
     ResponsiveContainer,
@@ -118,6 +119,7 @@ let Attendance = (props) => {
     let [course, setCourse] = useState()
     let [attendanceRecord, setAttendanceRecord] = useState()
     let [generatedPin, setGeneratedPin] = useState(false)
+    const { userType } = useContext(UserType)
     const { courselist, courselistDispatch } = useContext(UserCourseList);
 
     let [Open, setOpen] = useState('')
@@ -133,41 +135,73 @@ let Attendance = (props) => {
     }
 
     useEffect(() => {
-        if (course && JSON.parse(localStorage.getItem('info')).type === 'prof') {
-            fetch(`http://localhost:5000/attendance/teacher/checkPin/${course}`)
-                .then(response => response.json())
-                .then(response => {
-                    if (!response.error) {
-                        setGeneratedPin(response)
-                    }
-                });
+        setPin(null)
+        setAttendanceRecord(null)
+        setGeneratedPin(null)
+        if (course && userType=== 'prof') {
+            axios.get(`http://localhost:5000/attendance/teacher/checkPin/${course}`, { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
+                    setGeneratedPin(response.docs)
+                }
+            
+            })
+
+            // fetch(`http://localhost:5000/attendance/teacher/checkPin/${course}`)
+            //     .then(response => response.json())
+            //     .then(response => {
+            //         if (!response.error) {
+            //             setGeneratedPin(response)
+            //         }
+            //     });
         }
     }, [course])
     let handlePinSubmit = () => {
         if (pin) {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    'courseCode': course,
-                    'attendanceCode': pin,
-                    'username': JSON.parse(localStorage.getItem('info')).username
-                })
-            };
-            fetch('http://localhost:5000/attendance/student', requestOptions)
-                .then(response => response.json())
-                .then(response => {
-                    if (!response.error) {
-                        setAlertMessage('Success!')
-                        setSuccess(true)
-                        setOpen(true)
-                    }
-                    else {
-                        setAlertMessage(response.error)
-                        setSuccess(false)
-                        setOpen(true)
-                    }
-                });
+            // const requestOptions = {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({
+            //         'courseCode': course,
+            //         'attendanceCode': pin,
+            //         'username': JSON.parse(localStorage.getItem('info')).username
+            //     })
+            // };
+            axios.post(`http://localhost:5000/attendance/student`,{
+                'courseCode': course,
+                'attendanceCode': pin,
+            }, { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
+                    setAlertMessage('Success!')
+                    setSuccess(true)
+                    setOpen(true)
+                }else{
+                    setAlertMessage(response.error)
+                    setSuccess(false)
+                    setOpen(true)
+                }
+            })
+            // fetch('http://localhost:5000/attendance/student', requestOptions)
+            //     .then(response => response.json())
+            //     .then(response => {
+            //         if (!response.error) {
+            //             setAlertMessage('Success!')
+            //             setSuccess(true)
+            //             setOpen(true)
+            //         }
+            //         else {
+            //             setAlertMessage(response.error)
+            //             setSuccess(false)
+            //             setOpen(true)
+            //         }
+            //     });
         } else {
             setAlertMessage('please enter the pin!')
             setSuccess(false)
@@ -177,71 +211,128 @@ let Attendance = (props) => {
     let handleCheckRecord = () => {
         setChartOpen(true)
         if (course) {
-            fetch(`http://localhost:5000/attendance/student/${course}/${JSON.parse(localStorage.getItem('info')).username}`)
-                .then(response => response.json())
-                .then(response => {
-                    if (!response.error) {
-                        setAttendanceRecord(response[0])
-                    }
-                    else {
-                        setAlertMessage('No record/error occur!')
-                        setSuccess(false)
-                        setOpen(true)
-                        setChartOpen(false)
-                    }
-                });
+            axios.get(`http://localhost:5000/attendance/student/${course}`, { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
+                    setAttendanceRecord(response.docs[0])
+                }else{
+                    setAlertMessage('No record/error occur!')
+                    setSuccess(false)
+                    setOpen(true)
+                    setChartOpen(false)
+                }
+            })
+            // fetch(`http://localhost:5000/attendance/student/${course}/${JSON.parse(localStorage.getItem('info')).username}`)
+            //     .then(response => response.json())
+            //     .then(response => {
+            //         if (!response.error) {
+            //             setAttendanceRecord(response[0])
+            //         }
+            //         else {
+            //             setAlertMessage('No record/error occur!')
+            //             setSuccess(false)
+            //             setOpen(true)
+            //             setChartOpen(false)
+            //         }
+            //     });
         }
     }
     let handleProfCheckRecord = () => {
         setChartOpen(true)
         if (course) {
-            fetch(`http://localhost:5000/attendance/teacher/getAttendance/${course}`)
-                .then(response => response.json())
-                .then(response => {
-                    if (!response.error) {
-                        console.log(response)
-                        setAttendanceRecord(response[0])
-                    }
-                    else {
-                        setAlertMessage(response.error)
-                        setSuccess(false)
-                        setOpen(true)
-                        setChartOpen(false)
+            axios.get(`http://localhost:5000/attendance/teacher/getAttendance/${course}`, { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
+                }
+                else if (!response.error) {
+                    console.log(response)
+                        setAttendanceRecord(response.docs[0])
+                }else{
+                    setAlertMessage(response.error)
+                    setSuccess(false)
+                    setOpen(true)
+                    setChartOpen(false)
+                }
+            })
+            // fetch(`http://localhost:5000/attendance/teacher/getAttendance/${course}`)
+            //     .then(response => response.json())
+            //     .then(response => {
+            //         if (!response.error) {
+            //             console.log(response)
+            //             setAttendanceRecord(response[0])
+            //         }
+            //         else {
+            //             setAlertMessage(response.error)
+            //             setSuccess(false)
+            //             setOpen(true)
+            //             setChartOpen(false)
 
-                    }
-                });
+            //         }
+            //     });
         }
     }
 
     let handlePinGenerate = () => {
         if (course) {
-            fetch(`http://localhost:5000/attendance/teacher/getPin/${course}`)
-                .then(response => response.json())
-                .then(response => {
-                    if (!response.error) {
-                        setGeneratedPin(response)
-                    }
-                    else {
-                        setAlertMessage('No record/error occur!')
-                        setSuccess(false)
-                        setOpen(true)
-                    }
-                });
-        }
-    }
-    let handleCloseAttendance = () => {
-        fetch(`http://localhost:5000/attendance/teacher/closeAttendance/${course}`)
-            .then(response => response.json())
-            .then(response => {
-                if (!response.error) {
-                    setGeneratedPin(false)
+            axios.get(`http://localhost:5000/attendance/teacher/getPin/${course}`, { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
                 }
-                else {
+                else if (!response.error) {
+                    console.log(response)
+                    setGeneratedPin(response.docs)
+                }else{
                     setAlertMessage('No record/error occur!')
                     setSuccess(false)
                     setOpen(true)
                 }
-            });
+            })
+            // fetch(`http://localhost:5000/attendance/teacher/getPin/${course}`)
+            //     .then(response => response.json())
+            //     .then(response => {
+            //         if (!response.error) {
+            //             setGeneratedPin(response)
+            //         }
+            //         else {
+            //             setAlertMessage('No record/error occur!')
+            //             setSuccess(false)
+            //             setOpen(true)
+            //         }
+            //     });
+        }
+    }
+    let handleCloseAttendance = () => {
+        axios.get(`http://localhost:5000/attendance/teacher/closeAttendance/${course}`, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+            else if (!response.error) {
+                setGeneratedPin(false)
+            }else{
+                setAlertMessage('No record/error occur!')
+                setSuccess(false)
+                setOpen(true)
+            }
+        })
+
+        // fetch(`http://localhost:5000/attendance/teacher/closeAttendance/${course}`)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (!response.error) {
+        //             setGeneratedPin(false)
+        //         }
+        //         else {
+        //             setAlertMessage('No record/error occur!')
+        //             setSuccess(false)
+        //             setOpen(true)
+        //         }
+        //     });
     }
     let calGeneralAttendRate = () => {
         if (attendanceRecord && attendanceRecord.attendanceDate && Object.keys(attendanceRecord.student).length > 0) {
@@ -296,7 +387,7 @@ let Attendance = (props) => {
                             </Grid>
                             {/* If a Course is selected and prof is taking attendance, show below, 
                         otherwise return "No attendance required for this course"*/}
-                            {course ? JSON.parse(localStorage.getItem('info')).type === 'student' ?
+                            {course ? userType === 'student' ?
                                 <Grid item xs={6}>
                                     <Paper className={`${classes.attendancePaper} ${classes.paper}`}>
                                         <PeopleIcon fontSize="large" /><br />
@@ -308,7 +399,7 @@ let Attendance = (props) => {
                                             length={4}
                                             focus
                                             style={{ padding: '30px 0' }}
-                                            // ref={p => (this.pin = p)}
+                                            // ref={pin}
                                             type="numeric"
                                             onChange={pinOnChange}
                                         />
@@ -352,7 +443,7 @@ let Attendance = (props) => {
                             }
 
                         </Grid>
-                        {chartOpen ? JSON.parse(localStorage.getItem('info')).type === 'prof' ? renderProfChart() : renderStudentChart() : <div></div>}
+                        {chartOpen ? userType === 'prof' ? renderProfChart() : renderStudentChart() : <div></div>}
 
 
                     </div>
@@ -541,7 +632,7 @@ let Attendance = (props) => {
                                             return (
                                                 <TableRow className={classes.tableRow} >
                                                     <TableCell className={classes.tablecell}>{item.slice(0, 10)}</TableCell>
-                                                    <TableCell className={classes.tablecell}>{attendanceRecord.rate && attendanceRecord.rate[index] === '1' ? 'Attended' : 'Not Attended'}</TableCell>
+                                                    <TableCell className={classes.tablecell}>{attendanceRecord.rate && attendanceRecord.rate[index] === 1 ? 'Attended' : 'Not Attended'}</TableCell>
                                                 </TableRow>
                                             )
                                         })}
@@ -557,14 +648,14 @@ let Attendance = (props) => {
         }
     }
 
-    let RedirectToLogin = () => {
-        alert("You have not yet login!");
-        const { history } = props;
-        history.push('/login');
-    }
+    // let RedirectToLogin = () => {
+    //     alert("You have not yet login!");
+    //     const { history } = props;
+    //     history.push('/login');
+    // }
     return (
         <React.Fragment>
-            {localStorage.getItem('token') ? renderAttendace() : RedirectToLogin()}
+            {renderAttendace() }
         </React.Fragment>
     )
 }

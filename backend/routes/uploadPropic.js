@@ -7,6 +7,7 @@ const Course = require('../model/Course')
 
 var fs = require('fs');
 var cloudinary = require('cloudinary').v2;
+middleware = require("../middleware")
 
 cloudinary.config({
   cloud_name: 'dctxygull',
@@ -37,9 +38,9 @@ var uploadDoc = multer({
 })
 
 
-router.post('/uploadPropic/:username', upload.single('recfile'), async (req, res) => {
+router.post('/uploadPropic', middleware.sessionChecker, upload.single('recfile'), async (req, res) => {
 
-  Post.find({ username: req.params.username }, function (err, docs) {
+  Post.find({ username: req.session.user }, function (err, docs) {
     if (docs.length) {
       cloudinary.uploader.upload(`./public/${req.file.filename}`, { tags: 'basic_sample' })
         .then(function (image) {
@@ -50,7 +51,7 @@ router.post('/uploadPropic/:username', upload.single('recfile'), async (req, res
           console.log("* " + image.url);
 
           Post.findOneAndUpdate(
-            { 'username': req.params.username },
+            { 'username': req.session.user },
             { $set: { 'pic': image.url } },
             { seFindAndModify: false },
             function (error, success) {
@@ -77,7 +78,7 @@ router.post('/uploadPropic/:username', upload.single('recfile'), async (req, res
 })
 
 //add course materails
-router.post('/uplloadMaterial/:course/:type/:message/:date', uploadDoc.single('recfile'), async (req, res) => {
+router.post('/uplloadMaterial/:course/:type/:message/:date',middleware.sessionChecker, uploadDoc.single('recfile'), async (req, res) => {
   Course.find({ code: { $in: req.params.course } }, function (err, docs) {
     if (docs.length) {
       cloudinary.uploader.upload(`./public/${req.file.filename}`, { tags: 'basic_sample' })

@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const Attendance = require('../model/Attendance')
+middleware = require("../middleware")
 
 //get attendance by user's course (used by student)
-router.get('/student/:courseCode/:username', async (req, res) => {
+router.get('/student/:courseCode',middleware.sessionChecker, async (req, res) => {
     Attendance.find({'courseCode':req.params.courseCode}, async function (err, docs) {
         if (docs.length) {
-            let username = req.params.username
+            let username = req.session.user
             let obj=[]
             for(let i=0;i<docs.length;i++){
                 obj.push({"attendanceDate": docs[i].attendanceDate, 
@@ -14,7 +15,7 @@ router.get('/student/:courseCode/:username', async (req, res) => {
             "rate": docs[i].student[username] || null
             })
             }
-            res.json(obj)
+            res.json({docs:obj})
             
         } else {
             console.log('no course or wrong attendance code! ');
@@ -24,10 +25,10 @@ router.get('/student/:courseCode/:username', async (req, res) => {
 })
 
 // used to take attendance by acceptinng the attendance code
-router.post('/student', async (req, res) => {
+router.post('/student',middleware.sessionChecker, async (req, res) => {
     Attendance.find({'courseCode':req.body.courseCode, 'attendanceCode':req.body.attendanceCode}, async function (err, docs) {
         if (docs.length) {
-            let username = req.body.username
+            let username = req.session.user
             if(!docs[0].student[username]){
                 //first time 
                 let pushObj ={}
@@ -59,7 +60,7 @@ router.post('/student', async (req, res) => {
                          }
                      });
             }else{
-                res.json('reg alrdy!');
+                res.json({error:'Register Already!'});
             }
             
         } else {
@@ -71,10 +72,10 @@ router.post('/student', async (req, res) => {
 
 
 //get attendance by course (used by prof)
-router.get('/teacher/getAttendance/:courseCode', async (req, res) => {
+router.get('/teacher/getAttendance/:courseCode',middleware.sessionChecker, async (req, res) => {
     Attendance.find({'courseCode':req.params.courseCode}, async function (err, docs) {
         if (docs.length) {
-            res.json(docs)
+            res.json({docs:docs})
             
         } else {
             console.log('no course or no attendance! ');
@@ -84,7 +85,7 @@ router.get('/teacher/getAttendance/:courseCode', async (req, res) => {
 })
 
 // used to generate a random code for attendance taking
-router.get('/teacher/getPin/:courseCode', async (req, res) => {
+router.get('/teacher/getPin/:courseCode',middleware.sessionChecker, async (req, res) => {
     let randomcode = Math.floor(1000 + Math.random() * 9000);
 
      Attendance.find({'courseCode':req.params.courseCode}, async function (err, docs) {
@@ -99,7 +100,7 @@ router.get('/teacher/getPin/:courseCode', async (req, res) => {
                          if (error) {
                             res.json(error);
                          } else {
-                            res.json(success.attendanceCode);
+                            res.json({docs:success.attendanceCode});
                          }
                      });
             
@@ -112,12 +113,12 @@ router.get('/teacher/getPin/:courseCode', async (req, res) => {
 })
 
 // used to check if random code is already generated 
-router.get('/teacher/checkPin/:courseCode', async (req, res) => {
+router.get('/teacher/checkPin/:courseCode',middleware.sessionChecker, async (req, res) => {
 
      Attendance.find({'courseCode':req.params.courseCode}, async function (err, docs) {
         if (docs.length) {
             if(docs[0].attendanceCode.length >0 ){
-                res.json(docs[0].attendanceCode)
+                res.json({docs:docs[0].attendanceCode})
             }
             else
             res.json({ error: 'no code exist!' })
@@ -130,7 +131,7 @@ router.get('/teacher/checkPin/:courseCode', async (req, res) => {
 })
 
 //used to close attendance taking 
-router.get('/teacher/closeAttendance/:courseCode', async (req, res) => {
+router.get('/teacher/closeAttendance/:courseCode',middleware.sessionChecker, async (req, res) => {
 
     Attendance.find({'courseCode':req.params.courseCode}, async function (err, docs) {
         if (docs.length) {

@@ -27,6 +27,8 @@ const user = require('./routes/user')
 const uploadPropic = require('./routes/uploadPropic')
 const rating = require('./routes/rating')
 const addUpdate = require('./routes/addUpdate')
+const admin = require('./routes/admin')
+
 
 
 
@@ -91,8 +93,9 @@ app.use('/quiz', quiz)
 app.use("/forumComments", forumComments)
 app.use("/user", user)
 app.use("/", rating)
-
 app.use('/',uploadPropic)
+app.use('/admin',admin)
+
 
 
 

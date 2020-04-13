@@ -15,7 +15,8 @@ import Snackbar from '../Component/SnackBar';
 import CloseIcon from '@material-ui/icons/Close';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-const axios = require("axios");
+import axios from "axios"
+
 
 const useStyles = makeStyles(theme => ({
 
@@ -39,7 +40,7 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center',
         color: theme.palette.text.primary,
         overflow: "hidden",
-    textOverflow: "ellipsis"
+        textOverflow: "ellipsis"
     },
 
     paperContent: {
@@ -101,10 +102,10 @@ export default function UserProfile() {
     let [success, setSuccess] = useState()
     let [alertMessage, setAlertMessage] = useState()
     let [open, setOpen] = useState()
-    let [loading, setLoading]=useState()
-    let [oldpw, setOldpw]=useState()
-    
-    let [newpw, setNewpw]=useState()
+    let [loading, setLoading] = useState()
+    let [oldpw, setOldpw] = useState()
+
+    let [newpw, setNewpw] = useState()
     const [users, setValues] = useState({
         firstname: '',
         lastname: '',
@@ -115,77 +116,131 @@ export default function UserProfile() {
         pic: ''
     });
 
-    useEffect(()=>{
-        if (JSON.parse(localStorage.getItem('info'))) {
-            let username = JSON.parse(localStorage.getItem('info')).username
-            // get notification form server
-            fetch(`http://localhost:5000/user/info/${username}`)
-              .then(response => response.json())
-              .then(response => {
-                if (!response.error) {
-                  console.log(response)
-                  setValues({
+    useEffect(() => {
+        axios.get(`http://localhost:5000/user/info`, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+            else if (!response.error) {
+                setValues({
                     // ...users,
-                    ...response
+                    ...response.docs
                 });
+                console.log(response)
+            }
+            else {
+                console.log('ok')
+                console.log(response.error)
+            }
+        })
+        // if (JSON.parse(localStorage.getItem('info'))) {
+        //     let username = JSON.parse(localStorage.getItem('info')).username
+        //     // get notification form server
+        //     fetch(`http://localhost:5000/user/info/${username}`)
+        //       .then(response => response.json())
+        //       .then(response => {
+        //         if (!response.error) {
+        //           console.log(response)
+        //           setValues({
+        //             // ...users,
+        //             ...response
+        //         });
+        //         }
+        //         else {
+        //         //   setNotice(response.error)
+        //         }
+        //       });
+        //   }
+    }, [])
+    const handleChangePW = () => {
+        if (oldpw && newpw) {
+            // let username = JSON.parse(localStorage.getItem('info')).username
+            axios.post(`http://localhost:5000/user/editpw`, { 'oldpw': oldpw, 'newpw': newpw }, { withCredentials: true }).then(response => response.data).then((response) => {
+                if (response.redirectURL) {
+                    //back to login
+                    window.location.href = 'http://localhost:3000' + response.redirectURL
                 }
-                else {
-                //   setNotice(response.error)
-                }
-              });
-          }
-    },[])
-    const handleChangePW = ()=>{
-        if(oldpw && newpw) {
-            let username = JSON.parse(localStorage.getItem('info')).username
-            const requestOptions = {
-                method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({'oldpw':oldpw,'newpw':newpw })
-              };
-              fetch(`http://localhost:5000/user/editpw/${username}`, requestOptions)
-                .then(response => response.json())
-                .then(response => {
-                  if (!response.error) {
+                else if (!response.error) {
                     setSuccess(true)
                     console.log(response)
-                    setAlertMessage(response)
+                    setAlertMessage(response.docs)
                     setOpen(true)
-                  }
-                  else{
+                }
+                else {
                     console.log(response)
                     setSuccess(false)
                     setAlertMessage(response.error)
                     setOpen(true)
-                  }
-                });
+                }
+            })
+            // const requestOptions = {
+            //     method: 'POST',
+            // headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({'oldpw':oldpw,'newpw':newpw })
+            //   };
+            //   fetch(`http://localhost:5000/user/editpw/${username}`, requestOptions)
+            //     .then(response => response.json())
+            //     .then(response => {
+            //       if (!response.error) {
+            //         setSuccess(true)
+            //         console.log(response)
+            //         setAlertMessage(response)
+            //         setOpen(true)
+            //       }
+            //       else{
+            //         console.log(response)
+            //         setSuccess(false)
+            //         setAlertMessage(response.error)
+            //         setOpen(true)
+            //       }
+            //     });
         }
-       
+
     }
     const handleClick = () => {
-        console.log(JSON.stringify(users))
-        let username = JSON.parse(localStorage.getItem('info')).username
-        const requestOptions = {
-            method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(users)
-          };
-          fetch(`http://localhost:5000/user/edit/${username}`, requestOptions)
-            .then(response => response.json())
-            .then(response => {
-              if (!response.error) {
+        // console.log(JSON.stringify(users))
+        // let username = JSON.parse(localStorage.getItem('info')).username
+        // const requestOptions = {
+        //     method: 'POST',
+        // headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify(users)
+        //   };
+        axios.post(`http://localhost:5000/user/edit`, users, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+            else if (!response.error) {
                 setSuccess(true)
                 console.log(response)
                 setAlertMessage('Success!')
                 setOpen(true)
-              }
-              else{
+            }
+            else {
                 console.log(response)
                 setSuccess(false)
                 setAlertMessage(response.error)
                 setOpen(true)
-              }
-            });
+            }
+        })
+
+        //   fetch(`http://localhost:5000/user/edit/${username}`, requestOptions)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //       if (!response.error) {
+        //         setSuccess(true)
+        //         console.log(response)
+        //         setAlertMessage('Success!')
+        //         setOpen(true)
+        //       }
+        //       else{
+        //         console.log(response)
+        //         setSuccess(false)
+        //         setAlertMessage(response.error)
+        //         setOpen(true)
+        //       }
+        //     });
     };
 
     const handleClose = (event, reason) => {
@@ -199,38 +254,59 @@ export default function UserProfile() {
         });
     };
 
-    let  onChangeHandler = event => {
+    let onChangeHandler = event => {
         setSelectedFile(event.target.files[0])
     }
-   let onClickHandler = () => {
-       setLoading(true)
+    let onClickHandler = () => {
+        setLoading(true)
         const formData = new FormData()
         let username = JSON.parse(localStorage.getItem('info')).username
 
         formData.append('recfile', selectedFile)
-        const requestOptions = {
-            method: 'POST',
-            body: formData
-          };
-          fetch(`http://localhost:5000/uploadPropic/${username}`, requestOptions)
-            .then(response => response.json())
-            .then(response => {
-              if (!response.error) {
+        // const requestOptions = {
+        //     method: 'POST',
+        //     body: formData
+        // };
+        axios.post(`http://localhost:5000/uploadPropic`, formData, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+            else if (!response.error) {
                 setSuccess(true)
                 console.log(response.url)
                 setAlertMessage('Success!')
                 setOpen(true)
-       setLoading(false)
-
-              }
-              else{
+                setLoading(false)
+            }
+            else {
                 console.log(response)
                 setSuccess(false)
                 setAlertMessage(response.error)
-       setLoading(false)
-       setOpen(true)
-              }
-            });
+                setLoading(false)
+                setOpen(true)
+            }
+        })
+
+        // fetch(`http://localhost:5000/uploadPropic/${username}`, requestOptions)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (!response.error) {
+        //             setSuccess(true)
+        //             console.log(response.url)
+        //             setAlertMessage('Success!')
+        //             setOpen(true)
+        //             setLoading(false)
+
+        //         }
+        //         else {
+        //             console.log(response)
+        //             setSuccess(false)
+        //             setAlertMessage(response.error)
+        //             setLoading(false)
+        //             setOpen(true)
+        //         }
+        //     });
     }
 
 
@@ -285,11 +361,11 @@ export default function UserProfile() {
                             <Divider className={classes.divider} />
                         </div>
                         <Button color="primary" variant="contained" onClick={handleClick}>Save Details</Button>
-                        <Snackbar 
-                        success={success}
-                        Open={open}
-                        AlertMessage={alertMessage}
-                        handleClose={handleClose}
+                        <Snackbar
+                            success={success}
+                            Open={open}
+                            AlertMessage={alertMessage}
+                            handleClose={handleClose}
                         />
                     </Paper>
                 </Grid>
@@ -307,17 +383,17 @@ export default function UserProfile() {
                                 <PersonOutlineIcon fontSize="large" color="inherit" />
                                 <Typography variant="h5" noWrap>My Avatar</Typography>
                                 <Divider className={classes.divider} />
-                                <Avatar className={classes.large}  src={users.pic} ></Avatar>
+                                <Avatar className={classes.large} src={users.pic} ></Avatar>
                                 <Typography variant="h6" gutterBottom>{users.firstname} {users.lastname}</Typography>
                                 <Typography variant="body1" gutterBottom>{users.major}</Typography>
                                 <Typography nowrap={false} variant="body1" gutterBottom>{users.intro}</Typography>
 
                                 <Divider className={classes.divider} />
                                 <input type="file" name="recfile" onChange={onChangeHandler} />
-                                {selectedFile && <Button onClick={onClickHandler } className={classes.uploadButton} color="primary" variant="contained">
+                                {selectedFile && <Button onClick={onClickHandler} className={classes.uploadButton} color="primary" variant="contained">
                                     Upload picture
                                 </Button>}
-                                {loading  && <div><h6>Uploading.....</h6></div>}
+                                {loading && <div><h6>Uploading.....</h6></div>}
                             </Paper>
                         </Grid>
                         <Grid item xs={12}>
@@ -332,14 +408,14 @@ export default function UserProfile() {
                                             <TextField fullWidth helperText="" label="Old Password" margin="dense"
                                                 type="password"
                                                 id="standard-password-input"
-                                                name="oldpw" required onChange={(e)=>setOldpw(e.target.value)} value={oldpw} variant="outlined" />
+                                                name="oldpw" required onChange={(e) => setOldpw(e.target.value)} value={oldpw} variant="outlined" />
                                         </Grid>
                                         {/* new pw */}
                                         <Grid item md={6} xs={12}>
                                             <TextField fullWidth label="New Password" margin="dense"
                                                 type="password"
                                                 id="standard-password-input"
-                                                name="newpw" required onChange={(e)=>setNewpw(e.target.value)} value={newpw} variant="outlined" />
+                                                name="newpw" required onChange={(e) => setNewpw(e.target.value)} value={newpw} variant="outlined" />
                                         </Grid>
                                     </Grid>
                                     <Divider className={classes.divider} />

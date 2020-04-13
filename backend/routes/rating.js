@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Rating = require('../model/Rating')
 const Course = require('../model/Course')
+middleware = require("../middleware")
 
 // start the rating
-router.get('/rating/declare/:code', async (req, res) => {
+router.get('/rating/declare/:code', middleware.sessionChecker,async (req, res) => {
     const rating = new Rating({
         code: req.params.code,
         mode: 1,
@@ -28,7 +29,7 @@ router.get('/rating/declare/:code', async (req, res) => {
               if (error) {
                 res.json(error);
               } else {
-                res.json(success);
+                res.json({docs:createRating});
               }
             });
     } catch (err) {
@@ -37,7 +38,7 @@ router.get('/rating/declare/:code', async (req, res) => {
 })
 
 // check if user (student) can do the rating 
-router.get('/rating/checkRatingMode/:code', async (req, res) => {
+router.get('/rating/checkRatingMode/:code', middleware.sessionChecker,async (req, res) => {
     Rating.find({ code: req.params.code, mode: 1 }, async function (err, docs) {
         if (docs.length) {
             if (docs[0].mode) {
@@ -54,7 +55,7 @@ router.get('/rating/checkRatingMode/:code', async (req, res) => {
 })
 
 // close the rating 
-router.get('/rating/close/:id', async (req, res) => {
+router.get('/rating/close/:id', middleware.sessionChecker,async (req, res) => {
     Rating.find({ _id: req.params.id }, async function (err, docs) {
         if (docs.length) {
             Rating.findOneAndUpdate(
@@ -77,10 +78,10 @@ router.get('/rating/close/:id', async (req, res) => {
 })
 
 // To add a rating
-router.post('/rating/post', async (req, res) => {
+router.post('/rating/post', middleware.sessionChecker,async (req, res) => {
     let pushobj = {}
     console.log(req.body)
-    pushobj['rating.' + req.body.username] = req.body.ratingScore
+    pushobj['rating.' + req.session.user] = req.body.ratingScore
 
     Rating.findOneAndUpdate({ '_id': req.body.id },
         { $set:  pushobj },

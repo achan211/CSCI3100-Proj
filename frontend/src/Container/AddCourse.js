@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import axios from "axios"
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 const useStyles = makeStyles(theme => ({
@@ -50,36 +51,56 @@ let AddCourse = (props) => {
 
   useEffect(() => {
     //fetch all course avaiable
-    fetch('http://localhost:5000/')
-      .then(response => response.json())
-      .then(response => {
-        if (!response.error) {
-          console.log(response)
-          setAvaCourse(response)
-        }
-        else
-          setAvaCourse('no course yet')
+    axios.get(`http://localhost:5000/`, { withCredentials: true }).then(response => response.data).then((response) => {
+      if (response.redirectURL) {
+        //back to login
+        window.location.href = 'http://localhost:3000' + response.redirectURL
+      }
+      else if (!response.error) {
+        console.log(response)
+        setAvaCourse(response.docs)
+      }
+      else {
+        setAvaCourse('no course yet')
+      }
+    })
+    // fetch('http://localhost:5000/')
+    //   .then(response => response.json())
+    //   .then(response => {
+    //     if (!response.error) {
+    //       console.log(response)
+    //       setAvaCourse(response)
+    //     }
+    //     else
+    //       setAvaCourse('no course yet')
 
-      });
+    //   });
 
   }, [])
 
   let handleSubmit = () => {
     //submit request
     if (Course) {
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      // const requestOptions = {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     'code': Course.code,
+      //     'studentusername': JSON.parse(localStorage.getItem('info')).username,
+      //     'message': Message
+      //   })
+      // };
+      axios.post(`http://localhost:5000/user/requestAddCourse`,
+        {
           'code': Course.code,
-          'studentusername': JSON.parse(localStorage.getItem('info')).username,
           'message': Message
-        })
-      };
-      fetch('http://localhost:5000/user/requestAddCourse', requestOptions)
-        .then(response => response.json())
-        .then(response => {
-          if (!response.error) {
+        }
+        , { withCredentials: true }).then(response => response.data).then((response) => {
+          if (response.redirectURL) {
+            //back to login
+            window.location.href = 'http://localhost:3000' + response.redirectURL
+          }
+          else if (!response.error) {
             setMessage('')
             setAlertMessage('Success!')
             setOpen(true)
@@ -89,9 +110,23 @@ let AddCourse = (props) => {
             setAlertMessage(response.error)
             setOpen(true)
           }
+        })
+      // fetch('http://localhost:5000/user/requestAddCourse', requestOptions)
+      //   .then(response => response.json())
+      //   .then(response => {
+      //     if (!response.error) {
+      //       setMessage('')
+      //       setAlertMessage('Success!')
+      //       setOpen(true)
+      //     }
+      //     else {
+      //       setMessage('')
+      //       setAlertMessage(response.error)
+      //       setOpen(true)
+      //     }
 
 
-        });
+      // });
     } else {
       setAlertMessage('please select a course!')
       setOpen(true)

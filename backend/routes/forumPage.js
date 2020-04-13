@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../model/ForumPage')
+middleware = require("../middleware")
 
 // get the forum topic
-router.post('/', async (req, res) => {
+router.post('/',middleware.sessionChecker, async (req, res) => {
     Post.find({ code : { $in : req.body.code }  }, function (err, docs) {
         if (docs.length) {
             console.log(docs)
-            res.json(   docs[0] )
+            res.json( {docs:  docs[0]} )
         } else {
             console.log('no such forum! ');
             res.json({ error: 'no such forum! ' })
@@ -18,11 +19,11 @@ router.post('/', async (req, res) => {
 
 
 // To add a fourm topic to the server
-router.post('/addTopic', async (req, res) => {
+router.post('/addTopic',middleware.sessionChecker, async (req, res) => {
     let code = req.body.code 
     let topic = req.body.topic 
     let context = req.body.context 
-    let lauzhu = req.body.lauzhu
+    let lauzhu = req.session.user
     Post.find({'code':code}, async function (err, docs) {
         if (docs.length) {
             let pushObj={

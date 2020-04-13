@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
@@ -19,6 +19,8 @@ import Notification from "../Component/Notification/Notification";
 import CommentModal from "../Component/CommentModal"
 import NewTopicModal from "../Component/NewTopicModal"
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import axios from "axios"
+import { UserType, UserCourseList } from "../test"
 
 
 const useStyles = makeStyles(theme => ({
@@ -110,6 +112,7 @@ export default function ForumHome(props) {
   let [CurrentFourmTopicId, setCurrentFourmTopicId] = useState(null)
   let [Comments, setComments] = useState(null)
   let [CurrentCourse, setCurrentCourse] = useState(null)
+  const { courselist, courselistDispatch } = useContext(UserCourseList);
 
   const handleClickOpenComment = () => {
     setOpent(true);
@@ -124,112 +127,159 @@ export default function ForumHome(props) {
 
   // get forum topic from server
   useEffect(() => {
-    if (localStorage.getItem('token') && checkIfEnrolled()) {
-      let code = JSON.parse(info).course
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          'code': CurrentCourse ? CurrentCourse : props.match.params.id ? props.match.params.id : code[0],
-        })
-      };
-      fetch('http://localhost:5000/forum', requestOptions)
-        .then(response => response.json())
-        .then(response => {
-          //first time 
-          if (!CurrentCourse)
-            setCurrentCourse(props.match.params.id ? props.match.params.id : code[0])
-          if (!response.error) {
-            console.log(response)
-            setCourse(response.topic.reverse())
-            setCurrentFourmTopicId(null)
-            setComments(null)
-            setErrorValue(null)
-          }
-          else {
-            setCourse(null)
-            setErrorValue('no course yet')
-          }
+    if (checkIfEnrolled()) {
+      // let code = JSON.parse(info).course
+      // const requestOptions = {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     'code': CurrentCourse ? CurrentCourse : props.match.params.id ? props.match.params.id : code[0],
+      //   })
+      // };
+      axios.post(`http://localhost:5000/forum`, {
+        'code': CurrentCourse ? CurrentCourse : props.match.params.id ? props.match.params.id : courselist[0].code,
+      }, { withCredentials: true }).then(response => response.data).then((response) => {
+        if (response.redirectURL) {
+          //back to login
+          window.location.href = 'http://localhost:3000' + response.redirectURL
+        }
+        //first time
+        else if (!CurrentCourse)
+          setCurrentCourse(props.match.params.id ? props.match.params.id : courselist[0].code)
+        else if (!response.error) {
+          console.log(response)
+          setCourse(response.docs.topic.reverse())
+          setCurrentFourmTopicId(null)
+          setComments(null)
+          setErrorValue(null)
+        } else {
+          setCourse(null)
+          setErrorValue('no course yet')
+        }
 
-        });
+      })
+      // fetch('http://localhost:5000/forum', requestOptions)
+      //   .then(response => response.json())
+      //   .then(response => {
+      //     //first time 
+      //     if (!CurrentCourse)
+      //       setCurrentCourse(props.match.params.id ? props.match.params.id : code[0])
+      //     if (!response.error) {
+      //       console.log(response)
+      //       setCourse(response.topic.reverse())
+      //       setCurrentFourmTopicId(null)
+      //       setComments(null)
+      //       setErrorValue(null)
+      //     }
+      //     else {
+      //       setCourse(null)
+      //       setErrorValue('no course yet')
+      //     }
+
+      //   });
     }
-  }, [CurrentCourse])
+  }, [courselist,CurrentCourse])
 
   //get comment from server
   useEffect(() => {
     if (CurrentFourmTopicId) {
       console.log(Comments)
       console.log(CurrentCourse)
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          'code': CurrentCourse,
-          'id': CurrentFourmTopicId._id
-        })
-      };
-      fetch('http://localhost:5000/forumComments', requestOptions)
-        .then(response => response.json())
-        .then(response => {
-          if (!response.error) {
-            console.log(response)
-            setComments(response)
-          }
-          else {
-            setComments(null)
-          }
+      // const requestOptions = {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     'code': CurrentCourse,
+      //     'id': CurrentFourmTopicId._id
+      //   })
+      // };
+      axios.post(`http://localhost:5000/forumComments`, {
+        'code': CurrentCourse,
+        'id': CurrentFourmTopicId._id
+      }, { withCredentials: true }).then(response => response.data).then((response) => {
+        if (response.redirectURL) {
+          //back to login
+          window.location.href = 'http://localhost:3000' + response.redirectURL
+        }
+        else if (!response.error) {
+          console.log(response)
+          setComments(response.docs)
+        } else {
+          setComments(null)
+        }
+      })
+      // fetch('http://localhost:5000/forumComments', requestOptions)
+      //   .then(response => response.json())
+      //   .then(response => {
+      //     if (!response.error) {
+      //       console.log(response)
+      //       setComments(response)
+      //     }
+      //     else {
+      //       setComments(null)
+      //     }
 
-        });
+      //   });
     }
 
   }, [CurrentFourmTopicId])
 
   //post a new topic to server
   let handleAddTopic = (Topic, Context) => {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        'code': CurrentCourse,
-        'topic': Topic,
-        'context': Context,
-        'lauzhu': JSON.parse(info).username
+    // const requestOptions = {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     'code': CurrentCourse,
+    //     'topic': Topic,
+    //     'context': Context,
+    //     'lauzhu': JSON.parse(info).username
+    //   })
+    // };
+    axios.post(`http://localhost:5000/forum/addTopic`, {
+      'code': CurrentCourse,
+      'topic': Topic,
+      'context': Context,
+      }, { withCredentials: true }).then(response => response.data).then((response) => {
+        if (response.redirectURL) {
+          //back to login
+          window.location.href = 'http://localhost:3000' + response.redirectURL
+        }
+        else if (!response.error) {
+          console.log(response)
+          setCurrentFourmTopicId(response.docs)
+        } else {
+          console.log(response)
+        }
       })
-    };
-    fetch('http://localhost:5000/forum/addTopic', requestOptions)
-      .then(response => response.json())
-      .then(response => {
-        if (!response.error) {
-          console.log(response)
-          setCurrentFourmTopicId(response)
-        }
-        else {
-          console.log(response)
-        }
+    // fetch('http://localhost:5000/forum/addTopic', requestOptions)
+    //   .then(response => response.json())
+    //   .then(response => {
+    //     if (!response.error) {
+    //       console.log(response)
+    //       setCurrentFourmTopicId(response)
+    //     }
+    //     else {
+    //       console.log(response)
+    //     }
 
-      });
+    //   });
 
 
   }
 
   let checkIfEnrolled = () => {
-    let code = JSON.parse(info).course
+    let filtered = courselist && courselist.filter(i => {
+      return i.code === props.match.params.id
+    })
+    if (filtered.length > 0) {
+      return true
+    }else if(props.match.params.id=== undefined && courselist.length >0){
+      return true
+    }
+    else {
+      return false
 
-    if (props.match.params.id) {
-      let filtered = code.filter(i => {
-        return i === props.match.params.id
-      })
-      if (filtered.length > 0) {
-        return true
-      }
-      else {
-        return false
-      }
-    } else {
-      if (code.length > 0)
-        return true
-      else
-        return false
     }
   }
 
@@ -238,29 +288,46 @@ export default function ForumHome(props) {
   let handleAddComment = (value) => {
     if (value) {
       handleCloseComment()
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          'code': CurrentCourse,
-          'id': CurrentFourmTopicId._id,
-          'text': value,
-          'user': JSON.parse(info).username,
-          'lauzhu' : CurrentFourmTopicId.lauzhu
-        })
-      };
-      fetch('http://localhost:5000/forumComments/addComment', requestOptions)
-        .then(response => response.json())
-        .then(response => {
-          if (!response.error) {
-            console.log(response)
-            setComments(response)
-          }
-          else {
-            console.log(response)
-          }
+      // const requestOptions = {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     'code': CurrentCourse,
+      //     'id': CurrentFourmTopicId._id,
+      //     'text': value,
+      //     'user': JSON.parse(info).username,
+      //     'lauzhu': CurrentFourmTopicId.lauzhu
+      //   })
+      // };
+      axios.post(`http://localhost:5000/forumComments/addComment`, {
+        'code': CurrentCourse,
+        'id': CurrentFourmTopicId._id,
+        'text': value,
+        'lauzhu': CurrentFourmTopicId.lauzhu
+      }, { withCredentials: true }).then(response => response.data).then((response) => {
+        if (response.redirectURL) {
+          //back to login
+          window.location.href = 'http://localhost:3000' + response.redirectURL
+        }
+        else if (!response.error) {
+          console.log(response)
+          setComments(response)
+        } else {
+          console.log(response)
+        }
+      })
+      // fetch('http://localhost:5000/forumComments/addComment', requestOptions)
+      //   .then(response => response.json())
+      //   .then(response => {
+      //     if (!response.error) {
+      //       console.log(response)
+      //       setComments(response)
+      //     }
+      //     else {
+      //       console.log(response)
+      //     }
 
-        });
+      //   });
     } else
       alert("must fill in !")
   }
@@ -388,16 +455,16 @@ export default function ForumHome(props) {
                                 className={classes.headerMenu}
                                 disableAutoFocusItem
                               >
-                                {JSON.parse(info).course.map(item => (
+                                {courselist && courselist.map(item => (
                                   <MenuItem
-                                    key={item}
+                                    key={item.code}
                                     onClick={() => {
-                                      setCurrentCourse(item)
+                                      setCurrentCourse(item.code)
                                       setNotificationsMenu(null)
                                     }}
                                     className={classes.headerMenuItem}
                                   >
-                                    <Notification text={item} typographyVariant="inherit" />
+                                    <Notification text={item.code} typographyVariant="inherit" />
                                   </MenuItem>
                                 ))}
                               </Menu>
@@ -441,11 +508,6 @@ export default function ForumHome(props) {
     )
 
   }
-  let RedirectToLogin = () => {
-    alert("You have not yet login!");
-    const { history } = props;
-    history.push('/login');
-  }
   let renderErrorMessage = () => {
     return (
       <div>
@@ -456,7 +518,7 @@ export default function ForumHome(props) {
   }
   return (
     <React.Fragment>
-      {localStorage.getItem('token') ? checkIfEnrolled() ? renderForum() : renderErrorMessage() : RedirectToLogin()}
+      {checkIfEnrolled() ? renderForum() : renderErrorMessage()}
     </React.Fragment>
   );
 }

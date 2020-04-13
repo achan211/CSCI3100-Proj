@@ -210,7 +210,7 @@ let Quiz = (props) => {
 
     }
     let checkQuizHistory = (type) => {
-        props.history.push(`/Quiz/history/${Course}`)
+        props.history.push(`/Quiz/history/${Course ? Course  : 'Your'}`)
     }
     let handleStartOrEndQuiz = (value) => {
         setStartQuiz(value)
@@ -324,9 +324,7 @@ let Quiz = (props) => {
                     <DialogTitle id="form-dialog-title">Submitted Successfully! Your Score: </DialogTitle>
                     <DialogContent>
                         <h4> {score}/{question.length} </h4>
-                        <Link to="Quiz/history">
                             <Button variant="contained" color="default" onClick={checkQuizHistory}>Check Course Quiz Record</Button>
-                        </Link>
                     </DialogContent>
                 </Dialog>}
             </React.Fragment>

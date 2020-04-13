@@ -12,6 +12,8 @@ import Avatar from '@material-ui/core/Avatar'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import { CSVReader } from 'react-papaparse'
+import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
     app: {
@@ -26,95 +28,183 @@ const useStyles = makeStyles(theme => ({
     divider: {
         marginBottom: 10,
         marginTop: 8,
-    }, 
-      avatar: {
+    },
+    avatar: {
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
-      },
-      form: {
+    },
+    form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
-      },
-      submit: {
+    },
+    submit: {
         margin: theme.spacing(3, 0, 2),
-      },
-      formControl: {
+    },
+    formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
-      },
-      selectEmpty: {
+    },
+    selectEmpty: {
         marginTop: theme.spacing(10),
-      },
-      paper: {
+    },
+    paper: {
         padding: theme.spacing(2),
         margin: theme.spacing(1),
         marginTop: theme.spacing(3),
         textAlign: 'center',
         color: theme.palette.text.primary,
     },
+    csvuploadContainer: {
+        marginBottom: '75px'
+    }
 }));
 
 const CourseOfferingDepartment = [
-    {long: "Accountancy", short: "ACCT"}, 
-    {long: "Artifical Intelligence: Systems and Technologies", short: "AIST"}, 
-    {long: "Mathematics and Mathematics Education", short: "BMED"}, 
-    {long: "Computer Science", short: "CSCI"}, 
-    {long: "Communication", short: "COMM"}, 
-    {long: "Education", short: "EDUC"}, 
-    {long: "English", short: "ENGE"}, 
-    {long: "Mathematics", short: "MATH"}, 
-    {long: "Music", short: "MUSC"}, 
-    {long: "Physics", short: "PHYS"}, 
-    {long: "Social", short: "SOWK"}, 
-    {long: "Statistics", short: "STAT"}, 
-    {long: "Translation", short: "TRANS"}, 
+    { long: "Accountancy", short: "ACCT" },
+    { long: "Artifical Intelligence: Systems and Technologies", short: "AIST" },
+    { long: "Mathematics and Mathematics Education", short: "BMED" },
+    { long: "Computer Science", short: "CSCI" },
+    { long: "Communication", short: "COMM" },
+    { long: "Education", short: "EDUC" },
+    { long: "English", short: "ENGE" },
+    { long: "Mathematics", short: "MATH" },
+    { long: "Music", short: "MUSC" },
+    { long: "Physics", short: "PHYS" },
+    { long: "Social", short: "SOWK" },
+    { long: "Statistics", short: "STAT" },
+    { long: "Translation", short: "TRANS" },
 ];
 
 export default function AdminInput() {
     const classes = useStyles();
+    const [course, SetCourse] = useState({
+        department: '',
+        code: "",
+        title: '',
+        lecturer: '',
+        username: '',
+        student: []
+    })
+    const handleChange = event => {
+        SetCourse({
+            ...course,
+            [event.target.name]: event.target.value
+        });
+    };
+    const handleDepartmentChange = (event, value) => {
+        SetCourse({
+            ...course,
+            department: value.long
+        });
+    }
+    console.log(course)
+    let handleOnDrop = (data) => {
+        console.log('---------------------------')
+        data.shift()
+        SetCourse({
+            ...course,
+            student: data && data.map(i => i.data[0])})
+        console.log('---------------------------')
+    }
+
+    let handleOnError = (err, file, inputElem, reason) => {
+        console.log(err)
+    }
+
+    let handleOnRemoveFile = (data) => {
+        console.log('---------------------------')
+        console.log(data)
+        console.log('---------------------------')
+    }
+    let addCourseToDB =()=>{
+        axios.post(`http://localhost:5000/admin`, course, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+            else if (!response.error) {
+                // setSuccess(true)
+                console.log(response)
+                // setAlertMessage('Success!')
+                // setOpen(true)
+                // setLoading(false)
+            }
+            else {
+                console.log(response)
+                // setSuccess(false)
+                // setAlertMessage(response.error)
+                // setLoading(false)
+                // setOpen(true)
+            }
+        })
+    }
 
     return (
         <React.Fragment>
-            <div className={classes.app}> 
-            <Container component="main">
-            <Paper className={classes.paper}>
-                <SupervisorAccountIcon fontSize="large" />
-                <Typography component="h3" variant="h4">
-                    Admin Input Page
+            <div className={classes.app}>
+
+                <Container component="main">
+                    <Paper className={classes.paper}>
+                        <SupervisorAccountIcon fontSize="large" />
+                        <Typography component="h3" variant="h4">
+                            Admin Input Page
                 </Typography>
-                <Divider className={classes.divider} />
-                <form className={classes.form} noValidate>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                        <Autocomplete id="Course-Dept" options={CourseOfferingDepartment} getOptionLabel={(option) => option.short + ' - ' + option.long}
-                        renderInput={(params) => <TextField {...params} label="Course Offering Department" variant="outlined" />} />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                        <TextField fullWidth helperText="4-digit Code of the Course" label="Course Code" margin="dense"
-                        name="Course Code" required variant="outlined" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField fullWidth label="Course Title" margin="dense"
-                            name="Course Title" required variant="outlined" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField fullWidth label="Course Description" margin="dense"
-                            name="Course Description" rows="8" multiline required variant="outlined" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField fullWidth label="Course Lecturer" margin="dense"
-                            name="Course Lecturer" required variant="outlined" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField fullWidth label="Username" margin="dense" name="Username" required variant="outlined" />
-                        </Grid>
-                        <Grid item xs={12}><Button variant="contained" color="primary">Add more Students</Button></Grid>
-                    </Grid>
-                </form>
-                <Divider className={classes.divider} />
-                <Button variant="contained" color="primary">Submit</Button>
-                </Paper>
-            </Container>
+                        <Divider className={classes.divider} />
+                        <form className={classes.form} noValidate>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <Typography component="h6" variant="h6"> Add Student To Course (Format: 1 Column Named Student, follow with student's username)</Typography>
+                                    <div className={classes.csvuploadContainer}>
+                                        <CSVReader
+                                            onDrop={handleOnDrop}
+                                            onError={handleOnError}
+                                            addRemoveButton
+                                            onRemoveFile={handleOnRemoveFile}
+                                        >
+                                            <span>Drop CSV file here to add student to course.</span>
+                                        </CSVReader>
+                                    </div>
+
+                                </Grid>
+                                <Grid item xs={12}>
+                      
+
+                                        <Typography component="p" variant="h6"> Student List: </Typography>
+
+                                        {course.student.map(i => {
+                                            return (
+                                                <Typography component="div" variant="subtitle1"> {i}</Typography>
+
+                                            )
+                                        })}
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <Autocomplete id="Course-Dept" options={CourseOfferingDepartment} getOptionLabel={(option) => option.short + ' - ' + option.long}
+                                        onChange={handleDepartmentChange} renderInput={(params) => <TextField {...params} name='department' label="Course Offering Department" variant="outlined" />} />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField fullWidth helperText="4-digit Code of the Course" label="Course Code" margin="dense"
+                                        onChange={handleChange} name="code" required variant="outlined" />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Course Title" margin="dense"
+                                        onChange={handleChange} name="title" required variant="outlined" />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Course Lecturer" margin="dense"
+                                        onChange={handleChange} name="lecturer" required variant="outlined" />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth onChange={handleChange} label="Username of Lecturer" margin="dense" name="username" required variant="outlined" />
+                                </Grid>
+
+                            </Grid>
+                        </form>
+                        <Divider className={classes.divider} />
+                        <Button onClick={addCourseToDB} variant="contained" color="primary">Submit</Button>
+                    </Paper>
+                </Container>
             </div>
         </React.Fragment>
     )

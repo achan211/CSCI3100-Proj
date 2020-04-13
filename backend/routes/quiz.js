@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Quiz = require('../model/Quiz')
+middleware = require("../middleware")
 
 // get quiz question
-router.post('/student', async (req, res) => {
+router.post('/student',middleware.sessionChecker, async (req, res) => {
     Quiz.find({ 'courseCode': req.body.courseCode }, async function (err, docs) {
         if (docs.length) {
             let len = docs[0].quiz.length
@@ -22,7 +23,7 @@ router.post('/student', async (req, res) => {
 })
 
 //set quiz to start or stop
-router.get('/start/:courseCode/:mode', async (req, res) => {
+router.get('/start/:courseCode/:mode',middleware.sessionChecker, async (req, res) => {
     let message = req.params.mode === '1' ? 'Quiz has Started!' : 'Quiz has Ended!'
     Quiz.findOneAndUpdate(
         { 'courseCode': req.params.courseCode },
@@ -39,7 +40,7 @@ router.get('/start/:courseCode/:mode', async (req, res) => {
 })
 
 //Used by student. used to submit score to server
-router.post('/student/submit', async (req, res) => {
+router.post('/student/submit',middleware.sessionChecker, async (req, res) => {
     Quiz.find({ 'courseCode': req.body.courseCode }, function (err, docs) {
         if (docs.length) {
             let len = docs[0].quiz.length
@@ -86,7 +87,7 @@ router.post('/student/submit', async (req, res) => {
 })
 
 //get quiz result by course
-router.get('/result/:courseCode', async (req, res) => {
+router.get('/result/:courseCode', middleware.sessionChecker,async (req, res) => {
     Quiz.find({ 'courseCode': req.params.courseCode }, async function (err, docs) {
         if (docs.length) {
             if (docs[0].quiz) {
@@ -129,7 +130,7 @@ router.get('/result/:courseCode', async (req, res) => {
 })
 
 // Used by teacher. used to uplaod quiz question and answer. 
-router.post('/teacher', async (req, res) => {
+router.post('/teacher' , middleware.sessionChecker, async (req, res) => {
     let question = req.body.question // type: array of object
     let ans = req.body.ans //type: array
     Quiz.find({ 'courseCode': req.body.courseCode }, async function (err, docs) {

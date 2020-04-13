@@ -28,7 +28,7 @@ router.post('/', middleware.sessionChecker, async (req, res) => {
 })
 
 //get all course //used by in add Course Page
-router.get('/', async (req, res) => {
+router.get('/',middleware.sessionChecker, async (req, res) => {
     Post.find({}, function (err, docs) {
         if (docs.length) {
             console.log(docs)
@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
             for (let i = 0; i < docs.length; i++) {
                 tmp.push({ 'code': docs[i].code, 'name': docs[i].name, 'username': docs[i].username, 'prof': docs[i].prof })
             }
-            res.json(tmp)
+            res.json({docs:tmp})
         } else {
             console.log('no  course yet! ');
             res.json({ error: 'no course yet! ' })

@@ -55,18 +55,34 @@ let QuizHistory = (props) => {
     let [alertMessage, setAlertMessage] = useState()
     let [openAlert, setOpenAlert] = useState()
     let [result, setResult] = useState()
-    let [loading, setLoading]=useState()
+    let [loading, setLoading] = useState()
 
     const { userType } = useContext(UserType)
     const { courselist, courselistDispatch } = useContext(UserCourseList);
     const [quizNumber, setQuizNumber] = useState()
     console.log(quizNumber)
+
+    var filtered
+    let checkifEnrolled = () => {
+        if (props.match.params.course === undefined || props.match.params.course === 'Your') {
+            return true
+        }
+        filtered = courselist.length > 0 && courselist.filter(i => {
+            return i.code === props.match.params.course
+        })
+        if (filtered.length > 0) {
+            return true
+        } else if (courselist.length > 0) {
+            window.location.href = 'http://localhost:3000/404'
+        }
+    }
+
     useEffect(() => {
         //fetch all quiz result
-        let filered =[]
-        filered = courselist && courselist.filter(i=> i.code === Course)
-        if (Course &&  filered.length >0) {
-        setLoading(true)
+        let filered = []
+        filered = courselist && courselist.filter(i => i.code === Course)
+        if (Course && filered.length > 0) {
+            setLoading(true)
 
             axios.get(`http://localhost:5000/quiz/result/${Course}`, { withCredentials: true }).then(response => response.data).then((response) => {
                 if (response.redirectURL) {
@@ -117,7 +133,7 @@ let QuizHistory = (props) => {
 
         return (
             <React.Fragment>
-                <FullPaperPageHeader title={`${Course} Quiz Record`} body1={'Select Course To View Your Quiz Result!'}>
+                <FullPaperPageHeader title={`${props.match.params.course === undefined ? '' : Course} Quiz Record`} body1={'Select Course To View Your Quiz Result!'}>
                     <div>
                         {Array.isArray(courselist) &&
                             <Autocomplete
@@ -130,17 +146,19 @@ let QuizHistory = (props) => {
                                 renderInput={(params) => <TextField {...params} label="Search or select for a course" variant="outlined" />}
                             />
                         }
-                        {result && result.userscore && <h2>Selected Course: {Course}</h2> }
-                        {loading &&  <h2>Loading...</h2>}
+                        {result && result.userscore && <h2>Selected Course: {Course}</h2>}
+                        {loading && <h2>Loading...</h2>}
 
 
                         {result && result.userscore &&
                             <React.Fragment>
-                                <BarChart
-                                    data={result.userscore.map(i => i.score)}
-                                    label={result.userscore.map((i, index) => index + 1)}
-                                    title={`Your Score Record`}
-                                />
+                                {UserType === 'student' &&
+                                    <BarChart
+                                        data={result.userscore.map(i => i.score)}
+                                        label={result.userscore.map((i, index) => index + 1)}
+                                        title={`Your Score Record`}
+                                    />}
+
                                 <MixedChart
                                     data0={result.socredist.map(i => std(i))}
                                     data1={calAverage()}
@@ -149,26 +167,28 @@ let QuizHistory = (props) => {
                                     label1={'SD'}
                                     label0={'Class Average'}
                                 />
+                                {UserType === 'student' &&
+                                    <MixedChart
+                                        data0={result.userscore.map(i => i.score)}
+                                        data1={calAverage()}
+                                        label={result.userscore.map((i, index) => index + 1)}
+                                        title={`Compare To Overall Class (Your Score VS Overall Class)`}
+                                        label0={'Your Score'}
+                                        label1={'Class Average'}
+                                    />
+                                }
 
-                                <MixedChart
-                                    data0={result.userscore.map(i => i.score)}
-                                    data1={calAverage()}
-                                    label={result.userscore.map((i, index) => index + 1)}
-                                    title={`Compare To Overall Class (Your Score VS Overall Class)`}
-                                    label0={'Your Score'}
-                                    label1={'Class Average'}
-                                />
-
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    options={result.userscore.map((i, index) => 'Quiz No.' + (index + 1))}
-                                    autoFocus
-                                    className={classes.completeBox}
-                                    getOptionLabel={(e) => e}
-                                    onChange={(e, value) => setQuizNumber(value.slice(8))}
-                                    renderInput={(params) => <TextField {...params} label="Check Quiz Question And Answer " variant="outlined" />}
-                                />
-
+                                {UserType === 'student' &&
+                                    <Autocomplete
+                                        id="combo-box-demo"
+                                        options={result.userscore.map((i, index) => 'Quiz No.' + (index + 1))}
+                                        autoFocus
+                                        className={classes.completeBox}
+                                        getOptionLabel={(e) => e}
+                                        onChange={(e, value) => setQuizNumber(value.slice(8))}
+                                        renderInput={(params) => <TextField {...params} label="Check Quiz Question And Answer " variant="outlined" />}
+                                    />
+                                }
 
                             </React.Fragment>
                         }
@@ -181,14 +201,10 @@ let QuizHistory = (props) => {
         )
     }
 
-    let RedirectToLogin = () => {
-        alert("You have not yet login!");
-        const { history } = props;
-        history.push('/login');
-    }
+
     return (
         <React.Fragment>
-            {renderAddCourse()}
+            {checkifEnrolled() ? renderAddCourse() : <div>Loading...</div>}
         </React.Fragment>
     )
 }

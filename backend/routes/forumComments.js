@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const ForumComment = require('../model/ForumComment')
 const Post = require('../model/CreateAC')
+middleware = require("../middleware")
 
 // get the forum topic's comments
-router.post('/', async (req, res) => {
+router.post('/',middleware.sessionChecker, async (req, res) => {
     
     let id = req.body.id 
     let code = req.body.code 
@@ -17,7 +18,7 @@ router.post('/', async (req, res) => {
         if (docs.length) {
             console.log(docs[0])
             
-            res.json(   docs[0].comment[req.body.id] )
+            res.json( {docs:  docs[0].comment[req.body.id] })
         } else {
             console.log('no such commnet yet! ');
             res.json({ error: 'no such commnet yet! ' })
@@ -28,15 +29,17 @@ router.post('/', async (req, res) => {
 
 
 // To add a comment to the forum topic to the server
-router.post('/addComment', async (req, res) => {
+router.post('/addComment', middleware.sessionChecker,async (req, res) => {
     let code = req.body.code 
     let id = req.body.id 
     let text = req.body.text 
-    let user = req.body.user 
+    let user = req.session.user 
     let lauzhu = req.body.lauzhu
     let obj ={
         'code':code
     }
+    console.log(user)
+    console.log(lauzhu)
     // obj['comment.'+id]  = {"$exists":true}
     ForumComment.find(obj, async function (err, docs) {
         if (docs.length) {
