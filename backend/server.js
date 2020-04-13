@@ -27,6 +27,7 @@ const user = require('./routes/user')
 const uploadPropic = require('./routes/uploadPropic')
 const rating = require('./routes/rating')
 const addUpdate = require('./routes/addUpdate')
+const logout = require('./routes/logout')
 const admin = require('./routes/admin')
 
 
@@ -95,6 +96,8 @@ app.use("/user", user)
 app.use("/", rating)
 app.use('/',uploadPropic)
 app.use('/admin',admin)
+app.use('/logout',logout)
+
 
 
 

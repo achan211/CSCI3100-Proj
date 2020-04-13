@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.text.primary,
-        minHeight: 'calc(100vh - 80px)'
+        minHeight: 'calc(100vh - 172px)',
     },
 
     paperContent: {

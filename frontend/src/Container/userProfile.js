@@ -113,7 +113,8 @@ export default function UserProfile() {
         minor: '',
         intro: '',
         username: '',
-        pic: ''
+        pic: '',
+        email: ''
     });
 
     useEffect(() => {
@@ -308,12 +309,12 @@ export default function UserProfile() {
         //         }
         //     });
     }
-
+    console.log(users)
 
     let renderProfileInfo = () => {
         return (
             <React.Fragment>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <Paper className={classes.paper}>
                         <AccountCircleIcon fontSize="large" color="inherit" />
                         <Typography variant="h5" noWrap>My Profile</Typography>
@@ -332,7 +333,7 @@ export default function UserProfile() {
                                 </Grid>
                                 {/* Email Address */}
                                 <Grid item md={12} xs={12}>
-                                    <TextField fullWidth label="Email Address" margin="dense"
+                                    <TextField fullWidth label="Email" margin="dense" 
                                         name="email" required onChange={handleChange} value={users.email} variant="outlined" />
                                 </Grid>
                                 {/* Major */}
@@ -376,7 +377,7 @@ export default function UserProfile() {
     let renderProfile = () => {
         return (
             <React.Fragment>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <Grid container>
                         <Grid item xs={12}>
                             <Paper className={classes.paper}>

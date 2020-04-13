@@ -1,19 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { std } from 'mathjs'
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import FullPaperPageHeader from '../Component/FullPaperPageHeader'
 import { UserType, UserCourseList, UserInfo } from "../test"
 import axios from "axios"
-import LineChart from "../Component/LineChart"
 import BarChart from "../Component/BarChart"
 import MixedChart from "../Component/MixedChart"
 import QuizQuestion from "../Component/QuizQuestion"
@@ -23,23 +16,11 @@ const useStyles = makeStyles(theme => ({
         paddingTop: '15px',
         paddingBottom: '15px'
     },
-    paper: {
-        padding: theme.spacing(2),
-        margin: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.primary,
-        minHeight: 'calc(100vh - 80px)'
-    },
-
-    paperContent: {
-        textAlign: 'left',
-        justify: 'justified',
-        width: '60%',
-        margin: '0 auto'
-    },
     completeBox: {
         padding: '30px 0',
-        width: '70%'
+        [theme.breakpoints.up('md')]: {
+            width: '70%',
+          },
     },
     message: {
         paddingBottom: '25px',
@@ -60,14 +41,14 @@ let QuizHistory = (props) => {
     const { userType } = useContext(UserType)
     const { courselist, courselistDispatch } = useContext(UserCourseList);
     const [quizNumber, setQuizNumber] = useState()
-    console.log(quizNumber)
+    console.log(userType)
 
     var filtered
     let checkifEnrolled = () => {
         if (props.match.params.course === undefined || props.match.params.course === 'Your') {
             return true
         }
-        filtered = courselist.length > 0 && courselist.filter(i => {
+        filtered = courselist.length > 0 && Array.isArray(courselist) && courselist.filter(i => {
             return i.code === props.match.params.course
         })
         if (filtered.length > 0) {
@@ -80,7 +61,7 @@ let QuizHistory = (props) => {
     useEffect(() => {
         //fetch all quiz result
         let filered = []
-        filered = courselist && courselist.filter(i => i.code === Course)
+        filered = courselist && Array.isArray(courselist) && courselist.filter(i => i.code === Course)
         if (Course && filered.length > 0) {
             setLoading(true)
 
@@ -95,12 +76,14 @@ let QuizHistory = (props) => {
                     console.log(response.docs)
                 }
                 else {
+                    setResult(false)
+                    
                     setLoading(false)
                     alert(response.error)
                 }
             })
         }
-    }, [Course])
+    }, [Course, courselist])
 
 
     let calAverage = () => {
@@ -148,11 +131,12 @@ let QuizHistory = (props) => {
                         }
                         {result && result.userscore && <h2>Selected Course: {Course}</h2>}
                         {loading && <h2>Loading...</h2>}
+                        {!Array.isArray(courselist) && courselist.length >0  && <h2>You Have Not Enrolled In Any Course!</h2>}
 
 
                         {result && result.userscore &&
                             <React.Fragment>
-                                {UserType === 'student' &&
+                                {userType === 'student' &&
                                     <BarChart
                                         data={result.userscore.map(i => i.score)}
                                         label={result.userscore.map((i, index) => index + 1)}
@@ -167,7 +151,7 @@ let QuizHistory = (props) => {
                                     label1={'SD'}
                                     label0={'Class Average'}
                                 />
-                                {UserType === 'student' &&
+                                {userType === 'student' &&
                                     <MixedChart
                                         data0={result.userscore.map(i => i.score)}
                                         data1={calAverage()}
@@ -178,7 +162,7 @@ let QuizHistory = (props) => {
                                     />
                                 }
 
-                                {UserType === 'student' &&
+                                {userType === 'student' &&
                                     <Autocomplete
                                         id="combo-box-demo"
                                         options={result.userscore.map((i, index) => 'Quiz No.' + (index + 1))}

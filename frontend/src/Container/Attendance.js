@@ -16,7 +16,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import CourseTable from "../Component/CourseTable";
 import PinInput from "react-pin-input";
 import SnackBar from "../Component/SnackBar"
-import { UserType,UserCourseList } from "../test"
+import { UserType, UserCourseList } from "../test"
 import axios from "axios"
 
 import {
@@ -63,8 +63,9 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.text.primary,
-        width: '80%',
-
+        [theme.breakpoints.up('md')]: {
+            width: '80%',
+        },
     },
     courseListPaper: {
         float: 'right',
@@ -138,7 +139,7 @@ let Attendance = (props) => {
         setPin(null)
         setAttendanceRecord(null)
         setGeneratedPin(null)
-        if (course && userType=== 'prof') {
+        if (course && userType === 'prof') {
             axios.get(`http://localhost:5000/attendance/teacher/checkPin/${course}`, { withCredentials: true }).then(response => response.data).then((response) => {
                 if (response.redirectURL) {
                     //back to login
@@ -147,7 +148,7 @@ let Attendance = (props) => {
                 else if (!response.error) {
                     setGeneratedPin(response.docs)
                 }
-            
+
             })
 
             // fetch(`http://localhost:5000/attendance/teacher/checkPin/${course}`)
@@ -170,7 +171,7 @@ let Attendance = (props) => {
             //         'username': JSON.parse(localStorage.getItem('info')).username
             //     })
             // };
-            axios.post(`http://localhost:5000/attendance/student`,{
+            axios.post(`http://localhost:5000/attendance/student`, {
                 'courseCode': course,
                 'attendanceCode': pin,
             }, { withCredentials: true }).then(response => response.data).then((response) => {
@@ -182,7 +183,7 @@ let Attendance = (props) => {
                     setAlertMessage('Success!')
                     setSuccess(true)
                     setOpen(true)
-                }else{
+                } else {
                     setAlertMessage(response.error)
                     setSuccess(false)
                     setOpen(true)
@@ -218,7 +219,7 @@ let Attendance = (props) => {
                 }
                 else if (!response.error) {
                     setAttendanceRecord(response.docs[0])
-                }else{
+                } else {
                     setAlertMessage('No record/error occur!')
                     setSuccess(false)
                     setOpen(true)
@@ -250,8 +251,8 @@ let Attendance = (props) => {
                 }
                 else if (!response.error) {
                     console.log(response)
-                        setAttendanceRecord(response.docs[0])
-                }else{
+                    setAttendanceRecord(response.docs[0])
+                } else {
                     setAlertMessage(response.error)
                     setSuccess(false)
                     setOpen(true)
@@ -286,7 +287,7 @@ let Attendance = (props) => {
                 else if (!response.error) {
                     console.log(response)
                     setGeneratedPin(response.docs)
-                }else{
+                } else {
                     setAlertMessage('No record/error occur!')
                     setSuccess(false)
                     setOpen(true)
@@ -314,7 +315,7 @@ let Attendance = (props) => {
             }
             else if (!response.error) {
                 setGeneratedPin(false)
-            }else{
+            } else {
                 setAlertMessage('No record/error occur!')
                 setSuccess(false)
                 setOpen(true)
@@ -388,7 +389,7 @@ let Attendance = (props) => {
                             {/* If a Course is selected and prof is taking attendance, show below, 
                         otherwise return "No attendance required for this course"*/}
                             {course ? userType === 'student' ?
-                                <Grid item xs={6}>
+                                <Grid item xs={12} md={6}>
                                     <Paper className={`${classes.attendancePaper} ${classes.paper}`}>
                                         <PeopleIcon fontSize="large" /><br />
                                         <Typography variant="h4" component="h4">Verify {course} Attendance</Typography>
@@ -412,7 +413,7 @@ let Attendance = (props) => {
                                         <Button variant="contained" onClick={handleCheckRecord} color="primary">Check Record</Button>
                                     </Paper>
                                 </Grid>
-                                : <Grid item xs={6}>
+                                : <Grid item xs={12} md={6}>
                                     <Paper className={`${classes.attendancePaper} ${classes.paper}`}>
                                         <PeopleIcon fontSize="large" /><br />
                                         <Typography variant="h4" component="h4">Generate {course} Attendance Code</Typography>
@@ -436,7 +437,7 @@ let Attendance = (props) => {
                                         }
                                     </Paper>
                                 </Grid>
-                                : <Grid item xs={6}>
+                                : <Grid item xs={12} md={6}>
                                     <Paper className={`${classes.attendancePaper} ${classes.paper}`}>
                                     </Paper>
                                 </Grid>
@@ -472,7 +473,7 @@ let Attendance = (props) => {
                                     colorBrightness="secondary"
                                 >Attendance Line Chart (Nubmer of Students)</Typography>
                             </div>
-                            <ResponsiveContainer width="100%" minWidth={500} height={350}>
+                            <ResponsiveContainer width="100%" height={350}>
                                 <ComposedChart
                                     margin={{ top: 0, right: -15, left: -15, bottom: 0 }}
                                     data={calGeneralAttendRate()}
@@ -563,7 +564,6 @@ let Attendance = (props) => {
                 <Grid container>
                     <Grid item xs={12}>
                         <Paper className={` ${classes.paper} ${classes.chartPaper}`}>
-
                             <div className={`${classes.mainChartHeader} `}>
                                 <Typography
                                     variant="h5"
@@ -571,7 +571,7 @@ let Attendance = (props) => {
                                     colorBrightness="secondary"
                                 >Your Attendance Line Chart (In Percentage %)</Typography>
                             </div>
-                            <ResponsiveContainer width="100%" minWidth={500} height={350}>
+                            <ResponsiveContainer width="100%"  height={350}>
                                 <ComposedChart
                                     margin={{ top: 0, right: -15, left: -15, bottom: 0 }}
                                     data={calcAttendRate()}
@@ -655,7 +655,7 @@ let Attendance = (props) => {
     // }
     return (
         <React.Fragment>
-            {renderAttendace() }
+            {courselist.length > 0 ? Array.isArray(courselist) ? renderAttendace() : <div>no course yet!</div> : <div>loading...</div>}
         </React.Fragment>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.text.primary,
-        minHeight: 'calc(100vh - 80px)'
+        minHeight: 'calc(100vh - 172px)'
     },
     deleteContainer: {
         display: 'flex'
@@ -48,7 +48,10 @@ const useStyles = makeStyles(theme => ({
     paperContent: {
         textAlign: 'left',
         justify: 'justified',
-        width: '50%',
+        [theme.breakpoints.up('md')]: {
+            width: '50%',
+        },
+
         margin: '0 auto'
     },
     completeBox: {
@@ -194,15 +197,15 @@ let NotificationPage = (props) => {
                 }
                 else if (!response.error) {
                     if (type === 'disallow')
-                    setAlertMessage('Successfully Removed!')
-                else
-                    setAlertMessage('Successfully Added!')
-                let tmpArray = notice.sitNotice.filter(item => {
-                    return item._id !== id
-                })
-                console.log(tmpArray)
-                setNotice({ ...notice, sitNotice: tmpArray })
-                setOpen(true)
+                        setAlertMessage('Successfully Removed!')
+                    else
+                        setAlertMessage('Successfully Added!')
+                    let tmpArray = notice.sitNotice.filter(item => {
+                        return item._id !== id
+                    })
+                    console.log(tmpArray)
+                    setNotice({ ...notice, sitNotice: tmpArray })
+                    setOpen(true)
                 }
                 else {
                     setAlertMessage(response.error)
@@ -323,7 +326,7 @@ let NotificationPage = (props) => {
                                 {/* </Grid> */}
                                 <Typography variant="body1" gutterBottom>Here are all of your notificaitons: </Typography>
 
-                                <Typography variant="h4" noWrap className={classes.sectitle} > Sit in Course Request</Typography>
+                                <Typography variant="h4"  className={classes.sectitle} > Sit in Course Request</Typography>
 
                                 <List dense={false}>
                                     {renderNotiMessage('sitNotice')}
@@ -333,7 +336,7 @@ let NotificationPage = (props) => {
                                 <List dense={false}>
                                     {renderNotiMessage('forumNotice')}
                                 </List>
-                                {userType=== 'student' && <List dense={false}>
+                                {userType === 'student' && <List dense={false}>
                                     <Typography variant="h4" noWrap className={classes.sectitle} > Course Updates</Typography>
 
 

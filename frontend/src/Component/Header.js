@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -30,6 +30,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import axios from "axios"
+import { UserType } from "../test"
 
 const drawerWidth = 240;
 
@@ -111,6 +113,7 @@ export default function Header() {
   let [notificationsMenu, setNotificationsMenu] = useState(null);
   let [notice, setNotice] = useState(null)
   var [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
+  const { userType } = useContext(UserType)
 
 
   const handleDrawerOpen = () => {
@@ -122,48 +125,87 @@ export default function Header() {
   };
 
   useEffect(() => {
-
-    if (notificationsMenu || notice === null) {
-      if (JSON.parse(localStorage.getItem('info'))) {
-        let username = JSON.parse(localStorage.getItem('info')).username
-        // get notification form server
-        fetch(`http://localhost:5000/user/getNotification/${username}`)
-          .then(response => response.json())
-          .then(response => {
-            if (!response.error) {
-              let tmp = []
-              response.sitNotice.map(item => {
-                tmp.push(item)
-              })
-              if (JSON.parse(localStorage.getItem('info')).type === 'student') {
-                response.courseNotice.map(item => {
-                  tmp.push(item)
-                })
-              }
-
-              response.forumNotice.map(item => {
-                tmp.push(item)
-              })
-              tmp.sort(function (a, b) {
-                if (a.date > b.date) //sort  descending
-                  return -1
-                else
-                  return 1
-              })
-              setNotice(tmp)
-            }
-            else {
-              setNotice(response.error)
-            }
-
-
-          });
+    axios.get(`http://localhost:5000/user/getNotification`, { withCredentials: true }).then(response => response.data).then((response) => {
+      if (response.redirectURL) {
+        //back to login
+        window.location.href = 'http://localhost:3000' + response.redirectURL
       }
+      else if (!response.error) {
+        let tmp = []
+        response.docs.sitNotice.map(item => {
+          tmp.push(item)
+        })
+        if (userType === 'student') {
+          response.docs.courseNotice.map(item => {
+            tmp.push(item)
+          })
+        }
 
-    }
+        response.docs.forumNotice.map(item => {
+          tmp.push(item)
+        })
+        tmp.sort(function (a, b) {
+          if (a.date > b.date) //sort  descending
+            return -1
+          else
+            return 1
+        })
+        setNotice(tmp)
+      }
+      else {
+        setNotice(response.error)
+      }
+    })
+    // if (notificationsMenu || notice === null) {
+    //   if (JSON.parse(localStorage.getItem('info'))) {
+    //     let username = JSON.parse(localStorage.getItem('info')).username
+    //     // get notification form server
+    //     fetch(`http://localhost:5000/user/getNotification/${username}`)
+    //       .then(response => response.json())
+    //       .then(response => {
+    //         if (!response.error) {
+    //           let tmp = []
+    //           response.sitNotice.map(item => {
+    //             tmp.push(item)
+    //           })
+    //           if (JSON.parse(localStorage.getItem('info')).type === 'student') {
+    //             response.courseNotice.map(item => {
+    //               tmp.push(item)
+    //             })
+    //           }
+
+    //           response.forumNotice.map(item => {
+    //             tmp.push(item)
+    //           })
+    //           tmp.sort(function (a, b) {
+    //             if (a.date > b.date) //sort  descending
+    //               return -1
+    //             else
+    //               return 1
+    //           })
+    //           setNotice(tmp)
+    //         }
+    //         else {
+    //           setNotice(response.error)
+    //         }
 
 
-  }, [notificationsMenu])
+    //       });
+    //   }
+
+    // }
+
+
+  }, [notificationsMenu, userType])
+
+  let handleLogout =()=>{
+    axios.get(`http://localhost:5000/logout`, { withCredentials: true }).then(response => response.data).then((response) => {
+      if (response.redirectURL) {
+        //back to login
+        window.location.href = 'http://localhost:3000' + response.redirectURL
+      }
+    })
+  }
 
   return (
     <div className={classes.root}>
@@ -232,13 +274,13 @@ export default function Header() {
                 className={classes.headerMenuItem}
               >
                 <Typography gutterBottom variant="body1" component="p">
-                   -------- No New Message --------
+                  -------- No New Message --------
                                     </Typography>
               </MenuItem>
             }
 
           </Menu>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6"  >
             CUHK Live Classroom
           </Typography>
 
@@ -246,7 +288,9 @@ export default function Header() {
 
 
           <section className={classes.rightToolBar}>
-            <IconButton color="inherit"><ExitToAppIcon /></IconButton>
+            <IconButton color="inherit"
+              onClick={handleLogout}
+            ><ExitToAppIcon /></IconButton>
           </section>
         </Toolbar>
       </AppBar>
@@ -289,7 +333,7 @@ export default function Header() {
               <ListItemText primary="Sit-in a Course" />
             </ListItem>
           </MenuItem>
-          <MenuItem component={Link} to="/" onClick={handleDrawerClose} color="inherit">
+          <MenuItem component={Link} to="/home" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><AssignmentIcon /></ListItemIcon>
               <ListItemText primary="My Courses" />

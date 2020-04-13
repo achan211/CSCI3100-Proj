@@ -93,7 +93,7 @@ let SignUp = (props) => {
           if(response._id){
             alert("Success!!");
             HandleMapSateToProps(response)
-            history.push('/');
+            history.push('/login');
           }
           else{
             alert("user/email exists already!");

@@ -82,7 +82,7 @@ export default function Home(props) {
                     <Grid item md={4} xs={1} ></Grid>
                     <Grid item md={4} xs={10}>
                         <Card className={classes.card}>
-                            <Link className="link" to={`/${item.code}`}>
+                            <Link className="link" to={`/home/${item.code}`}>
                                 <CardActionArea>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h2">
@@ -112,18 +112,13 @@ export default function Home(props) {
                         My Courses
                         </Typography>
                     <Grid container  >
-                        {courselist ? Array.isArray(courselist) ? renderCourseCard() :<div>no course yet!</div>  : <div>loading...</div>}
+                        {courselist.length > 0 ? Array.isArray(courselist) ? renderCourseCard() : <div>no course yet!</div>  : <div>loading...</div>}
                     </Grid>
                 </Grid>
             </Grid>
         </div>
         // </React.Fragment>
     )
-    let RedirectToLogin = () => {
-        alert("You have not yet login!");
-        const { history } = props;
-        history.push('/login');
-    }
     return (
         <React.Fragment>
             {loginnedHome }

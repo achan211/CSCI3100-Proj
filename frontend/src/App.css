@@ -1,7 +1,11 @@
 .App {
   text-align: center;
   max-width: 1920px !important;
-  margin:  0 auto;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .App-logo {
@@ -9,24 +13,39 @@
   pointer-events: none;
 }
 
-a:visited { text-decoration: none; color:black; }
-a:hover { text-decoration: none; color:black; }
-a:focus { text-decoration: none; color:black; }
-a:hover, a:active { text-decoration: none; color:black }
-a {color: black}
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+a:focus {
+  text-decoration: none;
+  color: black;
+}
+a:hover,
+a:active {
+  text-decoration: none;
+  color: black;
+}
+a {
+  color: black;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-.generalGridContainer{
+.generalGridContainer {
   display: grid;
-  grid-template-columns: 20% 80% ;
+  grid-template-columns: 20% 80%;
 }
 
 .App-header {
-  background-color: #282c34 ;
+  background-color: rgba(0, 0, 0, 0.87);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -41,12 +60,12 @@ a {color: black}
 }
 .nav {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 .link {
   color: grey;
 }
-.link:hover{
+.link:hover {
   color: lightgray;
 }
 

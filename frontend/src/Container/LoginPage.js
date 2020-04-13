@@ -74,7 +74,7 @@ let LoginPage = (props) => {
       console.log(response)
       if (!response.redirectURL) {
         //back to home
-        window.location.href = 'http://localhost:3000' 
+        window.location.href = 'http://localhost:3000/home'
       }else{
         //has not loginned in 
         setRenderLogin(true)

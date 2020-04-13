@@ -18,7 +18,7 @@ router.post('/', middleware.sessionChecker, async (req, res) => {
                     res.json({docs : docs, type: req.session.usertype})
                 } else {
                     console.log('no  course yet! ');
-                    res.json({ error: 'no course yet! ' })
+                    res.json({ error: 'no course yet! ', type: req.session.usertype })
                 }
             });
         }

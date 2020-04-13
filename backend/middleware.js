@@ -6,8 +6,8 @@ module.exports = {
             next();
 
         } else {
-            console.log("no cookies , redirect to login")
-            res.json(  { 'redirectURL': '/login'})
+            console.log("no cookies , redirect to welcome page (intro)")
+            res.json(  { 'redirectURL': '/welcome'})
 
         }
     },
@@ -17,7 +17,7 @@ module.exports = {
         if (req.session.user && req.cookies.user_sid) {
             //have cookies
             console.log("has cookies, redirect to home ")
-            res.json(  { 'redirectURL': '/'})
+            res.json(  { 'redirectURL': '/home'})
 
         } else {
             console.log("no cookies, continue to login ")

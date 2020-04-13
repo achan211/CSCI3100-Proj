@@ -106,7 +106,7 @@ export default function CoursePage(props) {
     const { courselist, courselistDispatch } = useContext(UserCourseList);
     const { userType } = useContext(UserType)
 
-    let filtered;
+    var filtered;
 
     const handleClickOpen = (type) => {
         setOpen(type);
@@ -116,7 +116,7 @@ export default function CoursePage(props) {
     };
 
     let checkifEnrolled =()=>{
-        filtered = courselist.length > 0 && courselist.filter(i => {
+        filtered = courselist.length > 0 && Array.isArray(courselist) && courselist.filter(i => {
             return i.code === props.match.params.id
         })
         if ( filtered.length > 0) {
@@ -441,12 +441,12 @@ export default function CoursePage(props) {
                 <div className={classes.app}>
                     {/* <CoursePageButton id={props.match.params.id} /> */}
                     <div className={classes.main}>
-                        <Typography variant="h4" noWrap>
+                        <Typography variant="h4" >
                             {Course && Course.code} {Course && Course.name}
                         </Typography>
                         <Divider className={classes.divider} />
                         <Grid container>
-                            <Grid item xs={6}>
+                            <Grid item xs={12} md={6}>
                                 <Paper className={`${classes.paper} ${classes.materialspaper}`} variant="elevation">
                                     <Typography variant="h5" noWrap>Course Materials</Typography>
                                     {userType === 'prof' && <Button onClick={() => setAddMaterialsOpen(true)} variant="contained" >Add Materials</Button>}
@@ -480,7 +480,7 @@ export default function CoursePage(props) {
                                     <Divider className={classes.divider} />
                                 </Paper>
                                 <Paper className={`${classes.paper} ${classes.deadlinesPaper}`} variant="elevation">
-                                    <Typography variant="h5" noWrap>Rate This Course (Typically Open at Week 7 and Week 13)</Typography>
+                                    <Typography variant="h5" >Rate This Course (Typically Open at Week 7 and Week 13)</Typography>
                                     <Divider className={classes.divider} />
                                     <Typography id="discrete-slider" gutterBottom>{Course.code}  {Course.name} </Typography>
 
@@ -533,7 +533,7 @@ export default function CoursePage(props) {
                                 </Paper>
                             </Grid>
                             {/* Course Updates */}
-                            <Grid item xs={6}>
+                            <Grid item xs={12} md={6}>
                                 <Paper className={`${classes.paper} ${classes.updatespaper}`} variant="elevation">
                                     <Typography variant="h5" noWrap>Course Updates</Typography>
                                     {userType === 'prof' && <Button onClick={() => setAddUpdatesOpen(true)} variant="contained" >Add Updates</Button>}

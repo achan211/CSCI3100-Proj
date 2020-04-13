@@ -81,8 +81,9 @@ const useStyles = makeStyles(theme => ({
   },
 
   container: {
-    minHeight: " calc(100vh - 64px )",
-    maxHeight: " calc(100vh - 64px )",
+    minHeight: " calc(100vh - 156px )",
+    maxHeight: " calc(100vh - 156px )",
+
   },
 
   tableHead: {
@@ -178,7 +179,7 @@ export default function ForumHome(props) {
 
       //   });
     }
-  }, [courselist,CurrentCourse])
+  }, [courselist, CurrentCourse])
 
   //get comment from server
   useEffect(() => {
@@ -240,18 +241,18 @@ export default function ForumHome(props) {
       'code': CurrentCourse,
       'topic': Topic,
       'context': Context,
-      }, { withCredentials: true }).then(response => response.data).then((response) => {
-        if (response.redirectURL) {
-          //back to login
-          window.location.href = 'http://localhost:3000' + response.redirectURL
-        }
-        else if (!response.error) {
-          console.log(response)
-          setCurrentFourmTopicId(response.docs)
-        } else {
-          console.log(response)
-        }
-      })
+    }, { withCredentials: true }).then(response => response.data).then((response) => {
+      if (response.redirectURL) {
+        //back to login
+        window.location.href = 'http://localhost:3000' + response.redirectURL
+      }
+      else if (!response.error) {
+        console.log(response)
+        setCurrentFourmTopicId(response.docs)
+      } else {
+        console.log(response)
+      }
+    })
     // fetch('http://localhost:5000/forum/addTopic', requestOptions)
     //   .then(response => response.json())
     //   .then(response => {
@@ -269,12 +270,12 @@ export default function ForumHome(props) {
   }
 
   let checkIfEnrolled = () => {
-    let filtered = courselist && courselist.filter(i => {
+    let filtered = Array.isArray(courselist) && courselist.length > 0 && courselist.filter(i => {
       return i.code === props.match.params.id
     })
     if (filtered.length > 0) {
       return true
-    }else if(props.match.params.id=== undefined && courselist.length >0){
+    } else if (props.match.params.id === undefined && courselist.length > 0 && Array.isArray(courselist)) {
       return true
     }
     else {
@@ -358,64 +359,69 @@ export default function ForumHome(props) {
   }
 
   let renderForumComments = () => {
-    if (CurrentFourmTopicId) {
-      return (
-        <React.Fragment>
-          <TableHead>
-            <TableRow>
-              <TableCell className={classes.th}>
-                <ListItem>
-                  <ListItemAvatar><Avatar /></ListItemAvatar>
-                  <ListItemText>{CurrentFourmTopicId.topic}</ListItemText>
-                  <Tooltip title="Write a Comment" placement="bottom">
-                    <IconButton className={classes.AddButton} onClick={handleClickOpenComment}><CreateIcon /></IconButton>
-                  </Tooltip>
-                </ListItem>
-                {/* Dialogue for Comments */}
-                <CommentModal
-                  handleCloseComment={handleCloseComment}
-                  Opent={Opent}
-                  handleAddComment={handleAddComment}
-                />
+    return (
+      <React.Fragment>
+        <TableHead>
+          <TableRow>
+            <TableCell className={classes.th}>
+              <ListItem>
+                <ListItemAvatar><Avatar /></ListItemAvatar>
+                {CurrentFourmTopicId ?
+                  <React.Fragment>
+                    <ListItemText>{CurrentFourmTopicId.topic}</ListItemText>
+                    <Tooltip title="Write a Comment" placement="bottom">
+                      <IconButton className={classes.AddButton} onClick={handleClickOpenComment}><CreateIcon /></IconButton>
+                    </Tooltip>
+                  </React.Fragment>
+                  : <ListItemText>Select A topic To View Comment~ </ListItemText>
+                }
+              </ListItem>
+              {/* Dialogue for Comments */}
+              {CurrentFourmTopicId && <CommentModal
+                handleCloseComment={handleCloseComment}
+                Opent={Opent}
+                handleAddComment={handleAddComment}
+              />}
 
-              </TableCell>
-            </TableRow>
-          </TableHead>
 
-          <TableBody>
-            <React.Fragment>
-              <TableRow><TableCell>
-                <ListItemText>
-                  {CurrentFourmTopicId.context}
-                </ListItemText>
-              </TableCell></TableRow>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        {CurrentFourmTopicId && <TableBody>
+          <React.Fragment>
+            <TableRow><TableCell>
+              <ListItemText>
+                {CurrentFourmTopicId.context}
+              </ListItemText>
+            </TableCell></TableRow>
 
-              {Array.isArray(Comments) ? Comments.map(item => {
-                return (
-                  <TableRow key={item.date}>
-                    <TableCell>
-                      <ListItem>
-                        <ListItemAvatar>
-                          <Avatar />
-                        </ListItemAvatar>
-                        <ListItemText>{item.text}</ListItemText>
-                      </ListItem>
-                    </TableCell>
-                  </TableRow>
-                )
-              }) : <TableRow >
+            {Array.isArray(Comments) ? Comments.map(item => {
+              return (
+                <TableRow key={item.date}>
                   <TableCell>
                     <ListItem>
-                      <ListItemText style={{ 'textAlign': 'center' }}>No Comment Yet~</ListItemText>
+                      <ListItemAvatar>
+                        <Avatar />
+                      </ListItemAvatar>
+                      <ListItemText>{item.text}</ListItemText>
                     </ListItem>
                   </TableCell>
-                </TableRow>}
-            </React.Fragment>
-          </TableBody>
-        </React.Fragment>
-      )
-    }
+                </TableRow>
+              )
+            }) : <TableRow >
+                <TableCell>
+                  <ListItem>
+                    <ListItemText style={{ 'textAlign': 'center' }}>No Comment Yet~</ListItemText>
+                  </ListItem>
+                </TableCell>
+              </TableRow>}
+          </React.Fragment>
+        </TableBody>}
+
+      </React.Fragment>
+    )
   }
+
 
   let renderForum = () => {
     return (
@@ -426,7 +432,7 @@ export default function ForumHome(props) {
             <Paper className={classes.paper}>
               <Grid container>
                 {/* Table for Forum Threads */}
-                <Grid item xs={4} className={classes.forumTableContainer}>
+                <Grid item md={4} xs={12} className={classes.forumTableContainer}>
                   {/* <Paper className={classes.paper}> */}
                   <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
@@ -491,8 +497,8 @@ export default function ForumHome(props) {
                 </Grid>
 
                 {/* Thread Main Content & Comments */}
-                <Grid item xs={8}>
-                  <TableContainer className={classes.container}>
+                <Grid item md={8} xs={12}>
+                  <TableContainer className={`${classes.container} ${classes.commentConatiner}`}>
                     <Table stickyHeader aria-label="sticky table">
                       {renderForumComments()}
 
@@ -518,7 +524,8 @@ export default function ForumHome(props) {
   }
   return (
     <React.Fragment>
-      {checkIfEnrolled() ? renderForum() : renderErrorMessage()}
+      {courselist.length > 0 ? checkIfEnrolled() ? renderForum() : renderErrorMessage() : <div>loading...</div>
+      }
     </React.Fragment>
   );
 }

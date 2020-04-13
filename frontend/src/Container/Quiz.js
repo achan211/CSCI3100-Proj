@@ -58,6 +58,9 @@ const useStyles = makeStyles(theme => ({
     questionfield: {
         margin: '25px 0'
     },
+    container: {
+        minHeight: " calc(100vh - 156px )",
+      },
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
@@ -84,6 +87,7 @@ let Quiz = (props) => {
     const [modalOpen, setModalOpen] = useState(false)
     const [score, setScore] = useState(null)
     const [startQuiz, setStartQuiz] = useState(false)
+    const { courselist, courselistDispatch } = useContext(UserCourseList);
 
 
     useEffect(() => {
@@ -260,6 +264,7 @@ let Quiz = (props) => {
     let renderQuiz = () => {
         return (
             <React.Fragment>
+                <div className={classes.container}>
                 <Grid container>
                     <Grid item md={6} xs={12}>
 
@@ -327,6 +332,7 @@ let Quiz = (props) => {
                             <Button variant="contained" color="default" onClick={checkQuizHistory}>Check Course Quiz Record</Button>
                     </DialogContent>
                 </Dialog>}
+                </div>
             </React.Fragment>
         )
     }
@@ -426,7 +432,7 @@ let Quiz = (props) => {
     }
     return (
         <React.Fragment>
-            {renderQuiz()}
+            {courselist.length > 0 ? Array.isArray(courselist) ? renderQuiz() : <div>no course yet!</div> : <div>loading...</div>}
         </React.Fragment>
     )
 }

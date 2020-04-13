@@ -21,19 +21,22 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.primary,
-    minHeight: 'calc(100vh - 80px)'
+    minHeight: 'calc(100vh - 172px)'
   },
 
   paperContent: {
     textAlign: 'left',
     justify: 'justified',
-    width: '60%',
+    [theme.breakpoints.up('md')]: {
+      width: '60%',
+  },
     margin: '0 auto'
   },
   completeBox: {
     padding: '30px 0',
-    width: '70%'
-  },
+    [theme.breakpoints.up('md')]: {
+      width: '70%',
+  }},
   message: {
     paddingBottom: '25px',
   }
@@ -145,7 +148,7 @@ let AddCourse = (props) => {
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <div className={classes.paperContent}>
-                <Typography variant="h4" noWrap className={classes.title}>
+                <Typography variant="h4"  className={classes.title}>
                   Select To Sit In On A Course
                             </Typography>
                 <Typography variant="body1" gutterBottom>
@@ -176,7 +179,7 @@ let AddCourse = (props) => {
                       variant="outlined" label="Anything you would like to tell professsor" type="text" rows="15"
                       fullWidth multiline />
 
-                    <Button variant="contained" color="primary" href="#contained-buttons" onClick={handleSubmit}>
+                    <Button variant="contained" color="primary"   onClick={handleSubmit}>
                       Submit Request
                   </Button>
                   </React.Fragment>
