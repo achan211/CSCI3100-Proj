@@ -45,7 +45,7 @@ export default function Footer(props) {
     // <div className={classes.root}>
       <footer className={classes.footer}>
         <Container maxWidth="sm">
-          <Typography variant="body1">My sticky footer can be found here.</Typography>
+          <Typography variant="body1">2019-2020 Semester 2 CSCI3100 Group 9 Project</Typography>
           <Copyright />
         </Container>
       </footer>
