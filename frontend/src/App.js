@@ -25,6 +25,7 @@ import AdminInput from './Container/adminInput'
 import Errorpage from './Container/Errorpage'
 import Footer from './Component/Footer'
 import CourseList from "./Container/CourseList"
+import Welcome from './Container/welcome'
 import {
   BrowserRouter as Router,
   Switch,
@@ -43,7 +44,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 
 
 import { UserCourseList, UserInfo, UserType } from "./test"
@@ -148,16 +148,14 @@ return false
                 <Route path="/welcome" >
                   <React.Fragment>
                     <CssBaseline />
-                    <AppBar position="static">
+                  <AppBar position="static">
                       <Toolbar>
                       <Typography variant="h6" className={classes.title}>CUHK Live Classroom</Typography>
                       <Button color="inherit" className={classes.rightToolBar} size="large" component={Link} to="/login">Login</Button>
                       </Toolbar>
                     </AppBar>
-                    <Typography variant="h1" component="h1">This is a Welcome Page</Typography>
-                    <Typography variant="h3" component="h3">Please just ignore the Styling for now</Typography>
-                    To enter the log-in page, please click Login on the up right-hand corner. 
                   </React.Fragment>
+                  <Welcome />
                 </Route>
 
                 <Route path="/:id" >
