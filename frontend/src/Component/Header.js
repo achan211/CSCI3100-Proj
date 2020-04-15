@@ -334,7 +334,7 @@ export default function Header() {
           </MenuItem>
           <Divider />
 
-          <MenuItem component={Link} to="/course" onClick={handleDrawerClose} color="inherit">
+          <MenuItem component={Link} to="/Coursepage" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><PostAddIcon /></ListItemIcon>
               <ListItemText primary="My Course" />

@@ -260,7 +260,7 @@ export default function UserProfile() {
     let onClickHandler = () => {
         setLoading(true)
         const formData = new FormData()
-        let username = JSON.parse(localStorage.getItem('info')).username
+        // let username = JSON.parse(localStorage.getItem('info')).username
 
         formData.append('recfile', selectedFile)
         // const requestOptions = {
