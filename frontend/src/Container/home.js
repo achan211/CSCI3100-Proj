@@ -7,6 +7,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import { Link } from "react-router-dom";
 import axios from "axios"
@@ -217,8 +218,8 @@ export default function Home(props) {
             <Grid container >
                 <Grid item xs={12} >
                     <Typography variant="h4" className={classes.title}>
-                        Hello, {users.username}. Welcome To Your DashBoard!
-            </Typography>
+                        Hello, {users.username}. Welcome to Your Dashboard!
+                    </Typography>
                 </Grid>
                 <Grid item xs={12} >
 
@@ -227,7 +228,7 @@ export default function Home(props) {
                             <Grid container>
                                 <Grid item xs={12}>
                                     <Paper className={classes.paper} elevation={3}>
-                                        <Typography variant="h6" className={classes.title}>
+                                        <Typography variant="h4" className={classes.title}>
                                             My Courses</Typography>
                                         {/* {renderCourseCard()} */}
                                         <Grid container>
@@ -247,8 +248,8 @@ export default function Home(props) {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Paper className={classes.paper} elevation={3}>
-                                        <Typography variant="h6" className={classes.title}>
-                                            New Notificaiton</Typography>
+                                        <Typography variant="h4" className={classes.title}>
+                                            Notifications</Typography>
                                         {renderUpdates()}
                                         {notice && notice.length < itemNumber * 5 ?
                                             <div>
@@ -263,29 +264,15 @@ export default function Home(props) {
                                 </Grid>
 
                             </Grid>
-
                         </Grid>
+
                         <Grid item xs={12} md={8}>
-
+                            
                             <Paper className={classes.paper}>
-                                <Typography variant="h6" className={classes.title}>
-                                    Quick Link
-                        </Typography>
-                                <div className={classes.paperContent}>
-                                    <Button style={{ margin: '15px' }} variant="contained" color="default" onClick={() => setOpenQuiz(!openQuiz)} >Check Course Quiz Record</Button>
-                                    <Button style={{ margin: '15px' }} variant="contained" color="default"><a href="#regression">Regression Analysis</a></Button>
-
-
-
-                                </div>
-                            </Paper>
-                            <Paper className={classes.paper}>
-
-                                <Typography variant="h6" className={classes.title}>
+                                <Typography variant="h4" className={classes.title}>
                                     My Attendance Rate (in %)
-                        </Typography>
-                                <Grid container spacing={1}>
-
+                                </Typography>
+                                <Grid container spacing={2} alignItems="center">
                                     {courselist && courselist.map(i => {
                                         return <Grid item xs={12} md={6} lg={4}> <AttendanceChart course={i.code} /></Grid>
                                     })}

@@ -125,7 +125,7 @@ let QuizHistory = (props) => {
 
         return (
             <React.Fragment>
-                <FullPaperPageHeader minheight={props.minheight && props.minheight } width={props.width ? props.width :'70%'} title={`${props.match.params.course === undefined ? '' : Course} Quiz Record`} body1={'Select Course To View Your Quiz Result!'}>
+                <FullPaperPageHeader minheight={props.minheight && props.minheight } width={props.width ? props.width :'70%'} title={`${props.match.params.course === undefined ? '' : Course} My Quiz Record`} body1={'Select Course To View Your Quiz Result!'}>
                     <div>
                         {Array.isArray(courselist) &&
                             <Autocomplete

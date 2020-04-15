@@ -30,6 +30,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import SchoolIcon from '@material-ui/icons/School';
 import axios from "axios"
 import { UserType } from "../test"
 
@@ -329,14 +330,14 @@ export default function Header() {
           <MenuItem component={Link} to="/home" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><AssignmentIcon /></ListItemIcon>
-              <ListItemText primary="DashBoard" />
+              <ListItemText primary="Dashboard" />
             </ListItem>
           </MenuItem>
           <Divider />
 
           <MenuItem component={Link} to="/course" onClick={handleDrawerClose} color="inherit">
             <ListItem>
-              <ListItemIcon><PostAddIcon /></ListItemIcon>
+              <ListItemIcon><SchoolIcon /></ListItemIcon>
               <ListItemText primary="My Course" />
             </ListItem>
           </MenuItem>
