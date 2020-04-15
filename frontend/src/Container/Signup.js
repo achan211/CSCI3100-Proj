@@ -105,10 +105,10 @@ let SignUp = (props) => {
 
   let HandleMapSateToProps = (studentDetails) =>{
     // stateDispatch({ type: 'ADD_TOKEN', payload: { 'token': token} })
-    localStorage.setItem( 'info', JSON.stringify(studentDetails) )
-    localStorage.setItem( 'token', studentDetails._id )
+    // localStorage.setItem( 'info', JSON.stringify(studentDetails) )
+    // localStorage.setItem( 'token', studentDetails._id )
     
-    console.log(  localStorage.getItem( "token" ) )
+    // console.log(  localStorage.getItem( "token" ) )
   }
 
   let validateEmail = () => {
