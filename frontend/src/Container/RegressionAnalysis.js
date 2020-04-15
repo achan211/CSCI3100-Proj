@@ -266,8 +266,8 @@ let RegressionAnalysis = (props) => {
         return (
             <React.Fragment>
 
-                <FullPaperPageHeader minheight={props.minheight && props.minheight} width={props.width}  title={`${props.match.params.course === undefined ? '' : Course} Regression Analysis`} 
-                body1={'Select Course To The Relation Between Attendance, Score, And Rating!'}>
+                <FullPaperPageHeader minheight={props.minheight && props.minheight} width={props.width}  title={`${props.match.params.course === undefined ? '' : Course} My Score Analysis`} 
+                body1={'Select a Course to find out the Relationship between your Attendance, Score, and Ratings!'}>
                     <div>
                         {Array.isArray(courselist) &&
                             <Autocomplete
