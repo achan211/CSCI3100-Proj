@@ -39,23 +39,14 @@ import UserInfoReducer from "./Reducer/UserInfoReducer";
 import UserTypeReducer from "./Reducer/UserTypeReducer";
 import axios from "axios"
 
-import Typography from '@material-ui/core/Typography';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Button from '@material-ui/core/Button';
+
+
 
 
 import { UserCourseList, UserInfo, UserType } from "./test"
 
-const useStyles = makeStyles(theme => ({
-  rightToolBar: {
-    marginLeft: 'auto',
-    marginRight: -12,
-  }
-}));
+
 function App() {
-  const classes = useStyles();
 
   const [courselist, courselistDispatch] = useReducer(UserCourseListReducer, []);
   const [userType, userTypeDispatch] = useReducer(UserTypeReducer, '');
@@ -102,7 +93,7 @@ return false
   return (
     <Router history={history}>
       <div className="App">
-        <div>
+   
           <UserCourseList.Provider value={{
             courselist: courselist,
             courselistDispatch
@@ -145,8 +136,8 @@ return false
                 <Route exact path="/home" component={Home} />
 
                 {/* This Part is for Welcome Page */}
-                <Route path="/welcome" >
-                  <React.Fragment>
+                <Route path="/welcome" component={Welcome} />
+                  {/* <React.Fragment>
                     <CssBaseline />
                   <AppBar position="static">
                       <Toolbar>
@@ -154,9 +145,8 @@ return false
                       <Button color="inherit" className={classes.rightToolBar} size="large" component={Link} to="/login">Login</Button>
                       </Toolbar>
                     </AppBar>
-                  </React.Fragment>
-                  <Welcome />
-                </Route>
+                  </React.Fragment> */}
+            
 
                 <Route path="/:id" >
                   <div>ERROR </div>
@@ -167,7 +157,7 @@ return false
               </Switch>
             </UserType.Provider>
           </UserCourseList.Provider>
-        </div>
+
         {/* </React.Fragment> */}
         <Footer />
 
