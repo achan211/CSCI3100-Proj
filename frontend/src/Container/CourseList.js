@@ -160,7 +160,7 @@ export default function Home(props) {
             <Grid container >
                 <Grid item xs={12} >
                     <Typography variant="h4" className={classes.title}>
-                        Hello, {users.username}. Here Are Your Courses:
+                        Hello, {users.username}. Here are your Courses:
             </Typography>
                 </Grid>
                 <Grid item xs={12} >
@@ -173,7 +173,7 @@ export default function Home(props) {
     )
     return (
         <React.Fragment>
-            {courselist.length > 0 ? Array.isArray(courselist) ? renderLoginedHome() : <div>no course yet!</div> : <div>loading...</div>}
+            {courselist.length > 0 ? Array.isArray(courselist) ? renderLoginedHome() : <div>You haven't register a course yet!</div> : <div>Loading...</div>}
         </React.Fragment>
     )
 }

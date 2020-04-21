@@ -95,7 +95,7 @@ let LoginPage = (props) => {
 
         }
         else {
-          alert('wrong pw!')
+          alert('Invalid Password!')
         }
       })
     }
@@ -132,7 +132,7 @@ let LoginPage = (props) => {
                   required
                   fullWidth
                   id="username"
-                  label="User Name"
+                  label="Username"
                   name="username"
                   autoComplete="username"
                   autoFocus
@@ -167,12 +167,7 @@ let LoginPage = (props) => {
                   Sign In
             </Button>
                 <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                </Link>
-                  </Grid>
-                  <Grid item>
+                  <Grid item xs={12}>
                     <Link href="/signup" variant="body2">
                       {"Don't have an account? Sign Up"}
                     </Link>
@@ -193,7 +188,7 @@ let LoginPage = (props) => {
 
   return (
     <React.Fragment>
-      {renderLogin ? LoginPage(): <div>loading...</div>}
+      {renderLogin ? LoginPage(): <div>Loading...</div>}
     </React.Fragment>
 
   );
