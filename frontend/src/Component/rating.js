@@ -7,6 +7,7 @@ import Link from '@material-ui/core/Link';
 import Button from "@material-ui/core/Button";
 import Slider from "@material-ui/core/Slider";
 import TextField from "@material-ui/core/TextField";
+import { UserCourseList } from "../test"
 import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
@@ -53,6 +54,7 @@ export default function Rating(){
   const classes = useStyles();
   const [Course, setCourse] = useState()
   const { courselist, courselistDispatch } = useContext(UserCourseList);
+  const 
 
   
 
@@ -101,7 +103,7 @@ export default function Rating(){
                     />
                   </Grid>
                   <Grid item>
-                    <Typography id="one">10</Typography>
+                    <Typography id="ten">10</Typography>
                   </Grid>
                   <Typography id="next_line" gutterBottom />
                 </Grid>
@@ -109,7 +111,7 @@ export default function Rating(){
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => { window.location.href = "/ratingComplete" }}
+                    onClick={() => { window.location.href = "/Container/home" }}
                     >
                   Submit
                 </Button>
