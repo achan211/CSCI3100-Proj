@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: -12,
     color: 'white !important'
   },
+
   conetent: {
     marginTop: '64px'
   },
@@ -65,7 +66,7 @@ const Welcome = () => {
           </Toolbar>
         </AppBar>
         <div className={classes.conetent}>
-
+        <Typography variant="h4" gutterBottom>Manage teaching and learning with CUHK Live Classroom</Typography>
           <CustomSwiper />
           <Paper elevation={3} className={classes.paper} >
             <div className={classes.paperContentWrapper}>

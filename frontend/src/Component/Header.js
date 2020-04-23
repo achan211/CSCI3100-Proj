@@ -354,12 +354,6 @@ export default function Header() {
               <ListItemText primary="Attendance" />
             </ListItem>
           </MenuItem>
-          <MenuItem component={Link} to="/Chatroom" onClick={handleDrawerClose} color="inherit">
-            <ListItem>
-              <ListItemIcon><ChatIcon /></ListItemIcon>
-              <ListItemText primary="Chatroom" />
-            </ListItem>
-          </MenuItem>
           <MenuItem component={Link} to="/ForumHome" onClick={handleDrawerClose} color="inherit">
             <ListItem>
               <ListItemIcon><ForumIcon /></ListItemIcon>

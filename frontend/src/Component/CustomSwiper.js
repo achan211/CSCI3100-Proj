@@ -52,34 +52,43 @@ const CustomSwiper = () => {
   return(
     // <div className={classes.swiperContainer} >
     <Swiper  {...params}>
-  
+
+    
     <div className={classes.imgcontainer}>
-      <h2>With CUHK Live Classroom, you can:</h2>
-      <img className={classes.img}  src='https://i.imgur.com/qZ9W8ct.png'></img>
+      <img className={classes.img}  src='https://i.imgur.com/qZ9W8ct.png'></img><br />
+      A non-typical welcome page, filled with features you could only dream of. But not anymore. 
     </div>
     <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/Cqrwe35.png'></img>
+      <img className={classes.img} src='https://i.imgur.com/Cqrwe35.png'></img><br />
+      All updates captured at first glance. 
     </div>
     <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/wBVjhX2.png'></img>
+      <img className={classes.img} src='https://i.imgur.com/wBVjhX2.png'></img><br />
+
     </div>
     <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/KAHeJMG.png'></img>
+      <img className={classes.img} src='https://i.imgur.com/KAHeJMG.png'></img><br />
+      Couldn't register a course? Not a problem anymore. 
     </div>
     <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/JilcflE.png'></img>
+      <img className={classes.img} src='https://i.imgur.com/JilcflE.png'></img><br />
+      Now I'll never forget to sign up for my attendance. 
     </div>
     <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/L35NW6G.png'></img>
+      <img className={classes.img} src='https://i.imgur.com/L35NW6G.png'></img><br />
+      Hey, I've got a question. Do you know the answer?
     </div>
     <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/s9wZXuW.png'></img>
+      <img className={classes.img} src='https://i.imgur.com/s9wZXuW.png'></img><br />
+      My scores have never been more accurately analysed. 
     </div>
     <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/bPpxiLd.png'></img>
+      <img className={classes.img} src='https://i.imgur.com/bPpxiLd.png'></img><br />
+      Now I see, higher the attendance, higher the score I could get. 
     </div>
     <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/rvsoaAU.png'></img>
+      <img className={classes.img} src='https://i.imgur.com/rvsoaAU.png'></img><br />
+      Not even my phone would stop me from using.  
     </div>
   
   </Swiper>
