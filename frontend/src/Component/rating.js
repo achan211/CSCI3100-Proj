@@ -8,6 +8,8 @@ import Button from "@material-ui/core/Button";
 import Slider from "@material-ui/core/Slider";
 import TextField from "@material-ui/core/TextField";
 import { UserCourseList } from "../test"
+import { UserCourseList, UserType } from "../test"
+import React, { useEffect, useContext, useState } from 'react';
 import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
@@ -54,7 +56,6 @@ export default function Rating(){
   const classes = useStyles();
   const [Course, setCourse] = useState()
   const { courselist, courselistDispatch } = useContext(UserCourseList);
-  const 
 
   
 
@@ -65,9 +66,7 @@ export default function Rating(){
             window.location.href = 'http://localhost:3000' + response.redirectURL
         }
         else if (!response.error) {
-          setValues({
-            ...response.docs
-        });
+          getRating();
         }
         else {
             console.log(response.error)
@@ -93,7 +92,7 @@ export default function Rating(){
                   <Grid item xs={7}>
                     <Slider
                       defaultValue={5}
-                      getAriaValueText={rating}
+                      getAriaValueText={valuetext}
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="auto"
                       step={1}
@@ -125,11 +124,7 @@ export default function Rating(){
     )
   }
 
-  return (
-    <React.Fragment>
-        {courselist.length > 0 ? Array.isArray(courselist) ? renderLoginedHome() : <div>You haven't register a course yet!</div> : <div>Loading...</div>}
-    </React.Fragment>
-  )
+  
 
 }
 
