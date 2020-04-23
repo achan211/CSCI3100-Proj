@@ -101,7 +101,7 @@ return false
               userType: userType,
               userTypeDispatch
             }}>
-              {!checkifURLContainsString() &&  window.location.href !== 'http://localhost:3000/' && <Header />}
+              {!checkifURLContainsString() &&  window.location.href !== 'http://localhost:3000/' && userType !== 'admin' && <Header />}
               <Switch>
                 <Route path="/Attendance" render={(props) =>
                   <Attendance {...props} />

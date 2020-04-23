@@ -328,7 +328,7 @@ let Quiz = (props) => {
                 {modalOpen && <Dialog fullWidth={true} maxWidth={'md'} open={modalOpen} onClose={() => setModalOpen(false)} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Submitted Successfully! Your Score: </DialogTitle>
                     <DialogContent>
-                        <h4> {score}/{question.length} </h4>
+                        <h2> {score}/{question.length} </h2>
                             <Button variant="contained" color="default" onClick={checkQuizHistory}>Check Course Quiz Record</Button>
                     </DialogContent>
                 </Dialog>}

@@ -2,18 +2,17 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import { CssBaseline, IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Avatar from '@material-ui/core/Avatar'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import { CSVReader } from 'react-papaparse'
-import axios from "axios"
+import axios from "axios";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles(theme => ({
     app: {
@@ -94,7 +93,7 @@ export default function AdminInput() {
     const handleDepartmentChange = (event, value) => {
         SetCourse({
             ...course,
-            department: value && value.long 
+            department: value && value.long
         });
     }
     console.log(course)
@@ -103,7 +102,8 @@ export default function AdminInput() {
         data.shift()
         SetCourse({
             ...course,
-            student: data && data.map(i => i.data[0])})
+            student: data && data.map(i => i.data[0])
+        })
         console.log('---------------------------')
     }
 
@@ -116,7 +116,7 @@ export default function AdminInput() {
         console.log(data)
         console.log('---------------------------')
     }
-    let addCourseToDB =()=>{
+    let addCourseToDB = () => {
         axios.post(`http://localhost:5000/admin`, course, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {
                 //back to login
@@ -138,13 +138,27 @@ export default function AdminInput() {
             }
         })
     }
+    let handleLogout = () => {
+        axios.get(`http://localhost:5000/logout`, { withCredentials: true }).then(response => response.data).then((response) => {
+            if (response.redirectURL) {
+                //back to login
+                window.location.href = 'http://localhost:3000' + response.redirectURL
+            }
+        })
+    }
 
     return (
         <React.Fragment>
             <div className={classes.app}>
 
                 <Container component="main">
+                    <div>
+                    <IconButton color="inherit"
+                        onClick={handleLogout}
+                    ><ExitToAppIcon /></IconButton>
+                    </div>
                     <Paper className={classes.paper}>
+                        
                         <SupervisorAccountIcon fontSize="large" />
                         <Typography component="h3" variant="h4">
                             Admin Input Page
@@ -154,6 +168,7 @@ export default function AdminInput() {
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <Typography component="h6" variant="h6"> Add Student To Course (Format: 1 Column Named Student, follow with student's username)</Typography>
+                                    <img src='https://i.imgur.com/V01eYDv.jpg'></img>
                                     <div className={classes.csvuploadContainer}>
                                         <CSVReader
                                             onDrop={handleOnDrop}
@@ -167,16 +182,16 @@ export default function AdminInput() {
 
                                 </Grid>
                                 <Grid item xs={12}>
-                      
 
-                                        <Typography component="p" variant="h6"> Student List: </Typography>
 
-                                        {course.student.map(i => {
-                                            return (
-                                                <Typography component="div" variant="subtitle1"> {i}</Typography>
+                                    <Typography component="p" variant="h6"> Student List: </Typography>
 
-                                            )
-                                        })}
+                                    {course.student.map(i => {
+                                        return (
+                                            <Typography component="div" variant="subtitle1"> {i}</Typography>
+
+                                        )
+                                    })}
                                 </Grid>
 
                                 <Grid item xs={12} sm={6}>
@@ -204,6 +219,7 @@ export default function AdminInput() {
                         <Divider className={classes.divider} />
                         <Button onClick={addCourseToDB} variant="contained" color="primary">Submit</Button>
                     </Paper>
+                   
                 </Container>
             </div>
         </React.Fragment>

@@ -128,6 +128,12 @@ export default function CoursePage(props) {
 
     useEffect(() => {
         if ( checkifEnrolled()) {
+            filtered[0].updates.sort(function (a, b) {
+                if (a.date > b.date) //sort  descending
+                    return -1
+                else
+                    return 1
+            })
             setCourse(filtered[0])
         }
 

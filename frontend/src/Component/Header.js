@@ -374,15 +374,6 @@ export default function Header() {
           </MenuItem>
 
           <Divider />
-
-          <MenuItem component={Link} to="/adminInput" onClick={handleDrawerClose} color="inherit">
-            <ListItem>
-              <ListItemIcon><SupervisorAccountIcon /></ListItemIcon>
-              <ListItemText primary="Admin Input" />
-            </ListItem>
-          </MenuItem>
-
-          <Divider />
         </MenuList>
       </Drawer>
     </div>

@@ -12,6 +12,8 @@ import MixedChart from "../Component/MixedChart"
 import QuizQuestion from "../Component/QuizQuestion"
 import regression from 'regression';
 import ReactApexChart from 'react-apexcharts'
+import { Link } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 
 
 const useStyles = makeStyles(theme => ({
@@ -55,12 +57,12 @@ let RegressionAnalysis = (props) => {
     const { courselist, courselistDispatch } = useContext(UserCourseList);
     const [quizNumber, setQuizNumber] = useState()
     const [regressionResult, setRegressionResult] = useState()
-    const [ratAttend, setRatAttend]=useState()
-    const[regressionRatAttend,setRegressionRatAttend]=useState()
-    const[scoreRating,setScoreRating]=useState()
-    const[regressionScoreRating,setRegressionScoreRating]=useState()
+    const [ratAttend, setRatAttend] = useState()
+    const [regressionRatAttend, setRegressionRatAttend] = useState()
+    const [scoreRating, setScoreRating] = useState()
+    const [regressionScoreRating, setRegressionScoreRating] = useState()
 
-    
+
     console.log(userType)
 
     var filtered
@@ -161,13 +163,13 @@ let RegressionAnalysis = (props) => {
             console.log(totalquestion)
             console.log(studentarr)
             setFilteredData(studentarr)
-            let tmparr= calregression(studentarr)
+            let tmparr = calregression(studentarr)
             setRegressionResult(tmparr)
         }
     }, [result, attendanceRecord])
 
 
-    let  calregression = (cleanData)=>{
+    let calregression = (cleanData) => {
         if (cleanData) {
             const result = regression.linear(cleanData);
             const gradient = result.equation[0];
@@ -184,15 +186,15 @@ let RegressionAnalysis = (props) => {
                     y: i[1]
                 }
             })
-           return arr;
+            return arr;
             console.log(arr)
             // return arr
         }
     }
 
     //result vs rating
-    useEffect(()=>{
-        if(result && rating && attendanceRecord){
+    useEffect(() => {
+        if (result && rating && attendanceRecord) {
             let quizNum = result.length
             let ratingnum = rating.length
 
@@ -216,7 +218,7 @@ let RegressionAnalysis = (props) => {
                 let studratingtaken = 0
                 for (let i = 0; i < ratingnum; i++) {
                     if (rating[i].rating && rating[i].rating[key]) {
-                        studentrating += rating[i].rating[key] /10
+                        studentrating += rating[i].rating[key] / 10
                         studratingtaken++
                     }
                 }
@@ -225,15 +227,15 @@ let RegressionAnalysis = (props) => {
                 studentarr.push([studentscore, studentrating])
             }
             setScoreRating(studentarr)
-            let tmpregresArr =calregression(studentarr)
+            let tmpregresArr = calregression(studentarr)
             setRegressionScoreRating(tmpregresArr)
             console.log(studentarr)
         }
-    },[result,rating, attendanceRecord])
+    }, [result, rating, attendanceRecord])
 
     // rating data cleasning
-    useEffect(()=>{
-        if(rating && attendanceRecord){
+    useEffect(() => {
+        if (rating && attendanceRecord) {
             let ratingnum = rating.length
 
 
@@ -247,7 +249,7 @@ let RegressionAnalysis = (props) => {
                 let studratingtaken = 0
                 for (let i = 0; i < ratingnum; i++) {
                     if (rating[i].rating && rating[i].rating[key]) {
-                        studentrating += rating[i].rating[key] /10
+                        studentrating += rating[i].rating[key] / 10
                         studratingtaken++
                     }
                 }
@@ -255,20 +257,21 @@ let RegressionAnalysis = (props) => {
                 studentarr.push([studentrating, studattendrate])
             }
             setRatAttend(studentarr)
-            let tmpregresArr =calregression(studentarr)
+            let tmpregresArr = calregression(studentarr)
             setRegressionRatAttend(tmpregresArr)
             console.log(studentarr)
         }
-    },[rating,attendanceRecord])
+    }, [rating, attendanceRecord])
 
 
     let renderAnalysis = () => {
         return (
             <React.Fragment>
 
-                <FullPaperPageHeader minheight={props.minheight && props.minheight} width={props.width}  title={`${props.match.params.course === undefined ? '' : Course} My Score Analysis`} 
-                body1={'Select a Course to find out the Relationship between your Attendance, Score, and Ratings!'}>
+                <FullPaperPageHeader minheight={props.minheight && props.minheight} width={props.width} title={`${props.match.params.course === undefined ? '' : Course} My Score Analysis`}
+                    body1={'Select a Course to find out the Relationship between your Attendance, Score, and Ratings!'}>
                     <div>
+                      
                         {Array.isArray(courselist) &&
                             <Autocomplete
                                 id="combo-box-demo"
@@ -318,7 +321,7 @@ let RegressionAnalysis = (props) => {
                                             }
                                         },
                                         title: {
-                                            text: 'Quiz Score (%)' 
+                                            text: 'Quiz Score (%)'
                                         }
                                     },
                                     yaxis: {
@@ -349,7 +352,7 @@ let RegressionAnalysis = (props) => {
                                     data: regressionResult
                                 }]} type="line" height={350} />
                             </div>}
-                            {rating && attendanceRecord && ratAttend && regressionRatAttend &&
+                        {rating && attendanceRecord && ratAttend && regressionRatAttend &&
                             <div id="chart">
                                 <Typography variant="h4" className={classes.title}>
                                     Attendance Rate vs Course Rating</Typography>
@@ -414,7 +417,7 @@ let RegressionAnalysis = (props) => {
                                     data: regressionRatAttend
                                 }]} type="line" height={350} />
                             </div>}
-                            {rating && attendanceRecord && ratAttend  && regressionScoreRating &&
+                        {rating && attendanceRecord && ratAttend && regressionScoreRating &&
                             <div >
                                 <Typography variant="h4" className={classes.title}>
                                     Quiz Score vs Course Rating</Typography>

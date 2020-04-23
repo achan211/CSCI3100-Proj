@@ -61,7 +61,7 @@ const Welcome = () => {
         <AppBar position="fixed">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>CUHK Live Classroom</Typography>
-            <Button color="primary" className={classes.rightToolBar} size="large" component={Link} to="/login">Login</Button>
+            <Button color="primary" className={classes.rightToolBar} size="large" component={Link} to="/login">Login/My Page</Button>
           </Toolbar>
         </AppBar>
         <div className={classes.conetent}>

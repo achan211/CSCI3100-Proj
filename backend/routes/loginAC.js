@@ -13,7 +13,7 @@ router.post('/',middleware.loginChecker, async (req, res) => {
             docs[0].pw = undefined;
             req.session.user =req.body.username
             req.session.usertype = docs[0].type
-            res.json(  { 'redirectURL': '/home'})
+            res.json(  { 'redirectURL': '/home' })
 
         } else {
             console.log('no user: ');

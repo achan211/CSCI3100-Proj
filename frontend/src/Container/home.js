@@ -267,17 +267,36 @@ export default function Home(props) {
                         </Grid>
 
                         <Grid item xs={12} md={8}>
-                            
                             <Paper className={classes.paper}>
-                                <Typography variant="h4" className={classes.title}>
-                                    My Attendance Rate (in %)
-                                </Typography>
-                                <Grid container spacing={2} alignItems="center">
-                                    {courselist && courselist.map(i => {
-                                        return <Grid item xs={12} md={6} lg={4}> <AttendanceChart course={i.code} /></Grid>
-                                    })}
-                                </Grid>
+                                <Typography variant="h5" className={classes.title}>
+                                    Quick Link
+                             </Typography>
+                                {userType === 'student' &&
+                                    <Link className="link" to={`/Attendance`}>
+                                        <Button style={{ margin: '15px' }} variant="contained" color="primary" >Take Attendance</Button>
+                                    </Link>
+                                }
+                                <Link className="link" to={`/Quiz`}>
+                                    <Button style={{ margin: '15px' }} variant="contained" color="primary" >Take Quiz / Check Quiz Result</Button>
+                                </Link>
+                                <Link className="link" to={`/regressionAnalysis`}>
+                                    <Button style={{ margin: '15px' }} variant="contained" color="primary" >Regression Analysis of Courses</Button>
+                                </Link>
                             </Paper>
+
+                            {userType === 'student' &&
+                                <Paper className={classes.paper}>
+                                    <Typography variant="h4" className={classes.title}>
+                                        My Attendance Rate (in %)
+                             </Typography>
+                                    <Grid container spacing={2} alignItems="center">
+                                        {courselist && courselist.map(i => {
+                                            return <Grid item xs={12} md={6} lg={4}> <AttendanceChart course={i.code} /></Grid>
+                                        })}
+                                    </Grid>
+                                </Paper>
+                            }
+
                             <div id='regression'>
                                 <RegressionAnalysis {...props} minheight='0' width='100%' />
                             </div>
@@ -292,8 +311,15 @@ export default function Home(props) {
         </div>
         // </React.Fragment>
     )
+    
+    if (userType === 'admin') {
+        window.location.href = 'http://localhost:3000/adminInput'
+        return
+    }
+
     return (
         <React.Fragment>
+
             {courselist.length > 0 ? Array.isArray(courselist) ? renderLoginedHome() : <div>no course yet!</div> : <div>loading...</div>}
         </React.Fragment>
     )
