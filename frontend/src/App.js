@@ -20,7 +20,6 @@ import StartQuiz from "./Container/StartQuiz"
 import ProfessorQuiz from "./Container/ProfessorQuiz"
 import ProfessorStartQuiz from "./Container/ProfessorStartQuiz"
 import CreateQuiz from "./Container/CreateQuiz"
-import CourseRating from "./Component/rating"
 import AdminInput from './Container/adminInput'
 import Errorpage from './Container/Errorpage'
 import Footer from './Component/Footer'
@@ -128,7 +127,6 @@ return false
                 <Route path="/ProfessorStartQuiz" component={ProfessorStartQuiz} />
                 <Route path="/CreateQuiz" component={CreateQuiz} />
                 <Route path="/RegressionAnalysis" component={RegressionAnalysis} />
-                <Route path="/rating" component={CourseRating} />
                 <Route path="/adminInput" component={AdminInput} />
                 <Route path="/CourseList" component={CourseList} />
                 <Route path="/404" component={Errorpage} />
