@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext, useState } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -8,8 +8,6 @@ import Button from "@material-ui/core/Button";
 import Slider from "@material-ui/core/Slider";
 import TextField from "@material-ui/core/TextField";
 import { UserCourseList } from "../test"
-import { UserCourseList, UserType } from "../test"
-import React, { useEffect, useContext, useState } from 'react';
 import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
