@@ -3,8 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Swiper from 'react-id-swiper';
 import 'swiper/swiper.scss'
 import Typography from '@material-ui/core/Typography'
-
-
+import Button from '@material-ui/core/Button';
+import {
+  Link
+} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   SwiperElement: {
@@ -31,11 +33,15 @@ const useStyles = makeStyles(theme => ({
 
   },
   titleContainer:{
-    paddingTop: '500px'
+    // paddingTop: '450px'
+    margin: "auto"
   },
+
   title: {
-    color: 'grey'
+    color: 'grey', 
+    marginBottom: theme.spacing(2)
   },
+  
 }));
 
 const CustomSwiper = () => {
@@ -63,7 +69,8 @@ const CustomSwiper = () => {
     // <div className={classes.swiperContainer} >
     <Swiper  {...params}>
       <div className={classes.titleContainer}>
-        <Typography variant="h4" className={classes.title}>Filled With Features You Could Only Dream Of. But Not Anymore.</Typography>
+        <Typography variant="h3" gutterBottom>CUHK Live Classroom</Typography>
+        <Typography variant="h4" className={classes.title}>Filled with Features you could ever dream of. But not anymore.</Typography>
       </div>
       <div className={classes.imgcontainer}>
         <Typography variant="h6" className={classes.title}>Production Level Welcome Page</Typography>
@@ -75,7 +82,7 @@ const CustomSwiper = () => {
         <img className={classes.img} src='https://i.imgur.com/bPpxiLd.png'></img><br />
       </div>
       <div className={classes.imgcontainer}>
-        <Typography variant="h6" className={classes.title}>Integrated Attendance System and Recording Checking, with Dynamic Grpah </Typography>
+        <Typography variant="h6" className={classes.title}>Integrated Attendance System and Recording Checking, with Dynamic Grpahs </Typography>
         <img className={classes.img} src='https://i.imgur.com/JilcflE.png'></img><br />
       </div>
       <div className={classes.imgcontainer}>
@@ -83,7 +90,7 @@ const CustomSwiper = () => {
         <img className={classes.img} src='https://i.imgur.com/s9wZXuW.png'></img><br />
       </div>
       <div className={classes.imgcontainer}>
-        <Typography variant="h6" className={classes.title}>Integrated Forum System With Push Notification For Question Asking </Typography>
+        <Typography variant="h6" className={classes.title}>Integrated Forum System with Push Notification for Question asking </Typography>
 
         <img className={classes.img} src='https://i.imgur.com/L35NW6G.png'></img><br />
       </div>
@@ -93,15 +100,15 @@ const CustomSwiper = () => {
         <img className={classes.img} src='https://i.imgur.com/Cqrwe35.png'></img><br />
       </div>
       <div className={classes.imgcontainer}>
-        <Typography variant="h6" className={classes.title}>Course Materials, Deadlines, Updates, Rating, All in One Page </Typography>
+        <Typography variant="h6" className={classes.title}>Course Materials, Deadlines, Updates and Ratings, All in One Page </Typography>
         <img className={classes.img} src='https://i.imgur.com/wBVjhX2.png'></img><br />
       </div>
       <div className={classes.imgcontainer}>
-        <Typography variant="h6" className={classes.title}>Wanna Sit In a Course, and Receive Course Materials? Not A Problem anymore.</Typography>
+        <Typography variant="h6" className={classes.title}>Wanna sit in a Course, and receive all the Course Materials? Not a problem anymore.</Typography>
         <img className={classes.img} src='https://i.imgur.com/KAHeJMG.png'></img><br />
       </div>
       <div className={classes.imgcontainer}>
-        <Typography variant="h6" className={classes.title}>Responsive Web Design, Support All Users</Typography>
+        <Typography variant="h6" className={classes.title} gutterBottom>Responsive Web Design, Support All Users</Typography>
         <img className={classes.img} src='https://i.imgur.com/rvsoaAU.png'></img><br />
       </div>
 

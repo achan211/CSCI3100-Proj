@@ -284,13 +284,13 @@ let Quiz = (props) => {
                                 <Divider className={classes.divider} />
                                 <Typography variant="h6" component="h5">Selected Course: {Course}</Typography>
                                 <Divider className={classes.divider} />
-                                <Button variant="contained" onClick={() => setCreateQuiz(true)} >Create Quiz</Button>
+                                <Button variant="contained" color="primary" onClick={() => setCreateQuiz(true)} >Create Quiz</Button>
                                 <Divider className={classes.divider} />
 
                                 {startQuiz ? <Button variant="contained" color="secondary" onClick={() => handleStartOrEndQuiz(0)}>End Quiz</Button> :
                                     <Button variant="contained" color="primary" onClick={() => handleStartOrEndQuiz(1)}>Start Quiz</Button>}
                                 <Divider className={classes.divider} />
-                                <Button variant="contained" color="default" onClick={checkQuizHistory}>Check Course Quiz Record</Button>
+                                <Button variant="contained" color="primary" onClick={checkQuizHistory}>Check Course Quiz Record</Button>
                             </Paper>
                         </Grid>
                         : <Grid item md={6} xs={12}>
