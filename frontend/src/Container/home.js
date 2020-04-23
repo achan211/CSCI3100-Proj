@@ -188,7 +188,7 @@ export default function Home(props) {
     let renderUpdates = () => {
         if (Array.isArray(notice) && notice.length > 0) {
             return notice.map((item, index) => {
-                if (index < itemNumber * 5)
+                if (index < itemNumber * 4)
                     return (
                         <React.Fragment key={item._id}>
                             <ListItem>
