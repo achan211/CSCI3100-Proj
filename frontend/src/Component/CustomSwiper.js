@@ -2,32 +2,40 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Swiper from 'react-id-swiper';
 import 'swiper/swiper.scss'
+import Typography from '@material-ui/core/Typography'
 
 
 
 const useStyles = makeStyles(theme => ({
-  SwiperElement:{
+  SwiperElement: {
     // minHeight: 'calc(100vh - 172px)'
     height: '100%'
   },
-  swiperContainerDefine:{
+  swiperContainerDefine: {
     // minHeight: 'calc(100vh - 172px)',
     // maxHeight:'calc(100vh - 172px)',
     height: '105px !important',
     maxHeight: '105px !important'
-  }, 
-  img:{
+  },
+  img: {
     // 
     maxHeight: 'calc(100vh - 230px)',
+    margin: '-50px',
     // height:'auto',
     // maxWidth:'100%'
   },
-  imgcontainer:{
+  imgcontainer: {
     maxWidth: '1200px',
     maxHeight: 'calc(100vh - 170px)',
-    minHeight:'calc(100vh - 170px)',
+    minHeight: 'calc(100vh - 170px)',
 
-  }
+  },
+  titleContainer:{
+    paddingTop: '500px'
+  },
+  title: {
+    color: 'grey'
+  },
 }));
 
 const CustomSwiper = () => {
@@ -45,58 +53,63 @@ const CustomSwiper = () => {
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
-    }
+    },
+
+ 
 
   }
- 
-  return(
+
+  return (
     // <div className={classes.swiperContainer} >
     <Swiper  {...params}>
+      <div className={classes.titleContainer}>
+        <Typography variant="h4" className={classes.title}>Filled With Features You Could Only Dream Of. But Not Anymore.</Typography>
+      </div>
+      <div className={classes.imgcontainer}>
+        <Typography variant="h6" className={classes.title}>Production Level Welcome Page</Typography>
+        <img className={classes.img} src='https://i.imgur.com/qZ9W8ct.png'></img><br />
+      </div>
 
-    
-    <div className={classes.imgcontainer}>
-      <img className={classes.img}  src='https://i.imgur.com/qZ9W8ct.png'></img><br />
-      A non-typical welcome page, filled with features you could only dream of. But not anymore. 
-    </div>
-    <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/Cqrwe35.png'></img><br />
-      All updates captured at first glance. 
-    </div>
-    <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/wBVjhX2.png'></img><br />
+      <div className={classes.imgcontainer}>
+        <Typography variant="h6" className={classes.title}>Regression Analysis on Relation Between Quiz Score, Attendance Rate, and Course Rating Score</Typography>
+        <img className={classes.img} src='https://i.imgur.com/bPpxiLd.png'></img><br />
+      </div>
+      <div className={classes.imgcontainer}>
+        <Typography variant="h6" className={classes.title}>Integrated Attendance System and Recording Checking, with Dynamic Grpah </Typography>
+        <img className={classes.img} src='https://i.imgur.com/JilcflE.png'></img><br />
+      </div>
+      <div className={classes.imgcontainer}>
+        <Typography variant="h6" className={classes.title}>Integrated Quiz System with Score Analysis </Typography>
+        <img className={classes.img} src='https://i.imgur.com/s9wZXuW.png'></img><br />
+      </div>
+      <div className={classes.imgcontainer}>
+        <Typography variant="h6" className={classes.title}>Integrated Forum System With Push Notification For Question Asking </Typography>
 
-    </div>
-    <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/KAHeJMG.png'></img><br />
-      Couldn't register a course? Not a problem anymore. 
-    </div>
-    <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/JilcflE.png'></img><br />
-      Now I'll never forget to sign up for my attendance. 
-    </div>
-    <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/L35NW6G.png'></img><br />
-      Hey, I've got a question. Do you know the answer?
-    </div>
-    <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/s9wZXuW.png'></img><br />
-      My scores have never been more accurately analysed. 
-    </div>
-    <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/bPpxiLd.png'></img><br />
-      Now I see, higher the attendance, higher the score I could get. 
-    </div>
-    <div className={classes.imgcontainer}>
-      <img className={classes.img} src='https://i.imgur.com/rvsoaAU.png'></img><br />
-      Not even my phone would stop me from using.  
-    </div>
-  
-  </Swiper>
-    //  </div>
+        <img className={classes.img} src='https://i.imgur.com/L35NW6G.png'></img><br />
+      </div>
 
-  
+      <div className={classes.imgcontainer}>
+        <Typography variant="h6" className={classes.title}>All updates captured at first glance.  </Typography>
+        <img className={classes.img} src='https://i.imgur.com/Cqrwe35.png'></img><br />
+      </div>
+      <div className={classes.imgcontainer}>
+        <Typography variant="h6" className={classes.title}>Course Materials, Deadlines, Updates, Rating, All in One Page </Typography>
+        <img className={classes.img} src='https://i.imgur.com/wBVjhX2.png'></img><br />
+      </div>
+      <div className={classes.imgcontainer}>
+        <Typography variant="h6" className={classes.title}>Wanna Sit In a Course, and Receive Course Materials? Not A Problem anymore.</Typography>
+        <img className={classes.img} src='https://i.imgur.com/KAHeJMG.png'></img><br />
+      </div>
+      <div className={classes.imgcontainer}>
+        <Typography variant="h6" className={classes.title}>Responsive Web Design, Support All Users</Typography>
+        <img className={classes.img} src='https://i.imgur.com/rvsoaAU.png'></img><br />
+      </div>
+
+    </Swiper>
+
+
   )
 
 };
- 
+
 export default CustomSwiper;

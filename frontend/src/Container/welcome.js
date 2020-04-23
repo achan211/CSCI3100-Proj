@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
     margin: '50px auto'
   },
   paperContentWrapper:{
-    padding: '55px'
+    padding: '55px',
+    textAlign: 'left'
   }
 }));
 
@@ -66,12 +67,17 @@ const Welcome = () => {
           </Toolbar>
         </AppBar>
         <div className={classes.conetent}>
-        <Typography variant="h4" gutterBottom>Manage teaching and learning with CUHK Live Classroom</Typography>
+        <Typography variant="h4" style={{marginTop: '100px'}} gutterBottom></Typography>
           <CustomSwiper />
           <Paper elevation={3} className={classes.paper} >
             <div className={classes.paperContentWrapper}>
-            <Typography variant="h5">Tech Fratures</Typography>
-            <Typography variant="h5">Tech Fratures</Typography>
+            <Typography variant="h4">Tech Features</Typography>
+            <Typography variant="h5">1. Progressive Web App: Can be installed on mobile phone without submitting to digital distribution service platform (Google Play, App Store).</Typography>
+            <img src='https://i.imgur.com/AUpDVIE.jpg'></img>
+            <Typography variant="h5">2. Single Page Application: No extra queries to the server to download pages.</Typography>
+            <Typography variant="h5">3. Responsive Web Design: Suitable for both mobile and desktop users.</Typography>
+            <Typography variant="h5">4. Data Visualization</Typography>
+            <Typography variant="h5">5. Framework used: React.Js, ExpressJs, MongoDB</Typography>
             </div>
           </Paper>
 
