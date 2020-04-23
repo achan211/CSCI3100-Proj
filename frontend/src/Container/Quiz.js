@@ -21,8 +21,6 @@ import CourseTable from "../Component/CourseTable"
 import Divider from '@material-ui/core/Divider';
 import PeopleIcon from '@material-ui/icons/People';
 import TextField from '@material-ui/core/TextField'
-import StartQuiz from './StartQuiz';
-import { Link } from "react-router-dom";
 import axios from "axios"
 
 const useStyles = makeStyles(theme => ({

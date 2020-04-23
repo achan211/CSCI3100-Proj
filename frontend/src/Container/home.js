@@ -1,13 +1,11 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import { Link } from "react-router-dom";
 import axios from "axios"
@@ -18,7 +16,6 @@ import Paper from '@material-ui/core/Paper';
 import QuizHistory from "./QuizHistory"
 import AttendanceChart from "../Component/AttendanceChart"
 import { UserType } from "../test"
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 const useStyles = makeStyles(theme => ({

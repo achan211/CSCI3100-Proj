@@ -3,10 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Swiper from 'react-id-swiper';
 import 'swiper/swiper.scss'
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button';
-import {
-  Link
-} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   SwiperElement: {

@@ -23,13 +23,11 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TimerIcon from '@material-ui/icons/Timer';
 import ForumIcon from '@material-ui/icons/Forum';
-import ChatIcon from '@material-ui/icons/Chat';
 import GroupIcon from '@material-ui/icons/Group';
 import Notification from "./Notification/Notification";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import SchoolIcon from '@material-ui/icons/School';
 import axios from "axios"
 import { UserType } from "../test"
