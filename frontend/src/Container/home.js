@@ -76,7 +76,11 @@ const useStyles = makeStyles(theme => ({
     },
     profUpdate: {
         flexGrow: 1
-    }
+    },
+
+    courses: {
+        margin: "auto",
+    },
 }));
 
 // This is the homepage for user that have log into their accounts
@@ -232,8 +236,8 @@ export default function Home(props) {
 
                                             {courselist && courselist.map((item, index) => {
                                                 return (
-                                                    <Grid md={6} xs={12}>
-                                                        <Link className="link" to={`/home/${item.code}`}>
+                                                    <Grid container>
+                                                        <Link className="link" to={`/home/${item.code}`} className={classes.courses}>
                                                             <Button style={{ marginBottom: '15px' }} variant="contained" color="default" onClick={() => setOpenQuiz(!openQuiz)} >{item.name} {item.code}</Button>
                                                         </Link>
                                                     </Grid>
