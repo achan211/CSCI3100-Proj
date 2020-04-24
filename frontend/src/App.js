@@ -135,7 +135,7 @@ return false
 
                 {/* This Part is for Welcome Page */}
                 <Route path="/welcome" component={Welcome} />
-                  {/* <React.Fragment>
+                  <React.Fragment>
                     <CssBaseline />
                   <AppBar position="static">
                       <Toolbar>
@@ -143,7 +143,7 @@ return false
                       <Button color="inherit" className={classes.rightToolBar} size="large" component={Link} to="/login">Login</Button>
                       </Toolbar>
                     </AppBar>
-                  </React.Fragment> */}
+                  </React.Fragment>
             
 
                 <Route path="/:id" >
