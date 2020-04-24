@@ -7,6 +7,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
 import {
   Link
 } from "react-router-dom";
@@ -51,7 +52,13 @@ const useStyles = makeStyles((theme) => ({
   paperContentWrapper:{
     padding: '55px',
     textAlign: 'left'
-  }
+  },
+
+  divider: {
+    marginBottom: 10,
+    marginTop: 8,
+  },
+
 }));
 
 const Welcome = () => {
@@ -72,15 +79,15 @@ const Welcome = () => {
           <Paper elevation={3} className={classes.paper} >
             <div className={classes.paperContentWrapper}>
             <Typography variant="h4">Tech Features</Typography>
-            <Typography variant="h5">1. Progressive Web App: Can be installed on mobile phone without submitting to digital distribution service platform (Google Play, App Store).</Typography>
+            <Divider className={classes.divider} />
+            <Typography variant="body1">1. Progressive Web App: Can be installed on mobile phone without submitting to digital distribution service platform (Google Play, App Store).</Typography>
             <img src='https://i.imgur.com/AUpDVIE.jpg'></img>
-            <Typography variant="h5">2. Single Page Application: No extra queries to the server to download pages.</Typography>
-            <Typography variant="h5">3. Responsive Web Design: Suitable for both mobile and desktop users.</Typography>
-            <Typography variant="h5">4. Data Visualization</Typography>
-            <Typography variant="h5">5. Framework used: React.Js, ExpressJs, MongoDB</Typography>
+            <Typography variant="body1">2. Single Page Application: No extra queries to the server to download pages.</Typography>
+            <Typography variant="body1">3. Responsive Web Design: Suitable for both mobile and desktop users.</Typography>
+            <Typography variant="body1">4. Data Visualization</Typography>
+            <Typography variant="body1">5. Framework used: React.Js, ExpressJs, MongoDB</Typography>
             </div>
           </Paper>
-
         </div>
       </div>
     </React.Fragment>
