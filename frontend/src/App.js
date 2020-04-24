@@ -39,9 +39,6 @@ import UserTypeReducer from "./Reducer/UserTypeReducer";
 import axios from "axios"
 
 
-
-
-
 import { UserCourseList, UserInfo, UserType } from "./test"
 
 
@@ -70,9 +67,6 @@ function App() {
         }
       })
     }
-
-
-
   }, [])
 
   let checkifURLContainsString = () => {
@@ -82,10 +76,8 @@ function App() {
       window.location.href = 'http://localhost:3000/welcome'
 return false
     }
-
       return false
   }
-
 
   console.log(courselist)
   console.log(userType)
@@ -165,4 +157,3 @@ return false
   );
 }
 export default App;
-
