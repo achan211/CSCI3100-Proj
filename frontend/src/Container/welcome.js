@@ -82,10 +82,26 @@ const Welcome = () => {
             <Divider className={classes.divider} />
             <Typography variant="body1">1. Progressive Web App: Can be installed on mobile phone without submitting to digital distribution service platform (Google Play, App Store).</Typography>
             <img src='https://i.imgur.com/AUpDVIE.jpg'></img>
+            <Divider className={classes.divider} />
+
             <Typography variant="body1">2. Single Page Application: No extra queries to the server to download pages.</Typography>
+            <Divider className={classes.divider} />
+
             <Typography variant="body1">3. Responsive Web Design: Suitable for both mobile and desktop users.</Typography>
+            <Divider className={classes.divider} />
+
             <Typography variant="body1">4. Data Visualization</Typography>
+            <Divider className={classes.divider} />
+
             <Typography variant="body1">5. Framework used: React.Js, ExpressJs, MongoDB</Typography>
+            <Divider className={classes.divider} />
+
+            <Typography variant="body1">6. Archieved ALL optional features stated in CSCI3100 Project Requirement Specification</Typography>
+            <Typography variant="body1">(Regression Analysis, Visualization, Access control mechanism, managing user, mobile support)</Typography>
+            
+
+            <Divider className={classes.divider} />
+
             </div>
           </Paper>
         </div>

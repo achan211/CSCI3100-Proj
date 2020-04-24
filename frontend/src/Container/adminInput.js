@@ -125,12 +125,14 @@ export default function AdminInput() {
             else if (!response.error) {
                 // setSuccess(true)
                 console.log(response)
+                alert("Success!")
                 // setAlertMessage('Success!')
                 // setOpen(true)
                 // setLoading(false)
             }
             else {
                 console.log(response)
+                
                 // setSuccess(false)
                 // setAlertMessage(response.error)
                 // setLoading(false)
