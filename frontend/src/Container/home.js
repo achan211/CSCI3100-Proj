@@ -237,7 +237,7 @@ export default function Home(props) {
                                                 return (
                                                     <Grid md={6} xs={12}>
                                                         <Link className="link" to={`/home/${item.code}`}>
-                                                            <Button style={{ marginBottom: '15px' }} variant="contained" color="default" onClick={() => setOpenQuiz(!openQuiz)} >{item.name} {item.code}</Button>
+                                                            <Button style={{ margin: '15px' }} variant="contained" color="default" onClick={() => setOpenQuiz(!openQuiz)} >{item.name} {item.code}</Button>
                                                         </Link>
                                                     </Grid>
                                                 )
