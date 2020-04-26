@@ -62,7 +62,7 @@ const CustomSwiper = () => {
   }
 
   return (
-    // <div className={classes.swiperContainer} >
+    // This is the Swiper for the Welcome Page
     <Swiper  {...params}>
       <div className={classes.titleContainer}>
         <Typography variant="h3" gutterBottom>CUHK Live Classroom</Typography>
@@ -109,7 +109,6 @@ const CustomSwiper = () => {
       </div>
 
     </Swiper>
-
 
   )
 

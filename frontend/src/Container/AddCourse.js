@@ -67,32 +67,12 @@ let AddCourse = (props) => {
         setAvaCourse('no course yet')
       }
     })
-    // fetch('http://localhost:5000/')
-    //   .then(response => response.json())
-    //   .then(response => {
-    //     if (!response.error) {
-    //       console.log(response)
-    //       setAvaCourse(response)
-    //     }
-    //     else
-    //       setAvaCourse('no course yet')
-
-    //   });
 
   }, [])
 
   let handleSubmit = () => {
     //submit request
     if (Course) {
-      // const requestOptions = {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     'code': Course.code,
-      //     'studentusername': JSON.parse(localStorage.getItem('info')).username,
-      //     'message': Message
-      //   })
-      // };
       axios.post(`http://localhost:5000/user/requestAddCourse`,
         {
           'code': Course.code,
@@ -114,22 +94,6 @@ let AddCourse = (props) => {
             setOpen(true)
           }
         })
-      // fetch('http://localhost:5000/user/requestAddCourse', requestOptions)
-      //   .then(response => response.json())
-      //   .then(response => {
-      //     if (!response.error) {
-      //       setMessage('')
-      //       setAlertMessage('Success!')
-      //       setOpen(true)
-      //     }
-      //     else {
-      //       setMessage('')
-      //       setAlertMessage(response.error)
-      //       setOpen(true)
-      //     }
-
-
-      // });
     } else {
       setAlertMessage('please select a course!')
       setOpen(true)
