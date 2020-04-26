@@ -7,8 +7,6 @@ import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Slider from "@material-ui/core/Slider";
-// import AddIcon from '@material-ui/icons/Add';
-// import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '../Component/SnackBar';
 import axios from "axios"
 import { UserType, UserCourseList } from "../test"
@@ -84,6 +82,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
+// This is a Course Home Page
 export default function CoursePage(props) {
     const classes = useStyles();
     let [selectedFile, setSelectedFile] = useState()
@@ -136,51 +135,7 @@ export default function CoursePage(props) {
             })
             setCourse(filtered[0])
         }
-
        
-        // if (checkIfEnrolled()) {
-            // axios.post(`http://localhost:5000/`, { 'code': props.match.params.id }, { withCredentials: true }).then(response => response.data).then((response) => {
-            //     if (response.redirectURL) {
-            //         //back to login
-            //         window.location.href = 'http://localhost:3000' + response.redirectURL
-            //     }
-            //     else if (!response.error) {
-            //         response.docs[0].updates && response.docs[0].updates.sort(function (a, b) {
-            //             if (a.date > b.date) //sort  descending
-            //                 return -1
-            //             else
-            //                 return 1
-            //         })
-            //         setCourse(response.docs[0])
-            //     }
-            //     else {
-            //         setCourse('no course yet')
-            //     }
-            // })
-
-            // const requestOptions = {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({
-            //         'code': props.match.params.id,
-            //     })
-            // };
-            // fetch('http://localhost:5000/', requestOptions)
-            //     .then(response => response.json())
-            //     .then(response => {
-            //         if (!response.error) {
-            //             response[0].updates && response[0].updates.sort(function (a, b) {
-            //                 if (a.date > b.date) //sort  descending
-            //                     return -1
-            //                 else
-            //                     return 1
-            //             })
-            //             setCourse(response[0])
-            //         }
-            //         else
-            //             setCourse('no course yet')
-            //     });
-        // }
     }, [courselist])
 
     useEffect(() => {
@@ -196,16 +151,7 @@ export default function CoursePage(props) {
                     setRating(false)
             }
         })
-        // fetch(`http://localhost:5000/rating/checkRatingMode/${Course.code}`)
-        //         .then(response => response.json())
-        //         .then(response => {
-        //             if (!response.error) {
-        //                 if(response.mode === 'Available')
-        //                 setRating(response.id)
-        //                 else
-        //                 setRating(false)
-        //             }
-        //         });
+        
     }, [Course])
 
 
@@ -234,33 +180,6 @@ export default function CoursePage(props) {
                 setOpenAlert(true)
             }
         })
-        // const requestOptions = {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({
-        //         'course': Course.code,
-        //         'messagetype': MessageType,
-        //         'message':message
-        //     })
-        // };
-        // fetch('http://localhost:5000/updates/postUpdates', requestOptions)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (response !== null && !response.error) {
-        //             setSuccess(true)
-        //             console.log(response)
-        //             setAlertMessage('Success!')
-        //             setOpenAlert(true)
-        //             setLoading(false)
-        //         }
-        //         else{
-        //             console.log(response)
-        //             setSuccess(false)
-        //             setAlertMessage(response.error)
-        //             setLoading(false)
-        //             setOpenAlert(true)
-        //         }
-        //     });
     }
     let hanldeUploadDoc = () => {
         //addtype
@@ -296,26 +215,6 @@ export default function CoursePage(props) {
                     setOpenAlert(true)
                 }
             })
-        // fetch(`http://localhost:5000/uplloadMaterial/${Course.code}/${addType}/${message}/${selectedDate.toISOString()}`, requestOptions)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (!response.error) {
-        //             setSuccess(true)
-        //             console.log(response)
-        //             setAlertMessage('Success!')
-        //             setOpenAlert(true)
-        //             setLoading(false)
-        //             setAddMaterialsOpen(false)
-        //             setAddType(false)
-        //         }
-        //         else {
-        //             console.log(response)
-        //             setSuccess(false)
-        //             setAlertMessage(response.error)
-        //             setLoading(false)
-        //             setOpenAlert(true)
-        //         }
-        //     });
 
     }
     let handleTurnOnOffRating = (type) => {
@@ -341,36 +240,8 @@ export default function CoursePage(props) {
                 }
             })
 
-        // fetch(type ? `http://localhost:5000/rating/declare/${Course.code}` : `http://localhost:5000/rating/close/${rating}`)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (!response.error) {
-        //             setSuccess(true)
-        //             console.log(response)
-        //             setAlertMessage('Success!')
-        //             setOpenAlert(true)
-        //             setLoading(false)
-        //             setRating(type )
-        //         }
-        //         else {
-        //             console.log(response)
-        //             setSuccess(false)
-        //             setLoading(false)
-        //             setOpenAlert(true)
-        //             setAlertMessage(response.error)
-        //         }
-        //     });
     }
     let handleRateScoreSubmit = () => {
-        // const requestOptions = {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({
-        //         'username': JSON.parse(localStorage.getItem('info')).username,
-        //         'ratingScore': ratingScore,
-        //         'id': rating
-        //     })
-        // };
         axios.post(`http://localhost:5000/rating/post`, {
             'ratingScore': ratingScore,
             'id': rating
@@ -395,24 +266,6 @@ export default function CoursePage(props) {
                     setAlertMessage(response.error)
                 }
             })
-        // fetch(`http://localhost:5000/rating/post`, requestOptions)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (response !== null && !response.error) {
-        //             setSuccess(true)
-        //             console.log(response)
-        //             setAlertMessage('Success!')
-        //             setOpenAlert(true)
-        //             setLoading(false)
-        //         }
-        //         else {
-        //             console.log(response)
-        //             setSuccess(false)
-        //             setLoading(false)
-        //             setOpenAlert(true)
-        //             setAlertMessage(response.error)
-        //         }
-        //     });
     }
 
     let renderUpdates = () => {
@@ -452,6 +305,7 @@ export default function CoursePage(props) {
                         </Typography>
                         <Divider className={classes.divider} />
                         <Grid container>
+                            {/* Course Materials Upload & Download */}
                             <Grid item xs={12} md={6}>
                                 <Paper className={`${classes.paper} ${classes.materialspaper}`} variant="elevation">
                                     <Typography variant="h5" noWrap>Course Materials</Typography>
@@ -476,6 +330,7 @@ export default function CoursePage(props) {
 
                                     </div>
                                 </Paper>
+                                {/* Assignment Deadlines */}
                                 <Paper className={`${classes.paper} ${classes.deadlinesPaper}`} variant="elevation">
                                     <Typography variant="h5" noWrap>Deadlines for this course</Typography>
                                     <Divider className={classes.divider} />
@@ -485,6 +340,8 @@ export default function CoursePage(props) {
                                     }
                                     <Divider className={classes.divider} />
                                 </Paper>
+
+                                {/* Simpple Course Evaluation */}
                                 <Paper className={`${classes.paper} ${classes.deadlinesPaper}`} variant="elevation">
                                     <Typography variant="h5" >Rate This Course (Typically Open at Week 7 and Week 13)</Typography>
                                     <Divider className={classes.divider} />

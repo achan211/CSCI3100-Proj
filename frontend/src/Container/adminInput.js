@@ -58,6 +58,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+// As title, a list of Course Offering Department
 const CourseOfferingDepartment = [
     { long: "Accountancy", short: "ACCT" },
     { long: "Artifical Intelligence: Systems and Technologies", short: "AIST" },
@@ -148,6 +149,7 @@ export default function AdminInput() {
     }
 
     return (
+        // This part is for the administrator to input the Course Information (such as students, teacher, etc.)
         <React.Fragment>
             <div className={classes.app}>
 
