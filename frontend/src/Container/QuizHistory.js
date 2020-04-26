@@ -160,8 +160,8 @@ let QuizHistory = (props) => {
                                     data1={calAverage()}
                                     label={result.userscore.map((i, index) => (index + 1))}
                                     title={`Overall Class Result (Mean And SD)`}
-                                    label1={'SD'}
-                                    label0={'Class Average'}
+                                    label0={'SD'}
+                                    label1={'Class Average'}
                                 />
                                     </Grid>
                                     <Grid item md={6}>
@@ -191,7 +191,7 @@ let QuizHistory = (props) => {
                                     </Grid>
                                 </Grid>
                                 
-
+                                {console.log(result.userscore.map(i => i.score))}
                               
 
                             </React.Fragment>

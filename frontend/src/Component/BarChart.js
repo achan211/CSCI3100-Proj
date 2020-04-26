@@ -44,7 +44,11 @@ let BarChart = (props) => {
                     scaleLabel: {
                         display: true,
                         labelString: 'Score'
-                    }
+                    },
+                    ticks: {
+                        beginAtZero: true,
+                        min: 0
+                      }    
                 }
             ]
         }

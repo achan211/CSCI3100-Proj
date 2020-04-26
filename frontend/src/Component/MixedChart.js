@@ -11,7 +11,7 @@ let MixedChart = (props) => {
         datasets: [{
             label: props.label0,
             type: 'bar',
-            data: props.data1,
+            data: props.data0,
             fill: false,
             borderColor: '#36A2EB',
             backgroundColor: '#36A2EB',
@@ -19,9 +19,9 @@ let MixedChart = (props) => {
             pointBackgroundColor: '#36A2EB',
             pointHoverBackgroundColor: '#36A2EB',
             pointHoverBorderColor: '#36A2EB',
-            yAxisID: 'y-axis-2'
+            yAxisID: 'y-axis-1'
         }, {
-            type: 'bar',
+            type: 'line',
             label: props.label1,
             data: props.data1,
             fill: false,
@@ -29,7 +29,7 @@ let MixedChart = (props) => {
             borderColor: '#71B37C',
             hoverBackgroundColor: '#71B37C',
             hoverBorderColor: '#71B37C',
-            yAxisID: 'y-axis-1'
+            yAxisID: 'y-axis-2'
         }]
     };
     
@@ -73,8 +73,13 @@ let MixedChart = (props) => {
                     scaleLabel: {
                         display: true,
                         labelString: 'Score'
-                    }
-                },
+                    },
+                    ticks: {
+                        beginAtZero: true,
+                        min: 0
+                      }    
+                }
+                ,
                 {
                     type: 'linear',
                     display: true,
@@ -85,7 +90,11 @@ let MixedChart = (props) => {
                     },
                     labels: {
                         show: true
-                    }
+                    },
+                    ticks: {
+                        beginAtZero: true,
+                        min: 0
+                      } 
                 }
             ]
         }

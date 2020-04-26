@@ -146,4 +146,8 @@ return false
 
   );
 }
+<<<<<<< HEAD
 export default App;
+=======
+export default App;
+>>>>>>> e7e99247e8e4f02d7e50b3330fc3eb330490ea74
