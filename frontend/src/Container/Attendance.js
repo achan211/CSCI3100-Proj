@@ -112,8 +112,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-
 let Attendance = (props) => {
     const classes = useStyles();
     let [pin, setPin] = useState()
@@ -150,27 +148,10 @@ let Attendance = (props) => {
                 }
 
             })
-
-            // fetch(`http://localhost:5000/attendance/teacher/checkPin/${course}`)
-            //     .then(response => response.json())
-            //     .then(response => {
-            //         if (!response.error) {
-            //             setGeneratedPin(response)
-            //         }
-            //     });
         }
     }, [course])
     let handlePinSubmit = () => {
         if (pin) {
-            // const requestOptions = {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({
-            //         'courseCode': course,
-            //         'attendanceCode': pin,
-            //         'username': JSON.parse(localStorage.getItem('info')).username
-            //     })
-            // };
             axios.post(`http://localhost:5000/attendance/student`, {
                 'courseCode': course,
                 'attendanceCode': pin,
@@ -189,20 +170,6 @@ let Attendance = (props) => {
                     setOpen(true)
                 }
             })
-            // fetch('http://localhost:5000/attendance/student', requestOptions)
-            //     .then(response => response.json())
-            //     .then(response => {
-            //         if (!response.error) {
-            //             setAlertMessage('Success!')
-            //             setSuccess(true)
-            //             setOpen(true)
-            //         }
-            //         else {
-            //             setAlertMessage(response.error)
-            //             setSuccess(false)
-            //             setOpen(true)
-            //         }
-            //     });
         } else {
             setAlertMessage('please enter the pin!')
             setSuccess(false)
@@ -226,19 +193,6 @@ let Attendance = (props) => {
                     setChartOpen(false)
                 }
             })
-            // fetch(`http://localhost:5000/attendance/student/${course}/${JSON.parse(localStorage.getItem('info')).username}`)
-            //     .then(response => response.json())
-            //     .then(response => {
-            //         if (!response.error) {
-            //             setAttendanceRecord(response[0])
-            //         }
-            //         else {
-            //             setAlertMessage('No record/error occur!')
-            //             setSuccess(false)
-            //             setOpen(true)
-            //             setChartOpen(false)
-            //         }
-            //     });
         }
     }
     let handleProfCheckRecord = () => {
@@ -259,21 +213,6 @@ let Attendance = (props) => {
                     setChartOpen(false)
                 }
             })
-            // fetch(`http://localhost:5000/attendance/teacher/getAttendance/${course}`)
-            //     .then(response => response.json())
-            //     .then(response => {
-            //         if (!response.error) {
-            //             console.log(response)
-            //             setAttendanceRecord(response[0])
-            //         }
-            //         else {
-            //             setAlertMessage(response.error)
-            //             setSuccess(false)
-            //             setOpen(true)
-            //             setChartOpen(false)
-
-            //         }
-            //     });
         }
     }
 
@@ -293,18 +232,6 @@ let Attendance = (props) => {
                     setOpen(true)
                 }
             })
-            // fetch(`http://localhost:5000/attendance/teacher/getPin/${course}`)
-            //     .then(response => response.json())
-            //     .then(response => {
-            //         if (!response.error) {
-            //             setGeneratedPin(response)
-            //         }
-            //         else {
-            //             setAlertMessage('No record/error occur!')
-            //             setSuccess(false)
-            //             setOpen(true)
-            //         }
-            //     });
         }
     }
     let handleCloseAttendance = () => {
@@ -321,19 +248,6 @@ let Attendance = (props) => {
                 setOpen(true)
             }
         })
-
-        // fetch(`http://localhost:5000/attendance/teacher/closeAttendance/${course}`)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (!response.error) {
-        //             setGeneratedPin(false)
-        //         }
-        //         else {
-        //             setAlertMessage('No record/error occur!')
-        //             setSuccess(false)
-        //             setOpen(true)
-        //         }
-        //     });
     }
     let calGeneralAttendRate = () => {
         if (attendanceRecord && attendanceRecord.attendanceDate && Object.keys(attendanceRecord.student).length > 0) {
@@ -458,7 +372,7 @@ let Attendance = (props) => {
             </React.Fragment>
         )
     }
-
+    // The follow render the attendance Chart for the Professor. 
     let renderProfChart = () => {
         if (attendanceRecord)
             return (
@@ -648,11 +562,6 @@ let Attendance = (props) => {
         }
     }
 
-    // let RedirectToLogin = () => {
-    //     alert("You have not yet login!");
-    //     const { history } = props;
-    //     history.push('/login');
-    // }
     return (
         <React.Fragment>
             {courselist.length > 0 ? Array.isArray(courselist) ? renderAttendace() : <div>no course yet!</div> : <div>loading...</div>}
