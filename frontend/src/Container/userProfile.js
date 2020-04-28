@@ -206,6 +206,12 @@ export default function UserProfile() {
         // headers: { 'Content-Type': 'application/json' },
         //     body: JSON.stringify(users)
         //   };
+        if(users.firstname.length == 0 || users.lastname.length == 0 || users.email == 0 ) 
+        {
+            setSuccess(false)   
+            setAlertMessage('Required (*) Field cannot empty')
+            setOpen(true)
+        }else{
         axios.post(`http://localhost:5000/user/edit`, users, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {
                 //back to login
@@ -241,6 +247,7 @@ export default function UserProfile() {
         //         setOpen(true)
         //       }
         //     });
+    }
     };
 
     const handleClose = (event, reason) => {
@@ -251,7 +258,7 @@ export default function UserProfile() {
         setValues({
             ...users,
             [event.target.name]: event.target.value
-        });
+            });
     };
 
     let onChangeHandler = event => {
