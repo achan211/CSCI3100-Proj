@@ -162,6 +162,7 @@ export default function Header() {
     axios.get(`http://localhost:5000/logout`, { withCredentials: true }).then(response => response.data).then((response) => {
       if (response.redirectURL) {
         //back to login
+        alert('Successfully Logout!')
         window.location.href = 'http://localhost:3000' + response.redirectURL
       }
     })
