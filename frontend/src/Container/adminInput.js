@@ -99,16 +99,23 @@ export default function AdminInput() {
     }
     console.log(course)
     let handleOnDrop = (data) => {
-        console.log('---------------------------')
-        data.shift()
-        SetCourse({
-            ...course,
-            student: data && data.map(i => i.data[0])
-        })
-        console.log('---------------------------')
+        if (course.student == '\0'){
+            alert('File is empty')
+        }
+        else{
+            console.log('---------------------------')
+            data.shift()
+            SetCourse({
+                ...course,
+                student: data && data.map(i => i.data[0])
+            })
+            console.log('---------------------------')
+        }
+        
     }
 
     let handleOnError = (err, file, inputElem, reason) => {
+        alert('No CSV file')
         console.log(err)
     }
 
@@ -118,7 +125,8 @@ export default function AdminInput() {
         console.log('---------------------------')
     }
     let addCourseToDB = () => {
-        axios.post(`http://localhost:5000/admin`, course, { withCredentials: true }).then(response => response.data).then((response) => {
+        if (course.department.length > 0 && course.code.length > 0 && course.title.length > 0 && course.lecturer.length > 0 && course.username.length > 0){
+            axios.post(`http://localhost:5000/admin`, course, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {
                 //back to login
                 window.location.href = 'http://localhost:3000' + response.redirectURL
@@ -138,6 +146,31 @@ export default function AdminInput() {
                 // setOpen(true)
             }
         })
+        }
+        else{
+            if (course.department.length == 0 && course.code.length == 0 && course.title.length == 0 && course.lecturer.length == 0 && course.username.length == 0){
+                alert('No inputs !')
+            }
+            else{
+                if (course.department.length == 0){
+                    alert('Please enter course offering department')
+                }
+                if (course.code.length == 0){
+                    alert('Please enter course code')
+                }
+                if (course.title.length == 0){
+                    alert('Please enter course title')
+                }
+                if (course.lecturer.length == 0){
+                    alert('Please enter lecturer name')
+                }
+                if (course.username.length == 0){
+                    alert('Please enter username of lecturer')
+                }
+            }
+        } 
+       
+        
     }
     let handleLogout = () => {
         axios.get(`http://localhost:5000/logout`, { withCredentials: true }).then(response => response.data).then((response) => {
