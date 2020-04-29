@@ -99,23 +99,17 @@ export default function AdminInput() {
     }
     console.log(course)
     let handleOnDrop = (data) => {
-        if (course.student == '\0'){
-            alert('File is empty')
-        }
-        else{
-            console.log('---------------------------')
-            data.shift()
-            SetCourse({
-                ...course,
-                student: data && data.map(i => i.data[0])
-            })
-            console.log('---------------------------')
-        }
+        console.log('---------------------------')
+        data.shift()
+        SetCourse({
+            ...course,
+            student: data && data.map(i => i.data[0])
+        })
+        console.log('---------------------------')
         
     }
 
     let handleOnError = (err, file, inputElem, reason) => {
-        alert('No CSV file')
         console.log(err)
     }
 
