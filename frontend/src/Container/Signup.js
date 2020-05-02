@@ -3,7 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -104,11 +103,6 @@ let SignUp = (props) => {
   }
 
   let HandleMapSateToProps = (studentDetails) =>{
-    // stateDispatch({ type: 'ADD_TOKEN', payload: { 'token': token} })
-    // localStorage.setItem( 'info', JSON.stringify(studentDetails) )
-    // localStorage.setItem( 'token', studentDetails._id )
-    
-    // console.log(  localStorage.getItem( "token" ) )
   }
 
   let validateEmail = () => {

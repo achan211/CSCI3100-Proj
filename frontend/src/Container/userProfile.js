@@ -5,7 +5,6 @@ import Divider from '@material-ui/core/Divider';
 import { CssBaseline, IconButton } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
-
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -134,24 +133,6 @@ export default function UserProfile() {
                 console.log(response.error)
             }
         })
-        // if (JSON.parse(localStorage.getItem('info'))) {
-        //     let username = JSON.parse(localStorage.getItem('info')).username
-        //     // get notification form server
-        //     fetch(`http://localhost:5000/user/info/${username}`)
-        //       .then(response => response.json())
-        //       .then(response => {
-        //         if (!response.error) {
-        //           console.log(response)
-        //           setValues({
-        //             // ...users,
-        //             ...response
-        //         });
-        //         }
-        //         else {
-        //         //   setNotice(response.error)
-        //         }
-        //       });
-        //   }
     }, [])
     const handleChangePW = () => {
         if (oldpw && newpw) {
@@ -174,38 +155,10 @@ export default function UserProfile() {
                     setOpen(true)
                 }
             })
-            // const requestOptions = {
-            //     method: 'POST',
-            // headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({'oldpw':oldpw,'newpw':newpw })
-            //   };
-            //   fetch(`http://localhost:5000/user/editpw/${username}`, requestOptions)
-            //     .then(response => response.json())
-            //     .then(response => {
-            //       if (!response.error) {
-            //         setSuccess(true)
-            //         console.log(response)
-            //         setAlertMessage(response)
-            //         setOpen(true)
-            //       }
-            //       else{
-            //         console.log(response)
-            //         setSuccess(false)
-            //         setAlertMessage(response.error)
-            //         setOpen(true)
-            //       }
-            //     });
         }
 
     }
     const handleClick = () => {
-        // console.log(JSON.stringify(users))
-        // let username = JSON.parse(localStorage.getItem('info')).username
-        // const requestOptions = {
-        //     method: 'POST',
-        // headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(users)
-        //   };
         if(users.firstname.length == 0 || users.lastname.length == 0 || users.email == 0 ) 
         {
             setSuccess(false)   
@@ -230,23 +183,6 @@ export default function UserProfile() {
                 setOpen(true)
             }
         })
-
-        //   fetch(`http://localhost:5000/user/edit/${username}`, requestOptions)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //       if (!response.error) {
-        //         setSuccess(true)
-        //         console.log(response)
-        //         setAlertMessage('Success!')
-        //         setOpen(true)
-        //       }
-        //       else{
-        //         console.log(response)
-        //         setSuccess(false)
-        //         setAlertMessage(response.error)
-        //         setOpen(true)
-        //       }
-        //     });
     }
     };
 
@@ -295,28 +231,9 @@ export default function UserProfile() {
             }
         })
 
-        // fetch(`http://localhost:5000/uploadPropic/${username}`, requestOptions)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (!response.error) {
-        //             setSuccess(true)
-        //             console.log(response.url)
-        //             setAlertMessage('Success!')
-        //             setOpen(true)
-        //             setLoading(false)
-
-        //         }
-        //         else {
-        //             console.log(response)
-        //             setSuccess(false)
-        //             setAlertMessage(response.error)
-        //             setLoading(false)
-        //             setOpen(true)
-        //         }
-        //     });
     }
     console.log(users)
-
+    // This is a user profile page which allows users to modify their profile
     let renderProfileInfo = () => {
         return (
             <React.Fragment>
@@ -432,8 +349,6 @@ export default function UserProfile() {
                         </Grid>
                     </Grid>
                 </Grid>
-
-
             </React.Fragment>
         )
     }

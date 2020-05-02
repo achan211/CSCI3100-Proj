@@ -56,7 +56,7 @@ let CourseTable = (props) => {
     const { userType, userTypeDispatch } = useContext(UserType);
     const { courselist, courselistDispatch } = useContext(UserCourseList);
 
-
+    // This returns the Course List of Students / Professor
     const classes = useStyles();
     return (
             <Paper className={ userType === 'student' ?
