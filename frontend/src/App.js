@@ -34,7 +34,6 @@ import {
 import history from './history';
 import './App.css';
 import UserCourseListReducer from "./Reducer/UserCourseListReducer";
-import UserInfoReducer from "./Reducer/UserInfoReducer";
 import UserTypeReducer from "./Reducer/UserTypeReducer";
 import axios from "axios"
 
@@ -103,6 +102,7 @@ return false
                   <LoginPage {...props} />
                 }
                 />
+                {/* Just a bunch of routs for different pages */}
                 <Route path="/signup" exact component={SignUp} />
                 <Route path="/forgetpw" component={ForgetPW} />
                 <Route path="/Chatroom" component={Chatroom} />
@@ -127,16 +127,6 @@ return false
 
                 {/* This Part is for Welcome Page */}
                 <Route path="/welcome" component={Welcome} />
-                  {/* <React.Fragment>
-                    <CssBaseline />
-                  <AppBar position="static">
-                      <Toolbar>
-                      <Typography variant="h6" className={classes.title}>CUHK Live Classroom</Typography>
-                      <Button color="inherit" className={classes.rightToolBar} size="large" component={Link} to="/login">Login</Button>
-                      </Toolbar>
-                    </AppBar>
-                  </React.Fragment> */}
-            
 
                 <Route path="/:id" >
                   <div>ERROR </div>

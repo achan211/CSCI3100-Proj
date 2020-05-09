@@ -58,6 +58,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+// As title, a list of Course Offering Department
 const CourseOfferingDepartment = [
     { long: "Accountancy", short: "ACCT" },
     { long: "Artifical Intelligence: Systems and Technologies", short: "AIST" },
@@ -105,6 +106,7 @@ export default function AdminInput() {
             student: data && data.map(i => i.data[0])
         })
         console.log('---------------------------')
+        
     }
 
     let handleOnError = (err, file, inputElem, reason) => {
@@ -117,7 +119,8 @@ export default function AdminInput() {
         console.log('---------------------------')
     }
     let addCourseToDB = () => {
-        axios.post(`http://localhost:5000/admin`, course, { withCredentials: true }).then(response => response.data).then((response) => {
+        if (course.department.length > 0 && course.code.length > 0 && course.title.length > 0 && course.lecturer.length > 0 && course.username.length > 0){
+            axios.post(`http://localhost:5000/admin`, course, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {
                 //back to login
                 window.location.href = 'http://localhost:3000' + response.redirectURL
@@ -139,6 +142,31 @@ export default function AdminInput() {
                 // setOpen(true)
             }
         })
+        }
+        else{
+            if (course.department.length == 0 && course.code.length == 0 && course.title.length == 0 && course.lecturer.length == 0 && course.username.length == 0){
+                alert('No inputs !')
+            }
+            else{
+                if (course.department.length == 0){
+                    alert('Please enter course offering department')
+                }
+                if (course.code.length == 0){
+                    alert('Please enter course code')
+                }
+                if (course.title.length == 0){
+                    alert('Please enter course title')
+                }
+                if (course.lecturer.length == 0){
+                    alert('Please enter lecturer name')
+                }
+                if (course.username.length == 0){
+                    alert('Please enter username of lecturer')
+                }
+            }
+        } 
+       
+        
     }
     let handleLogout = () => {
         axios.get(`http://localhost:5000/logout`, { withCredentials: true }).then(response => response.data).then((response) => {
@@ -150,6 +178,7 @@ export default function AdminInput() {
     }
 
     return (
+        // This part is for the administrator to input the Course Information (such as students, teacher, etc.)
         <React.Fragment>
             <div className={classes.app}>
 

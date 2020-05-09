@@ -20,8 +20,10 @@ const useStyles = makeStyles(theme => ({
     }
 
 }));
+
 let ErrorPage = ()=>{
     const classes = useStyles();
+    // Just to return the Error
     return(
         <React.Fragment>
                 <div className={classes.app}>

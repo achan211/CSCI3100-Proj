@@ -6,7 +6,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-
 import { Link } from "react-router-dom";
 import axios from "axios"
 import RegressionAnalysis from "./RegressionAnalysis"
@@ -18,6 +17,7 @@ import AttendanceChart from "../Component/AttendanceChart"
 import { UserType } from "../test"
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
@@ -161,8 +161,6 @@ export default function Home(props) {
             return (
                 <React.Fragment key={item.code}>
                     <Grid container >
-
-                        {/* <Grid item xs={1} ></Grid> */}
                         <Grid item xs={12}>
                             <Card className={classes.card}>
                                 <Link className="link" to={`/home/${item.code}`}>
@@ -179,7 +177,6 @@ export default function Home(props) {
                                 </Link>
                             </Card>
                         </Grid>
-                        {/* <Grid item md={1} xs={1} ></Grid> */}
                     </Grid>
 
                 </React.Fragment>
@@ -212,10 +209,7 @@ export default function Home(props) {
         }
     }
     let renderLoginedHome = () => (
-        // <React.Fragment>
-        //     <CssBaseline />
         <div className={classes.root}>
-
             <Grid container >
                 <Grid item xs={12} >
                     <Typography variant="h4" className={classes.title}>
@@ -231,9 +225,7 @@ export default function Home(props) {
                                     <Paper className={classes.paper} elevation={3}>
                                         <Typography variant="h4" className={classes.title}>
                                             My Courses</Typography>
-                                        {/* {renderCourseCard()} */}
                                         <Grid container>
-
                                             {courselist && courselist.map((item, index) => {
                                                 return (
                                                     <Grid container>
@@ -244,7 +236,6 @@ export default function Home(props) {
                                                 )
                                             })}
                                         </Grid>
-
                                     </Paper>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -259,8 +250,6 @@ export default function Home(props) {
                                             </div>
                                             : <Button variant="contained" color="primary" onClick={() => setItemNubmer(itemNumber + 1)}>Read More</Button>
                                         }
-
-
                                     </Paper>
                                 </Grid>
 

@@ -144,7 +144,7 @@ export default function Header() {
           tmp.push(item)
         })
         tmp.sort(function (a, b) {
-          if (a.date > b.date) //sort  descending
+          if (a.date > b.date) //sort descending
             return -1
           else
             return 1
@@ -155,45 +155,6 @@ export default function Header() {
         setNotice(response.error)
       }
     })
-    // if (notificationsMenu || notice === null) {
-    //   if (JSON.parse(localStorage.getItem('info'))) {
-    //     let username = JSON.parse(localStorage.getItem('info')).username
-    //     // get notification form server
-    //     fetch(`http://localhost:5000/user/getNotification/${username}`)
-    //       .then(response => response.json())
-    //       .then(response => {
-    //         if (!response.error) {
-    //           let tmp = []
-    //           response.sitNotice.map(item => {
-    //             tmp.push(item)
-    //           })
-    //           if (JSON.parse(localStorage.getItem('info')).type === 'student') {
-    //             response.courseNotice.map(item => {
-    //               tmp.push(item)
-    //             })
-    //           }
-
-    //           response.forumNotice.map(item => {
-    //             tmp.push(item)
-    //           })
-    //           tmp.sort(function (a, b) {
-    //             if (a.date > b.date) //sort  descending
-    //               return -1
-    //             else
-    //               return 1
-    //           })
-    //           setNotice(tmp)
-    //         }
-    //         else {
-    //           setNotice(response.error)
-    //         }
-
-
-    //       });
-    //   }
-
-    // }
-
 
   }, [notificationsMenu, userType])
 
@@ -201,6 +162,7 @@ export default function Header() {
     axios.get(`http://localhost:5000/logout`, { withCredentials: true }).then(response => response.data).then((response) => {
       if (response.redirectURL) {
         //back to login
+        alert('Successfully Logout!')
         window.location.href = 'http://localhost:3000' + response.redirectURL
       }
     })
@@ -209,6 +171,7 @@ export default function Header() {
   return (
     <div className={classes.root}>
       <CssBaseline />
+      {/* The appbar on top */}
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
@@ -216,6 +179,7 @@ export default function Header() {
         })}
       >
         <Toolbar>
+          {/* Button for the drawer */}
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -282,10 +246,7 @@ export default function Header() {
           <Typography variant="h6"  >
             CUHK Live Classroom
           </Typography>
-
-
-
-
+          {/* Logout Button */}
           <section className={classes.rightToolBar}>
             <IconButton color="inherit"
               onClick={handleLogout}
@@ -302,6 +263,7 @@ export default function Header() {
           paper: classes.drawerPaper,
         }}
       >
+        {/* Drawer Component and the respective links */}
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -315,7 +277,6 @@ export default function Header() {
               <ListItemText primary="User Profile" />
             </ListItem>
           </MenuItem>
-
 
           <MenuItem color="inherit" component={Link} to="/NotificationPage" onClick={handleDrawerClose}>
             <ListItem  >

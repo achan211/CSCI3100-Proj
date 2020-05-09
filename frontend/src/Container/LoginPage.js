@@ -99,6 +99,16 @@ let LoginPage = (props) => {
         }
       })
     }
+    else {
+      if (username.length == 0 ) 
+      {
+        alert('Please enter user name')
+      }
+      if(pw.length == 0)
+      {
+        alert('Please enter password')
+      }
+  }
   }
 
 

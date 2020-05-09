@@ -128,14 +128,6 @@ export default function ForumHome(props) {
   // get forum topic from server
   useEffect(() => {
     if (checkIfEnrolled()) {
-      // let code = JSON.parse(info).course
-      // const requestOptions = {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     'code': CurrentCourse ? CurrentCourse : props.match.params.id ? props.match.params.id : code[0],
-      //   })
-      // };
       axios.post(`http://localhost:5000/forum`, {
         'code': CurrentCourse ? CurrentCourse : props.match.params.id ? props.match.params.id : courselist[0].code,
       }, { withCredentials: true }).then(response => response.data).then((response) => {
@@ -158,25 +150,6 @@ export default function ForumHome(props) {
         }
 
       })
-      // fetch('http://localhost:5000/forum', requestOptions)
-      //   .then(response => response.json())
-      //   .then(response => {
-      //     //first time 
-      //     if (!CurrentCourse)
-      //       setCurrentCourse(props.match.params.id ? props.match.params.id : code[0])
-      //     if (!response.error) {
-      //       console.log(response)
-      //       setCourse(response.topic.reverse())
-      //       setCurrentFourmTopicId(null)
-      //       setComments(null)
-      //       setErrorValue(null)
-      //     }
-      //     else {
-      //       setCourse(null)
-      //       setErrorValue('no course yet')
-      //     }
-
-      //   });
     }
   }, [courselist, CurrentCourse])
 
@@ -185,14 +158,7 @@ export default function ForumHome(props) {
     if (CurrentFourmTopicId) {
       console.log(Comments)
       console.log(CurrentCourse)
-      // const requestOptions = {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     'code': CurrentCourse,
-      //     'id': CurrentFourmTopicId._id
-      //   })
-      // };
+
       axios.post(`http://localhost:5000/forumComments`, {
         'code': CurrentCourse,
         'id': CurrentFourmTopicId._id
@@ -208,34 +174,14 @@ export default function ForumHome(props) {
           setComments(null)
         }
       })
-      // fetch('http://localhost:5000/forumComments', requestOptions)
-      //   .then(response => response.json())
-      //   .then(response => {
-      //     if (!response.error) {
-      //       console.log(response)
-      //       setComments(response)
-      //     }
-      //     else {
-      //       setComments(null)
-      //     }
-
-      //   });
+      
     }
 
   }, [CurrentFourmTopicId])
 
   //post a new topic to server
   let handleAddTopic = (Topic, Context) => {
-    // const requestOptions = {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     'code': CurrentCourse,
-    //     'topic': Topic,
-    //     'context': Context,
-    //     'lauzhu': JSON.parse(info).username
-    //   })
-    // };
+
     axios.post(`http://localhost:5000/forum/addTopic`, {
       'code': CurrentCourse,
       'topic': Topic,
@@ -252,19 +198,6 @@ export default function ForumHome(props) {
         console.log(response)
       }
     })
-    // fetch('http://localhost:5000/forum/addTopic', requestOptions)
-    //   .then(response => response.json())
-    //   .then(response => {
-    //     if (!response.error) {
-    //       console.log(response)
-    //       setCurrentFourmTopicId(response)
-    //     }
-    //     else {
-    //       console.log(response)
-    //     }
-
-    //   });
-
 
   }
 
@@ -288,17 +221,7 @@ export default function ForumHome(props) {
   let handleAddComment = (value) => {
     if (value) {
       handleCloseComment()
-      // const requestOptions = {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     'code': CurrentCourse,
-      //     'id': CurrentFourmTopicId._id,
-      //     'text': value,
-      //     'user': JSON.parse(info).username,
-      //     'lauzhu': CurrentFourmTopicId.lauzhu
-      //   })
-      // };
+
       axios.post(`http://localhost:5000/forumComments/addComment`, {
         'code': CurrentCourse,
         'id': CurrentFourmTopicId._id,
@@ -316,22 +239,12 @@ export default function ForumHome(props) {
           console.log(response)
         }
       })
-      // fetch('http://localhost:5000/forumComments/addComment', requestOptions)
-      //   .then(response => response.json())
-      //   .then(response => {
-      //     if (!response.error) {
-      //       console.log(response)
-      //       setComments(response)
-      //     }
-      //     else {
-      //       console.log(response)
-      //     }
 
-      //   });
     } else
       alert("must fill in !")
   }
 
+  // Render the Topics of the threads of a Class Forum
   let renderForumTopic = () => {
     if (ErrorValue === null && Course) {
       return (
@@ -339,7 +252,6 @@ export default function ForumHome(props) {
           return (
             <TableRow key={item._id}>
               <TableCell>
-                {/* <Link to="/" onClick={()=>setCurrentFourmTopicId(item._id)}> */}
 
                 <ListItem onClick={() => setCurrentFourmTopicId(item)}>
                   <ListItemAvatar>
@@ -357,6 +269,7 @@ export default function ForumHome(props) {
     }
   }
 
+  // Render the comments of a particular threads
   let renderForumComments = () => {
     return (
       <React.Fragment>
@@ -435,8 +348,7 @@ export default function ForumHome(props) {
                   {/* <Paper className={classes.paper}> */}
                   <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
-                      {/* The header of the table shows the course name of that forum. 
-                Working on switching different forums*/}
+                      {/* The header of the table shows the course name of that forum. */}
                       <TableHead>
                         <TableRow>
                           <TableCell className={classes.th}>
@@ -480,8 +392,6 @@ export default function ForumHome(props) {
                               />
                             </ListItem>
 
-
-
                           </TableCell>
                         </TableRow>
                       </TableHead>
@@ -516,8 +426,7 @@ export default function ForumHome(props) {
   let renderErrorMessage = () => {
     return (
       <div>
-        not yet enrolled this course!
-        (need styling, thanks!)
+        Not yet enrolled this course!
       </div>
     )
   }
