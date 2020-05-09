@@ -98,6 +98,9 @@ const Welcome = () => {
 
             <Typography variant="body1">6. Archieved ALL optional features stated in CSCI3100 Project Requirement Specification</Typography>
             <Typography variant="body1">(Regression Analysis, Visualization, Access control mechanism, managing user, mobile support)</Typography>
+            <Divider className={classes.divider} />
+
+            <Typography variant="body1">7. Secure Cookies Login Authentication</Typography>
             
 
             <Divider className={classes.divider} />
