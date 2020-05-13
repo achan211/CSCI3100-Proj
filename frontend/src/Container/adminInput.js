@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -118,6 +125,8 @@ export default function AdminInput() {
         console.log(data)
         console.log('---------------------------')
     }
+    
+    // add course to database
     let addCourseToDB = () => {
         if (course.department.length > 0 && course.code.length > 0 && course.title.length > 0 && course.lecturer.length > 0 && course.username.length > 0){
             axios.post(`http://localhost:5000/admin`, course, { withCredentials: true }).then(response => response.data).then((response) => {
@@ -126,20 +135,11 @@ export default function AdminInput() {
                 window.location.href = 'http://localhost:3000' + response.redirectURL
             }
             else if (!response.error) {
-                // setSuccess(true)
                 console.log(response)
                 alert("Success!")
-                // setAlertMessage('Success!')
-                // setOpen(true)
-                // setLoading(false)
             }
             else {
                 console.log(response)
-                
-                // setSuccess(false)
-                // setAlertMessage(response.error)
-                // setLoading(false)
-                // setOpen(true)
             }
         })
         }

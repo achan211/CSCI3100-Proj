@@ -1,4 +1,10 @@
-
+// PROGRAM – Program to handle API request from client
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: handle API request from client
+// DATA STRUCTURES: Json Data Type storing details
 var express = require('express');
 var app = express();
 const mongoose = require("mongoose")

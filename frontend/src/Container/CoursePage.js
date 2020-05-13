@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -114,6 +121,7 @@ export default function CoursePage(props) {
         setOpen(false);
     };
 
+    //check if user is enrolled in that course
     let checkifEnrolled =()=>{
         filtered = courselist.length > 0 && Array.isArray(courselist) && courselist.filter(i => {
             return i.code === props.match.params.id
@@ -125,6 +133,7 @@ export default function CoursePage(props) {
         }
     }
 
+    //reorder the updates noti
     useEffect(() => {
         if ( checkifEnrolled()) {
             filtered[0].updates.sort(function (a, b) {
@@ -138,6 +147,7 @@ export default function CoursePage(props) {
        
     }, [courselist])
 
+    //check if user can rate the course
     useEffect(() => {
         axios.get(`http://localhost:5000/rating/checkRatingMode/${Course.code}`, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {
@@ -154,7 +164,7 @@ export default function CoursePage(props) {
         
     }, [Course])
 
-
+    //for teacher to add course updates to db
     let hanldeAddUpdates = () => {
         setLoading(true)
         axios.post(`http://localhost:5000/updates/postUpdates`, {
@@ -181,6 +191,8 @@ export default function CoursePage(props) {
             }
         })
     }
+
+    //for teacher to add course docs to db
     let hanldeUploadDoc = () => {
         //addtype
         setLoading(true)
@@ -217,6 +229,9 @@ export default function CoursePage(props) {
             })
 
     }
+
+
+    //for teacher to turn off course rating
     let handleTurnOnOffRating = (type) => {
         axios.get(type ? `http://localhost:5000/rating/declare/${Course.code}` : `http://localhost:5000/rating/close/${rating}`,
             { withCredentials: true }).then(response => response.data).then((response) => {
@@ -241,6 +256,8 @@ export default function CoursePage(props) {
             })
 
     }
+
+    //for student to submite course rating
     let handleRateScoreSubmit = () => {
         axios.post(`http://localhost:5000/rating/post`, {
             'ratingScore': ratingScore,

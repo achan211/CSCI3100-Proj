@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React, { useState, useReducer } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -65,12 +72,7 @@ let SignUp = (props) => {
   const [pw, setpw] = useState('');
   const [repw, setrepw] = useState('');
   const [pwErrorMessage, setpwErrorMessage] = useState('');
-
-  // useEffect(() => {
-
-  // });
-
-
+  //submit sign up form to server
   let handleSubmit = () => {
     if ( firstname.length > 0 && lastname.length > 0 && username.length > 0 && validateEmail() && pw.length > 0 && pwErrorMessage.length === 0  )
     {

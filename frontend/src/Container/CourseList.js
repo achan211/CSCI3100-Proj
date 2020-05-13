@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React, { useEffect, useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -102,6 +109,8 @@ export default function Home(props) {
         pic: '',
         email: ''
     });
+
+    //fetch user enrolled course from db
     useEffect(() => {
         axios.get(`http://localhost:5000/user/info`, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {

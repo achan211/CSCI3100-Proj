@@ -1,3 +1,11 @@
+// PROGRAM – Program to check user login status
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: check user login status
+// DATA STRUCTURES: Json Data Type storing details
+
 module.exports = {
     sessionChecker: function (req, res, next) {
         console.log("1")

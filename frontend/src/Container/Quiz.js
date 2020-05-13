@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React, { useContext, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -87,7 +94,7 @@ let Quiz = (props) => {
     const [startQuiz, setStartQuiz] = useState(false)
     const { courselist, courselistDispatch } = useContext(UserCourseList);
 
-
+    // check the status of quiz mode (not started/starting) 
     useEffect(() => {
         axios.post('http://localhost:5000/quiz/student/', { 'courseCode': Course }, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {
@@ -103,18 +110,11 @@ let Quiz = (props) => {
             }
         })
     }, [Course])
+
+    //submit created quiz to server
     let profSendQuizQuestion = () => {
         profquestion = profquestion.slice(0, questionNubmer)
         answer = answer.slice(0, questionNubmer)
-        // const requestOptions = {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({
-        //         'courseCode': Course,
-        //         'question': profquestion,
-        //         'ans': answer
-        //     })
-        // };
         axios.post('http://localhost:5000/quiz/teacher',
             {
                 'courseCode': Course, 'question': profquestion,
@@ -139,24 +139,9 @@ let Quiz = (props) => {
                     setOpenAlert(true)
                 }
             })
-        // fetch(`http://localhost:5000/quiz/teacher`, requestOptions)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (!response.error) {
-        //             console.log(response)
-        //             setSuccess(true)
-        //             setAlertMessage('Create Successfully!')
-        //             setOpenAlert(true)
-        //         }
-        //         else {
-        //             console.log(response)
-        //             setSuccess(false)
-        //             setAlertMessage(response.error)
-        //             setOpenAlert(true)
-        //         }
-        //     });
-
     }
+
+    //student submit answred quiz solution to server
     let studSendQuizQuestion = () => {
         if (answer.length !== question.length) {
             setSuccess(false)
@@ -164,14 +149,6 @@ let Quiz = (props) => {
             setOpenAlert(true)
             return
         }
-        // const requestOptions = {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({
-        //         'username': username,
-        //         'ans': answer,
-        //     })
-        // };
         axios.post('http://localhost:5000/quiz/student/submit',
             {
                 'ans': answer,
@@ -194,26 +171,13 @@ let Quiz = (props) => {
                     setOpenAlert(true)
                 }
             })
-        // fetch(`http://localhost:5000/quiz/student/submit`, requestOptions)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (!response.error) {
-        //             console.log(response)
-        //             setModalOpen(true)
-        //             setScore(response.score)
-        //         }
-        //         else {
-        //             console.log(response)
-        //             setSuccess(false)
-        //             setAlertMessage(response.error)
-        //             setOpenAlert(true)
-        //         }
-        //     });
-
     }
+    // check quiz history, will be redirect 
     let checkQuizHistory = (type) => {
         props.history.push(`/Quiz/history/${Course ? Course  : 'Your'}`)
     }
+
+    //for teacher to start or stop a quiz
     let handleStartOrEndQuiz = (value) => {
         setStartQuiz(value)
         axios.get(`http://localhost:5000/quiz/start/${Course}/${value}`,
@@ -235,22 +199,6 @@ let Quiz = (props) => {
                     setOpenAlert(true)
                 }
             })
-        // fetch(`http://localhost:5000/quiz/start/${Course}/${value}`)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (!response.error) {
-        //             console.log(response.message)
-        //             setOpenAlert(true)
-        //             setSuccess(true)
-        //             setAlertMessage(response.message)
-        //         }
-        //         else {
-        //             console.log(response)
-        //             setSuccess(false)
-        //             setAlertMessage(response.error)
-        //             setOpenAlert(true)
-        //         }
-        //     });
     }
     let handleQusChnage = (e, index) => {
         profquestion[index] = { ...profquestion[index] }

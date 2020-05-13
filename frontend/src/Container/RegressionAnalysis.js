@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -80,8 +87,9 @@ let RegressionAnalysis = (props) => {
         }
     }
 
+    //fetch all quiz result, attendance, and course rating
     useEffect(() => {
-        //fetch all quiz result
+
         let filered = []
         filered = courselist && Array.isArray(courselist) && courselist.filter(i => i.code === Course)
         if (Course && filered.length > 0) {
@@ -271,7 +279,7 @@ let RegressionAnalysis = (props) => {
                 <FullPaperPageHeader minheight={props.minheight && props.minheight} width={props.width} title={`${props.match.params.course === undefined ? '' : Course} My Score Analysis`}
                     body1={'Select a Course to find out the Relationship between your Attendance, Score, and Ratings!'}>
                     <div>
-                      
+
                         {Array.isArray(courselist) &&
                             <Autocomplete
                                 id="combo-box-demo"

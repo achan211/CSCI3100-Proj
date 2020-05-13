@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -72,6 +79,8 @@ let NotificationPage = (props) => {
     const handleClose = () => {
         setOpen(false)
     };
+
+    //get user notification from server
     useEffect(() => {
         axios.get(`http://localhost:5000/user/getNotification`, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {
@@ -104,44 +113,9 @@ let NotificationPage = (props) => {
                 setNotice(response.error)
             }
         })
-        // if (JSON.parse(localStorage.getItem('info'))) {
-        //     let username = JSON.parse(localStorage.getItem('info')).username
-        //     // get notification form server
-        //     fetch(`http://localhost:5000/user/getNotification/${username}`, )
-        //         .then(response => response.json())
-        //         .then(response => {
-        //             if (!response.error) {
-        //                 console.log(response)
-        //                 response.sitNotice.sort(function (a, b) {
-        //                     if (a.date > b.date) //sort  descending
-        //                         return -1
-        //                     else
-        //                         return 1
-        //                 })
-        //                 response.forumNotice.sort(function (a, b) {
-        //                     if (a.date > b.date) //sort  descending
-        //                         return -1
-        //                     else
-        //                         return 1
-        //                 })
-        //                 response.courseNotice.sort(function (a, b) {
-        //                     if (a.date > b.date) //sort  descending
-        //                         return -1
-        //                     else
-        //                         return 1
-        //                 })
-        //                 setNotice(response)
-
-        //             }
-        //             else {
-        //                 setNotice(response.error)
-        //             }
-
-
-        //         });
-        // }
     }, [])
 
+    // send delete request of notification to server
     let handleDeleteNoti = (id, noticeType) => {
         axios.delete(`http://localhost:5000/user/deleteNotification/${id}/${noticeType}`, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {
@@ -162,26 +136,9 @@ let NotificationPage = (props) => {
                 setOpen(true)
             }
         })
-
-        // let username = JSON.parse(localStorage.getItem('info')).username
-        // fetch(`http://localhost:5000/user/deleteNotification/${username}/${id}/${noticeType}`, { method: 'DELETE'})
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (response.docs) {
-        //             setAlertMessage('Deleted!')
-        //             let tmpArray = notice[noticeType].filter(item=>{
-        //                 return item._id !== id
-        //             })
-        //             console.log(tmpArray)
-        //             setNotice({...notice, [noticeType] : tmpArray })
-        //             setOpen(true)
-        //         } else{
-        //             setAlertMessage('Fail to delete')
-        //             setOpen(true)
-        //           }
-        //     })
     }
 
+    // for teacher to approve or disapprove sit in request
     let handleSitInApprove = (id, studentUsername, course, type) => {
         axios.post(`http://localhost:5000/user/addEnrolledCourse`,
             {
@@ -212,41 +169,9 @@ let NotificationPage = (props) => {
                     setOpen(true)
                 }
             })
-        // const requestOptions = {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({
-        //         'course': course,
-        //         'username': studentUsername,
-        //         'profusername': JSON.parse(localStorage.getItem('info')).username,
-        //         'type': type,
-        //         'id': id //noti id
-        //     })
-        // };
-        // fetch('http://localhost:5000/user/addEnrolledCourse', requestOptions)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (!response.error) {
-        //             if (type === 'disallow')
-        //                 setAlertMessage('Successfully Removed!')
-        //             else
-        //                 setAlertMessage('Successfully Added!')
-        //             let tmpArray = notice.sitNotice.filter(item => {
-        //                 return item._id !== id
-        //             })
-        //             console.log(tmpArray)
-        //             setNotice({ ...notice, sitNotice: tmpArray })
-        //             setOpen(true)
-        //         }
-        //         else {
-        //             setAlertMessage(response.error)
-        //             setOpen(true)
-        //         }
-
-
-        //     });
     }
 
+    // render notificaiton message
     let renderNotiMessage = (type) => {
         //sitNotice
         //forumNotice

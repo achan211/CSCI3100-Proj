@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React, { useState, useEffect, useReducer, useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -68,6 +75,7 @@ let LoginPage = (props) => {
   const [pw, setpw] = useState('');
   const [renderLogin,setRenderLogin]=useState()
 
+  //check if user has loginned in
   useEffect(() => {
     axios.post('http://localhost:5000/', {}, { withCredentials: true }).then(response => response.data).then((response) => {
 
@@ -81,6 +89,8 @@ let LoginPage = (props) => {
       }
     })
   },[])
+
+  //submit login info to server
   let handleSubmit = () => {
     if (username.length > 0 && pw.length > 0) {
 

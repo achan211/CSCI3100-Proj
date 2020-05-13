@@ -1,3 +1,11 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
+
 import React from "react";
 import ForumIcon from '@material-ui/icons/Forum';
 import { useTheme } from "@material-ui/styles";
@@ -32,14 +40,8 @@ export default function Notification({ variant, ...props }) {
       >
         <ForumIcon />
       </div>
-      <div 
-      // className={classes.messageContainer}
-      >
+      <div >
         <Typography
-          // className={classnames({
-          //   [classes.containedTypography]: variant === "contained",
-          // })}
-          // variant={props.typographyVariant}
           weight="medium" gutterBottom
           className={classes.text}
         >
@@ -47,10 +49,6 @@ export default function Notification({ variant, ...props }) {
         
         </Typography>
         <Typography
-          // className={classnames({
-          //   [classes.containedTypography]: variant === "contained",
-          // })}
-          // variant={props.typographyVariant}
           className={classes.text}
 
           color="text" colorBrightness="secondary"

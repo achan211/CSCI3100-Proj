@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -116,6 +123,7 @@ export default function UserProfile() {
         email: ''
     });
 
+    //get user info from server
     useEffect(() => {
         axios.get(`http://localhost:5000/user/info`, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {
@@ -134,6 +142,8 @@ export default function UserProfile() {
             }
         })
     }, [])
+
+    //handle change user pw
     const handleChangePW = () => {
         if (oldpw && newpw) {
             // let username = JSON.parse(localStorage.getItem('info')).username
@@ -158,6 +168,8 @@ export default function UserProfile() {
         }
 
     }
+
+    //check and submit user edit request to server
     const handleClick = () => {
         if(users.firstname.length == 0 || users.lastname.length == 0 || users.email == 0 ) 
         {
@@ -200,16 +212,13 @@ export default function UserProfile() {
     let onChangeHandler = event => {
         setSelectedFile(event.target.files[0])
     }
+
+    //upload user profic pic
     let onClickHandler = () => {
         setLoading(true)
         const formData = new FormData()
-        // let username = JSON.parse(localStorage.getItem('info')).username
 
         formData.append('recfile', selectedFile)
-        // const requestOptions = {
-        //     method: 'POST',
-        //     body: formData
-        // };
         axios.post(`http://localhost:5000/uploadPropic`, formData, { withCredentials: true }).then(response => response.data).then((response) => {
             if (response.redirectURL) {
                 //back to login

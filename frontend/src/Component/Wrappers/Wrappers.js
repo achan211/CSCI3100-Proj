@@ -1,3 +1,10 @@
+// PROGRAM – Program to render a wrapper
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render wrapper
+// DATA STRUCTURES: Json Data Type storing course details
 import React from "react";
 import {
   withStyles,

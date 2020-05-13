@@ -1,3 +1,10 @@
+// PROGRAM – Program to style component
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render style component
+// DATA STRUCTURES: NA
 import { makeStyles } from "@material-ui/styles";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 

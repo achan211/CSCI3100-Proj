@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -67,8 +74,6 @@ const useStyles = makeStyles((theme) => ({
 const Welcome = () => {
   const classes = useStyles();
   // Welcome Page
-  let result = escomplex.analyse('E:\CSCI3100-Proj\frontend\src\Container\welcome.js');
-  console.log(result)
   return (
     <React.Fragment>
       <div className={classes.root}>

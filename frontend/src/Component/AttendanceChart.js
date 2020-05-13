@@ -1,3 +1,10 @@
+// PROGRAM – Program to render page content
+// PROGRAMMER: So, Chi Fung
+// CALLING SEQUENCE: return the JSX element, then call useffect. 
+// VERSION 1: written 4-2-2020
+// REVISION 1.1: written 4-5-2020
+// PURPOSE: render page content
+// DATA STRUCTURES: Json Data Type storing course details
 import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -184,21 +191,6 @@ let Attendance = (props) => {
                     setChartOpen(false)
                 }
             })
-            // fetch(`http://localhost:5000/attendance/teacher/getAttendance/${course}`)
-            //     .then(response => response.json())
-            //     .then(response => {
-            //         if (!response.error) {
-            //             console.log(response)
-            //             setAttendanceRecord(response[0])
-            //         }
-            //         else {
-            //             setAlertMessage(response.error)
-            //             setSuccess(false)
-            //             setOpen(true)
-            //             setChartOpen(false)
-
-            //         }
-            //     });
         }
     }
 
