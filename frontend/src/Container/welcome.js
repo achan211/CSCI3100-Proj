@@ -8,9 +8,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
+
 import {
   Link
 } from "react-router-dom";
+const escomplex = require('escomplex');
+
 const useStyles = makeStyles((theme) => ({
   rightToolBar: {
     marginLeft: 'auto',
@@ -64,6 +67,8 @@ const useStyles = makeStyles((theme) => ({
 const Welcome = () => {
   const classes = useStyles();
   // Welcome Page
+  let result = escomplex.analyse('E:\CSCI3100-Proj\frontend\src\Container\welcome.js');
+  console.log(result)
   return (
     <React.Fragment>
       <div className={classes.root}>
