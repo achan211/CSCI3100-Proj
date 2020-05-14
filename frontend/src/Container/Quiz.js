@@ -370,7 +370,7 @@ let Quiz = (props) => {
                                 </Grid>
                             )
                         })}
-                        <Button variant="contained" onClick={() => studSendQuizQuestion()} color="primary">Sumbmit Quiz!</Button>
+                        <Button variant="contained" onClick={() => studSendQuizQuestion()} color="primary">Submit Quiz!</Button>
                     </Paper>
                 </Grid>
             </Grid>
