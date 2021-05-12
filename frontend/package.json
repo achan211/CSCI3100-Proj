@@ -37,7 +37,7 @@
     "recharts": "^1.8.5",
     "regression": "^2.0.1",
     "sass": "^1.26.3",
-    "swiper": "^5.3.7",
+    "swiper": "^6.5.1",
     "tinycolor2": "^1.4.1",
     "yarn": "^1.22.4"
   },
