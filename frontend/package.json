@@ -21,7 +21,7 @@
     "date-fns": "^2.8.1",
     "escomplex": "^2.0.0-alpha",
     "history": "^4.10.1",
-    "mathjs": "^6.6.3",
+    "mathjs": "^7.5.1",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
